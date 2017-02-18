@@ -1,13 +1,11 @@
 package com.fondesa.quicksavestate.sample;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
 import com.fondesa.quicksavestate.SaveState;
-import com.fondesa.quicksavestate.StateSerDes;
 
 public class MainActivity extends AppCompatActivity {
     private static final String FIRST_VALUE = "first";
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    public static class RandomStateSerDes implements StateSerDes<String> {
+//    public static class RandomStateSerDes implements StateSD<String> {
 //        @Override
 //        public void serialize(@NonNull Bundle state, @NonNull String key, @NonNull String value) {
 //            state.putString(key + ".string", value);

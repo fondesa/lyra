@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface SaveState {
-    Class<? extends StateSerDes> value() default StateSerDes.class;
+    Class<? extends StateSD> value() default StateSD.class;
 }

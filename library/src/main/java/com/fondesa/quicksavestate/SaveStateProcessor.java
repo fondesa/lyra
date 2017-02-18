@@ -3,6 +3,7 @@ package com.fondesa.quicksavestate;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.util.ArrayMap;
 
 import java.lang.reflect.Field;
 
@@ -11,7 +12,10 @@ import java.lang.reflect.Field;
  */
 
 public class SaveStateProcessor {
+    private ArrayMap<Class<?>, StateSD<?>> mNativeCachedState;
+
     public SaveStateProcessor() {
+        mNativeCachedState = new ArrayMap<>();
     }
 
     public void saveState(@NonNull Object stateHolder, @NonNull Bundle bundle) {
@@ -27,18 +31,18 @@ public class SaveStateProcessor {
                 field.setAccessible(true);
             }
 
-            String fieldName = field.getName();
-            Object fieldValue;
+            final String fieldName = field.getName();
+            final Object fieldValue;
             try {
                 fieldValue = field.get(stateHolder);
             } catch (IllegalAccessException e) {
-                fieldValue = null;
+                throw new RuntimeException("Cannot access to field " + fieldName +
+                        " of class " + stateHolder.getClass().getName());
             }
 
             if (fieldValue != null) {
-                StateBundleManager bundleManager = new StateBundleManager(bundle);
-                StateSerDes stateSerDes = getStateSerDes(saveState);
-                stateSerDes.serialize(bundleManager, fieldName, fieldValue);
+                final StateSD stateSD = getStateSD(field, saveState);
+                stateSD.serialize(bundle, fieldName, fieldValue);
             }
 
             if (!accessible) {
@@ -63,15 +67,16 @@ public class SaveStateProcessor {
                 field.setAccessible(true);
             }
 
-            StateBundleManager bundleManager = new StateBundleManager(bundle);
-            final StateSerDes stateSerDes = getStateSerDes(saveState);
-            Object fieldValue = stateSerDes.deserialize(bundleManager, field.getName());
+            final StateSD stateSD = getStateSD(field, saveState);
 
+            final String fieldName = field.getName();
+            final Object fieldValue = stateSD.deserialize(bundle, fieldName);
             if (fieldValue != null) {
                 try {
                     field.set(stateHolder, fieldValue);
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException("Cannot access to field " + fieldName +
+                            " of class " + stateHolder.getClass().getName());
                 }
             }
 
@@ -81,18 +86,35 @@ public class SaveStateProcessor {
         }
     }
 
-    private StateSerDes getStateSerDes(@NonNull SaveState saveState) {
-        Class<? extends StateSerDes> stateSerDesClass = saveState.value();
-        StateSerDes stateSerDes = null;
-        if (stateSerDesClass == StateSerDes.class) {
-            stateSerDes = new NativeStateSerDes();
+    private StateSD getStateSD(@NonNull Field field, @NonNull SaveState saveState) {
+        final Class<?> fieldClass = field.getType();
+        StateSD stateSD = mNativeCachedState.get(fieldClass);
+        if (stateSD != null)
+            return stateSD;
+
+        final Class<? extends StateSD> stateSDClass = saveState.value();
+        if (stateSDClass == StateSD.class) {
+            stateSD = getNativeStateSD(fieldClass);
+            if (stateSD == null) {
+                throw new RuntimeException("You have to specify a custom " + StateSD.class.getName() +
+                        " for an object of type " + fieldClass.getClass().getName());
+            }
+            mNativeCachedState.put(fieldClass, stateSD);
         } else {
             try {
-                stateSerDes = stateSerDesClass.newInstance();
+                stateSD = stateSDClass.newInstance();
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new RuntimeException("Cannot instantiate a " + StateSD.class.getSimpleName() +
+                        " of class " + stateSDClass.getClass().getName());
             }
         }
-        return stateSerDes;
+        return stateSD;
+    }
+
+    private StateSD getNativeStateSD(Class<?> value) {
+        if (value.isAssignableFrom(String.class))
+            return new NativeSD.StringSD();
+
+        return null;
     }
 }
