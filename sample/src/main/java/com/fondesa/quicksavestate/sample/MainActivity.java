@@ -6,13 +6,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.fondesa.quicksavestate.SaveState;
+import com.fondesa.quicksavestate.sample.model.Model;
+import com.fondesa.quicksavestate.sample.model.ParcelableModel;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private TextView mTextView;
-    private TextView mArrayTextView;
-
 
     @SaveState
     private String mText;
@@ -24,14 +24,16 @@ public class MainActivity extends AppCompatActivity {
     byte mPrimitiveByte;
 
     @SaveState
-    ArrayList<CustomModel> mIntegerArray;
+    ArrayList<Model> mModelList;
+
+    @SaveState
+    ParcelableModel mModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTextView = (TextView) findViewById(R.id.text_view);
-        mArrayTextView = (TextView) findViewById(R.id.array_text_view);
 
         printInfo();
 
@@ -41,27 +43,54 @@ public class MainActivity extends AppCompatActivity {
                 mText = (mText == null) ? "first" : null;
                 mByte = (mByte == null) ? (byte) 1 : null;
                 mPrimitiveByte = (mPrimitiveByte == 0) ? (byte) 1 : 0;
-                ArrayList<CustomModel> integers = new ArrayList<>();
-                integers.add(new CustomModel(1, "first"));
-                integers.add(new CustomModel(2, "second"));
-                integers.add(new CustomModel(3, "third"));
-                mIntegerArray = (mIntegerArray == null) ? integers : null;
+                ArrayList<Model> modelList = new ArrayList<>();
+                modelList.add(new Model(1, "first"));
+                modelList.add(new Model(2, "second"));
+                modelList.add(new Model(3, "third"));
 
+                mModelList = (mModelList == null) ? modelList : null;
+                mModel = (mModel == null) ? new ParcelableModel(5, "fifth") : null;
                 printInfo();
             }
         });
     }
 
     private void printInfo() {
-        mTextView.setText(mText + " " + mByte + " " + mPrimitiveByte);
-        if (mIntegerArray != null) {
+        mTextView.setText(null);
+
+        mTextView.append("String: " + mText);
+        appendNl();
+        mTextView.append("Primitive byte: " + mPrimitiveByte);
+        appendNl();
+        mTextView.append("Byte object: " + mByte);
+        appendNl();
+
+        mTextView.append("Model list: ");
+        if (mModelList != null) {
             String text = "";
-            for (CustomModel m : mIntegerArray) {
-                text += m.id + ": " + m.value + "\n";
+            for (int i = 0; i < mModelList.size(); i++) {
+                Model m = mModelList.get(i);
+                if (i != 0)
+                    text += " - ";
+
+                text += m.id + ": " + m.value;
             }
-            mArrayTextView.setText(text);
+            mTextView.append(text);
         } else {
-            mArrayTextView.setText(null);
+            mTextView.append("null");
         }
+
+        appendNl();
+
+        mTextView.append("Parcelable model: ");
+        if (mModel != null) {
+            mTextView.append(mModel.id + ": " + mModel.value);
+        } else {
+            mTextView.append("null");
+        }
+    }
+
+    private void appendNl() {
+        mTextView.append("\n");
     }
 }

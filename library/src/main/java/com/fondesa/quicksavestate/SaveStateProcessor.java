@@ -16,7 +16,6 @@ import java.lang.reflect.Field;
 /**
  * Created by antoniolig on 17/02/17.
  */
-
 public class SaveStateProcessor {
     private ArrayMap<Class<?>, StateSD<?>> mNativeCachedState;
 
