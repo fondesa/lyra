@@ -2,21 +2,18 @@ package com.fondesa.quicksavestate;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-
-import java.lang.reflect.Field;
 
 /**
  * Created by antoniolig on 17/02/17.
  */
 public class QuickSaveState implements Application.ActivityLifecycleCallbacks {
 
-    private SaveStateProcessor<Activity> mProcessor;
+    private SaveStateProcessor mProcessor;
 
     public QuickSaveState(@NonNull Application application) {
-        mProcessor = new SaveStateProcessor<>();
+        mProcessor = new SaveStateProcessor();
         application.registerActivityLifecycleCallbacks(this);
     }
 

@@ -10,11 +10,11 @@ import java.lang.reflect.Field;
  * Created by antoniolig on 17/02/17.
  */
 
-public class SaveStateProcessor<StateHolder> {
+public class SaveStateProcessor {
     public SaveStateProcessor() {
     }
 
-    public void saveState(@NonNull StateHolder stateHolder, @NonNull Bundle bundle) {
+    public void saveState(@NonNull Object stateHolder, @NonNull Bundle bundle) {
         Field[] fields = stateHolder.getClass().getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
             Field field = fields[i];
@@ -47,7 +47,7 @@ public class SaveStateProcessor<StateHolder> {
         }
     }
 
-    public void restoreState(@NonNull StateHolder stateHolder, @Nullable Bundle bundle) {
+    public void restoreState(@NonNull Object stateHolder, @Nullable Bundle bundle) {
         if (bundle == null)
             return;
 
