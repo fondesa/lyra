@@ -16,11 +16,18 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
+    <TextView
+        android:id="@+id/array_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view"
+        android:layout_centerInParent="true" />
+
     <Button
         android:id="@+id/btn_change_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text_view"
+        android:layout_below="@id/array_text_view"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:text="@string/change_value" />

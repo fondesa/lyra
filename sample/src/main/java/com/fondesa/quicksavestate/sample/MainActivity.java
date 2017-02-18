@@ -7,42 +7,61 @@ import android.widget.TextView;
 
 import com.fondesa.quicksavestate.SaveState;
 
-public class MainActivity extends AppCompatActivity {
-    private static final String FIRST_VALUE = "first";
-    private static final String SECOND_VALUE = "second";
+import java.util.ArrayList;
 
-    public TextView mTextView;
+public class MainActivity extends AppCompatActivity {
+    private TextView mTextView;
+    private TextView mArrayTextView;
+
 
     @SaveState
     private String mText;
+
+    @SaveState
+    Byte mByte;
+
+    @SaveState
+    byte mPrimitiveByte;
+
+    @SaveState
+    ArrayList<CustomModel> mIntegerArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTextView = (TextView) findViewById(R.id.text_view);
+        mArrayTextView = (TextView) findViewById(R.id.array_text_view);
 
-        mTextView.setText(mText);
+        printInfo();
 
         findViewById(R.id.btn_change_value).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mText = (mText == null || mText.equals(SECOND_VALUE)) ? FIRST_VALUE : SECOND_VALUE;
-                mText = (mText == null) ? FIRST_VALUE : null;
-                mTextView.setText(mText);
+                mText = (mText == null) ? "first" : null;
+                mByte = (mByte == null) ? (byte) 1 : null;
+                mPrimitiveByte = (mPrimitiveByte == 0) ? (byte) 1 : 0;
+                ArrayList<CustomModel> integers = new ArrayList<>();
+                integers.add(new CustomModel(1, "first"));
+                integers.add(new CustomModel(2, "second"));
+                integers.add(new CustomModel(3, "third"));
+                mIntegerArray = (mIntegerArray == null) ? integers : null;
+
+                printInfo();
             }
         });
     }
 
-//    public static class RandomStateSerDes implements StateSD<String> {
-//        @Override
-//        public void serialize(@NonNull Bundle state, @NonNull String key, @NonNull String value) {
-//            state.putString(key + ".string", value);
-//        }
-//
-//        @Override
-//        public String deserialize(@NonNull Bundle state, @NonNull String fieldName) {
-//            return state.getString(fieldName + ".string");
-//        }
-//    }
+    private void printInfo() {
+        mTextView.setText(mText + " " + mByte + " " + mPrimitiveByte);
+        if (mIntegerArray != null) {
+            String text = "";
+            for (CustomModel m : mIntegerArray) {
+                text += m.id + ": " + m.value + "\n";
+            }
+            mArrayTextView.setText(text);
+        } else {
+            mArrayTextView.setText(null);
+        }
+    }
 }
