@@ -25,11 +25,22 @@ public class QuickSaveState implements Application.ActivityLifecycleCallbacks {
     }
 
     public static void saveState(@NonNull Object stateHolder, @NonNull Bundle state) {
+        if (instance == null) {
+            throw getNullInstanceException();
+        }
         instance.mProcessor.saveState(stateHolder, state);
     }
 
     public static void restoreState(@NonNull Object stateHolder, @Nullable Bundle state) {
+        if (instance == null) {
+            throw getNullInstanceException();
+        }
         instance.mProcessor.restoreState(stateHolder, state);
+    }
+
+    private static NullPointerException getNullInstanceException() {
+        return new NullPointerException("Instance not initialized. You have to call " +
+                QuickSaveState.class.getSimpleName() + "init() in your application.");
     }
 
     private QuickSaveState(@NonNull Application application) {
@@ -43,24 +54,16 @@ public class QuickSaveState implements Application.ActivityLifecycleCallbacks {
     }
 
     @Override
-    public void onActivityStarted(Activity activity) {
-
-    }
+    public void onActivityStarted(Activity activity) { /* empty */ }
 
     @Override
-    public void onActivityResumed(Activity activity) {
-
-    }
+    public void onActivityResumed(Activity activity) { /* empty */ }
 
     @Override
-    public void onActivityPaused(Activity activity) {
-
-    }
+    public void onActivityPaused(Activity activity) { /* empty */ }
 
     @Override
-    public void onActivityStopped(Activity activity) {
-
-    }
+    public void onActivityStopped(Activity activity) { /* empty */ }
 
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
@@ -68,7 +71,5 @@ public class QuickSaveState implements Application.ActivityLifecycleCallbacks {
     }
 
     @Override
-    public void onActivityDestroyed(Activity activity) {
-
-    }
+    public void onActivityDestroyed(Activity activity) { /* empty */ }
 }
