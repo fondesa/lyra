@@ -1,4 +1,6 @@
-package com.fondesa.quicksavestate;
+package com.fondesa.quicksavestate.annotation;
+
+import com.fondesa.quicksavestate.coder.StateCoder;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,5 +13,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface SaveState {
-    Class<? extends StateSD> value() default StateSD.class;
+    Class<? extends StateCoder> value() default StateCoder.class;
 }

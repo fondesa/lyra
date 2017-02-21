@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.fondesa.quicksavestate.SaveState;
+import com.fondesa.quicksavestate.annotation.SaveState;
 import com.fondesa.quicksavestate.sample.model.Model;
 import com.fondesa.quicksavestate.sample.model.ParcelableModel;
 

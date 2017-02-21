@@ -1,4 +1,4 @@
-package com.fondesa.quicksavestate;
+package com.fondesa.quicksavestate.processor;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +10,10 @@ import android.support.v4.util.ArrayMap;
 import android.util.Size;
 import android.util.SizeF;
 
+import com.fondesa.quicksavestate.annotation.SaveState;
+import com.fondesa.quicksavestate.coder.BaseCoders;
+import com.fondesa.quicksavestate.coder.StateCoder;
+
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
@@ -17,7 +21,7 @@ import java.lang.reflect.Field;
  * Created by antoniolig on 17/02/17.
  */
 public class SaveStateProcessor {
-    private ArrayMap<Class<?>, StateSD<?>> mNativeCachedState;
+    private ArrayMap<Class<?>, StateCoder<?>> mNativeCachedState;
 
     public SaveStateProcessor() {
         mNativeCachedState = new ArrayMap<>();
@@ -46,8 +50,8 @@ public class SaveStateProcessor {
             }
 
             if (fieldValue != null) {
-                final StateSD stateSD = getStateSD(field, saveState);
-                stateSD.serialize(bundle, fieldName, fieldValue);
+                final StateCoder stateCoder = getStateSD(field, saveState);
+                stateCoder.serialize(bundle, fieldName, fieldValue);
             }
 
             if (!accessible) {
@@ -72,10 +76,10 @@ public class SaveStateProcessor {
                 field.setAccessible(true);
             }
 
-            final StateSD stateSD = getStateSD(field, saveState);
+            final StateCoder stateCoder = getStateSD(field, saveState);
 
             final String fieldName = field.getName();
-            final Object fieldValue = stateSD.deserialize(bundle, fieldName);
+            final Object fieldValue = stateCoder.deserialize(bundle, fieldName);
             if (fieldValue != null) {
                 try {
                     field.set(stateHolder, fieldValue);
@@ -91,123 +95,123 @@ public class SaveStateProcessor {
         }
     }
 
-    private StateSD getStateSD(@NonNull Field field, @NonNull SaveState saveState) {
+    private StateCoder getStateSD(@NonNull Field field, @NonNull SaveState saveState) {
         final Class<?> fieldClass = field.getType();
-        StateSD stateSD;
+        StateCoder stateCoder;
 
-        final Class<? extends StateSD> stateSDClass = saveState.value();
-        if (stateSDClass == StateSD.class) {
-            stateSD = mNativeCachedState.get(fieldClass);
-            if (stateSD != null)
-                return stateSD;
+        final Class<? extends StateCoder> stateSDClass = saveState.value();
+        if (stateSDClass == StateCoder.class) {
+            stateCoder = mNativeCachedState.get(fieldClass);
+            if (stateCoder != null)
+                return stateCoder;
 
-            stateSD = getNativeStateSD(fieldClass);
-            if (stateSD == null) {
-                throw new RuntimeException("You have to specify a custom " + StateSD.class.getName() +
+            stateCoder = getNativeStateSD(fieldClass);
+            if (stateCoder == null) {
+                throw new RuntimeException("You have to specify a custom " + StateCoder.class.getName() +
                         " for an object of type " + fieldClass.getName());
             }
-            mNativeCachedState.put(fieldClass, stateSD);
+            mNativeCachedState.put(fieldClass, stateCoder);
         } else {
             try {
-                stateSD = stateSDClass.newInstance();
+                stateCoder = stateSDClass.newInstance();
             } catch (Exception e) {
-                throw new RuntimeException("Cannot instantiate a " + StateSD.class.getSimpleName() +
+                throw new RuntimeException("Cannot instantiate a " + StateCoder.class.getSimpleName() +
                         " of class " + stateSDClass.getName());
             }
         }
-        return stateSD;
+        return stateCoder;
     }
 
-    private StateSD getNativeStateSD(@NonNull Class<?> cls) {
+    private StateCoder getNativeStateSD(@NonNull Class<?> cls) {
         if (boolean.class.isAssignableFrom(cls) || Boolean.class.isAssignableFrom(cls))
-            return new NativeSD.BooleanSD();
+            return new BaseCoders.BooleanCoder();
 
         if (boolean[].class.isAssignableFrom(cls))
-            return new NativeSD.BooleanArraySD();
+            return new BaseCoders.BooleanArrayCoder();
 
         if (byte.class.isAssignableFrom(cls) || Byte.class.isAssignableFrom(cls))
-            return new NativeSD.ByteSD();
+            return new BaseCoders.ByteCoder();
 
         if (byte[].class.isAssignableFrom(cls))
-            return new NativeSD.ByteArraySD();
+            return new BaseCoders.ByteArrayCoder();
 
         if (char.class.isAssignableFrom(cls) || Character.class.isAssignableFrom(cls))
-            return new NativeSD.CharSD();
+            return new BaseCoders.CharCoder();
 
         if (char[].class.isAssignableFrom(cls))
-            return new NativeSD.CharArraySD();
+            return new BaseCoders.CharArrayCoder();
 
         if (CharSequence.class.isAssignableFrom(cls))
-            return new NativeSD.CharSequenceSD();
+            return new BaseCoders.CharSequenceCoder();
 
         if (CharSequence[].class.isAssignableFrom(cls))
-            return new NativeSD.CharSequenceArraySD();
+            return new BaseCoders.CharSequenceArrayCoder();
 
         if (double.class.isAssignableFrom(cls) || Double.class.isAssignableFrom(cls))
-            return new NativeSD.DoubleSD();
+            return new BaseCoders.DoubleCoder();
 
         if (double[].class.isAssignableFrom(cls))
-            return new NativeSD.DoubleArraySD();
+            return new BaseCoders.DoubleArrayCoder();
 
         if (float.class.isAssignableFrom(cls) || Float.class.isAssignableFrom(cls))
-            return new NativeSD.FloatSD();
+            return new BaseCoders.FloatCoder();
 
         if (float[].class.isAssignableFrom(cls))
-            return new NativeSD.FloatArraySD();
+            return new BaseCoders.FloatArrayCoder();
 
         if (int.class.isAssignableFrom(cls) || Integer.class.isAssignableFrom(cls))
-            return new NativeSD.IntSD();
+            return new BaseCoders.IntCoder();
 
         if (int[].class.isAssignableFrom(cls) || Integer[].class.isAssignableFrom(cls))
-            return new NativeSD.IntArraySD();
+            return new BaseCoders.IntArrayCoder();
 
         if (long.class.isAssignableFrom(cls) || Long.class.isAssignableFrom(cls))
-            return new NativeSD.LongSD();
+            return new BaseCoders.LongCoder();
 
         if (long[].class.isAssignableFrom(cls))
-            return new NativeSD.LongArraySD();
+            return new BaseCoders.LongArrayCoder();
 
         if (Parcelable.class.isAssignableFrom(cls))
-            return new NativeSD.ParcelableSD();
+            return new BaseCoders.ParcelableCoder();
 
         if (Parcelable[].class.isAssignableFrom(cls))
-            return new NativeSD.ParcelableArraySD();
+            return new BaseCoders.ParcelableArrayCoder();
 
         if (Serializable.class.isAssignableFrom(cls))
-            return new NativeSD.SerializableSD();
+            return new BaseCoders.SerializableCoder();
 
         if (short.class.isAssignableFrom(cls) || Short.class.isAssignableFrom(cls))
-            return new NativeSD.ShortSD();
+            return new BaseCoders.ShortCoder();
 
         if (short[].class.isAssignableFrom(cls))
-            return new NativeSD.ShortArraySD();
+            return new BaseCoders.ShortArrayCoder();
 
         if (String.class.isAssignableFrom(cls))
-            return new NativeSD.StringSD();
+            return new BaseCoders.StringCoder();
 
         if (String[].class.isAssignableFrom(cls))
-            return new NativeSD.StringArraySD();
+            return new BaseCoders.StringArrayCoder();
 
         final int apiVersion = Build.VERSION.SDK_INT;
         if (IBinder.class.isAssignableFrom(cls)) {
             if (apiVersion >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                return new NativeSD.BinderSD();
+                return new BaseCoders.BinderCoder();
 
-            throw new RuntimeException("The class " + NativeSD.BinderSD.class.getName() + " is available only above api 18");
+            throw new RuntimeException("The class " + BaseCoders.BinderCoder.class.getName() + " is available only above api 18");
         }
 
         if (Size.class.isAssignableFrom(cls)) {
             if (apiVersion >= Build.VERSION_CODES.LOLLIPOP)
-                return new NativeSD.SizeSD();
+                return new BaseCoders.SizeCoder();
 
-            throw new RuntimeException("The class " + NativeSD.SizeSD.class.getName() + " is available only above api 21");
+            throw new RuntimeException("The class " + BaseCoders.SizeCoder.class.getName() + " is available only above api 21");
         }
 
         if (SizeF.class.isAssignableFrom(cls)) {
             if (apiVersion >= Build.VERSION_CODES.LOLLIPOP)
-                return new NativeSD.SizeFSD();
+                return new BaseCoders.SizeFSD();
 
-            throw new RuntimeException("The class " + NativeSD.SizeFSD.class.getName() + " is available only above api 21");
+            throw new RuntimeException("The class " + BaseCoders.SizeFSD.class.getName() + " is available only above api 21");
         }
 
         return null;

@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.fondesa.quicksavestate.processor.SaveStateProcessor;
+
 /**
  * Created by antoniolig on 17/02/17.
  */
