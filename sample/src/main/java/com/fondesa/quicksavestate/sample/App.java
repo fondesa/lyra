@@ -13,6 +13,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        new QuickSaveState(this);
+        QuickSaveState.init(this);
     }
 }

@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        QuickSaveState.restoreState(this, savedInstanceState);
+
         setContentView(R.layout.activity_main);
         mTextView = (TextView) findViewById(R.id.text_view);
 
@@ -53,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
                 printInfo();
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        QuickSaveState.saveState(this, outState);
     }
 
     private void printInfo() {

@@ -4,22 +4,42 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
 /**
  * Created by antoniolig on 17/02/17.
  */
 public class QuickSaveState implements Application.ActivityLifecycleCallbacks {
+    private static final String TAG = QuickSaveState.class.getSimpleName();
 
     private SaveStateProcessor mProcessor;
 
-    public QuickSaveState(@NonNull Application application) {
+    private static QuickSaveState instance;
+
+    public static void init(@NonNull Application application) {
+        if (instance != null) {
+            Log.w(TAG, "The instance is initialized. You have called init() multiple times.");
+        }
+        instance = new QuickSaveState(application);
+    }
+
+    public static void saveState(@NonNull Object stateHolder, @NonNull Bundle state) {
+        instance.mProcessor.saveState(stateHolder, state);
+    }
+
+    public static void restoreState(@NonNull Object stateHolder, @Nullable Bundle state) {
+        instance.mProcessor.restoreState(stateHolder, state);
+    }
+
+    private QuickSaveState(@NonNull Application application) {
         mProcessor = new SaveStateProcessor();
         application.registerActivityLifecycleCallbacks(this);
     }
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        mProcessor.restoreState(activity, savedInstanceState);
+        restoreState(activity, savedInstanceState);
     }
 
     @Override
@@ -44,7 +64,7 @@ public class QuickSaveState implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-        mProcessor.saveState(activity, outState);
+        saveState(activity, outState);
     }
 
     @Override

@@ -190,21 +190,21 @@ public class SaveStateProcessor {
 
         final int apiVersion = Build.VERSION.SDK_INT;
         if (IBinder.class.isAssignableFrom(cls)) {
-            if (apiVersion >= 18)
+            if (apiVersion >= Build.VERSION_CODES.JELLY_BEAN_MR2)
                 return new NativeSD.BinderSD();
 
             throw new RuntimeException("The class " + NativeSD.BinderSD.class.getName() + " is available only above api 18");
         }
 
         if (Size.class.isAssignableFrom(cls)) {
-            if (apiVersion >= 21)
+            if (apiVersion >= Build.VERSION_CODES.LOLLIPOP)
                 return new NativeSD.SizeSD();
 
             throw new RuntimeException("The class " + NativeSD.SizeSD.class.getName() + " is available only above api 21");
         }
 
         if (SizeF.class.isAssignableFrom(cls)) {
-            if (apiVersion >= 21)
+            if (apiVersion >= Build.VERSION_CODES.LOLLIPOP)
                 return new NativeSD.SizeFSD();
 
             throw new RuntimeException("The class " + NativeSD.SizeFSD.class.getName() + " is available only above api 21");
@@ -213,22 +213,3 @@ public class SaveStateProcessor {
         return null;
     }
 }
-
-
-//            if (value != null) {
-//                ArrayList arrayList = (ArrayList) value;
-//                Class<?> itemType = null;
-//                boolean differentTypes = false;
-//                for (int i = 0; i < arrayList.size(); i++) {
-//                    Class<?> newItemType = arrayList.get(i).getClass();
-//                    if(itemType != null && itemType != newItemType) {
-//                        differentTypes = true;
-//                        break;
-//                    }
-//                    itemType = newItemType;
-//                }
-//
-//                if (!differentTypes) {
-//
-//                }
-//            }
