@@ -1,20 +1,14 @@
 package com.fondesa.quicksavestate.processor;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
-import android.util.Size;
-import android.util.SizeF;
 
 import com.fondesa.quicksavestate.annotation.SaveState;
-import com.fondesa.quicksavestate.coder.BaseCoders;
 import com.fondesa.quicksavestate.coder.StateCoder;
+import com.fondesa.quicksavestate.coder.utils.StateCoderUtils;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 
 /**
@@ -50,7 +44,7 @@ public class SaveStateProcessor {
             }
 
             if (fieldValue != null) {
-                final StateCoder stateCoder = getStateSD(field, saveState);
+                final StateCoder stateCoder = getStateCoder(field, saveState);
                 stateCoder.serialize(bundle, fieldName, fieldValue);
             }
 
@@ -76,7 +70,7 @@ public class SaveStateProcessor {
                 field.setAccessible(true);
             }
 
-            final StateCoder stateCoder = getStateSD(field, saveState);
+            final StateCoder stateCoder = getStateCoder(field, saveState);
 
             final String fieldName = field.getName();
             final Object fieldValue = stateCoder.deserialize(bundle, fieldName);
@@ -95,7 +89,7 @@ public class SaveStateProcessor {
         }
     }
 
-    private StateCoder getStateSD(@NonNull Field field, @NonNull SaveState saveState) {
+    private StateCoder getStateCoder(@NonNull Field field, @NonNull SaveState saveState) {
         final Class<?> fieldClass = field.getType();
         StateCoder stateCoder;
 
@@ -105,7 +99,7 @@ public class SaveStateProcessor {
             if (stateCoder != null)
                 return stateCoder;
 
-            stateCoder = getNativeStateSD(fieldClass);
+            stateCoder = StateCoderUtils.getBaseCoderForClass(fieldClass);
             if (stateCoder == null) {
                 throw new RuntimeException("You have to specify a custom " + StateCoder.class.getName() +
                         " for an object of type " + fieldClass.getName());
@@ -120,100 +114,5 @@ public class SaveStateProcessor {
             }
         }
         return stateCoder;
-    }
-
-    private StateCoder getNativeStateSD(@NonNull Class<?> cls) {
-        if (boolean.class.isAssignableFrom(cls) || Boolean.class.isAssignableFrom(cls))
-            return new BaseCoders.BooleanCoder();
-
-        if (boolean[].class.isAssignableFrom(cls))
-            return new BaseCoders.BooleanArrayCoder();
-
-        if (byte.class.isAssignableFrom(cls) || Byte.class.isAssignableFrom(cls))
-            return new BaseCoders.ByteCoder();
-
-        if (byte[].class.isAssignableFrom(cls))
-            return new BaseCoders.ByteArrayCoder();
-
-        if (char.class.isAssignableFrom(cls) || Character.class.isAssignableFrom(cls))
-            return new BaseCoders.CharCoder();
-
-        if (char[].class.isAssignableFrom(cls))
-            return new BaseCoders.CharArrayCoder();
-
-        if (CharSequence.class.isAssignableFrom(cls))
-            return new BaseCoders.CharSequenceCoder();
-
-        if (CharSequence[].class.isAssignableFrom(cls))
-            return new BaseCoders.CharSequenceArrayCoder();
-
-        if (double.class.isAssignableFrom(cls) || Double.class.isAssignableFrom(cls))
-            return new BaseCoders.DoubleCoder();
-
-        if (double[].class.isAssignableFrom(cls))
-            return new BaseCoders.DoubleArrayCoder();
-
-        if (float.class.isAssignableFrom(cls) || Float.class.isAssignableFrom(cls))
-            return new BaseCoders.FloatCoder();
-
-        if (float[].class.isAssignableFrom(cls))
-            return new BaseCoders.FloatArrayCoder();
-
-        if (int.class.isAssignableFrom(cls) || Integer.class.isAssignableFrom(cls))
-            return new BaseCoders.IntCoder();
-
-        if (int[].class.isAssignableFrom(cls) || Integer[].class.isAssignableFrom(cls))
-            return new BaseCoders.IntArrayCoder();
-
-        if (long.class.isAssignableFrom(cls) || Long.class.isAssignableFrom(cls))
-            return new BaseCoders.LongCoder();
-
-        if (long[].class.isAssignableFrom(cls))
-            return new BaseCoders.LongArrayCoder();
-
-        if (Parcelable.class.isAssignableFrom(cls))
-            return new BaseCoders.ParcelableCoder();
-
-        if (Parcelable[].class.isAssignableFrom(cls))
-            return new BaseCoders.ParcelableArrayCoder();
-
-        if (Serializable.class.isAssignableFrom(cls))
-            return new BaseCoders.SerializableCoder();
-
-        if (short.class.isAssignableFrom(cls) || Short.class.isAssignableFrom(cls))
-            return new BaseCoders.ShortCoder();
-
-        if (short[].class.isAssignableFrom(cls))
-            return new BaseCoders.ShortArrayCoder();
-
-        if (String.class.isAssignableFrom(cls))
-            return new BaseCoders.StringCoder();
-
-        if (String[].class.isAssignableFrom(cls))
-            return new BaseCoders.StringArrayCoder();
-
-        final int apiVersion = Build.VERSION.SDK_INT;
-        if (IBinder.class.isAssignableFrom(cls)) {
-            if (apiVersion >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                return new BaseCoders.BinderCoder();
-
-            throw new RuntimeException("The class " + BaseCoders.BinderCoder.class.getName() + " is available only above api 18");
-        }
-
-        if (Size.class.isAssignableFrom(cls)) {
-            if (apiVersion >= Build.VERSION_CODES.LOLLIPOP)
-                return new BaseCoders.SizeCoder();
-
-            throw new RuntimeException("The class " + BaseCoders.SizeCoder.class.getName() + " is available only above api 21");
-        }
-
-        if (SizeF.class.isAssignableFrom(cls)) {
-            if (apiVersion >= Build.VERSION_CODES.LOLLIPOP)
-                return new BaseCoders.SizeFSD();
-
-            throw new RuntimeException("The class " + BaseCoders.SizeFSD.class.getName() + " is available only above api 21");
-        }
-
-        return null;
     }
 }
