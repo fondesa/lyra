@@ -2,6 +2,7 @@ package com.fondesa.quicksavestate.sample.model;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Parcelable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
@@ -28,5 +29,13 @@ public class CustomView extends View {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        return super.onSaveInstanceState();
+    }
 
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        super.onRestoreInstanceState(state);
+    }
 }
