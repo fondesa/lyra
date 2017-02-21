@@ -34,6 +34,8 @@ import com.fondesa.quicksavestate.coder.base.SizeCoder;
 import com.fondesa.quicksavestate.coder.base.SizeFCoder;
 import com.fondesa.quicksavestate.coder.base.StringArrayCoder;
 import com.fondesa.quicksavestate.coder.base.StringCoder;
+import com.fondesa.quicksavestate.exception.CoderNotFoundException;
+import com.fondesa.quicksavestate.exception.CoderUnsupportedException;
 
 import java.io.Serializable;
 
@@ -41,13 +43,13 @@ import java.io.Serializable;
  * Created by antoniolig on 22/02/17.
  */
 
-public class StateCoderUtils {
+public final class StateCoderUtils {
 
     private StateCoderUtils() {
         // empty private constructor to avoid instantiation
     }
 
-    public static StateCoder getBaseCoderForClass(@NonNull Class<?> cls) {
+    public static StateCoder getBaseCoderForClass(@NonNull Class<?> cls) throws CoderNotFoundException, CoderUnsupportedException {
         if (boolean.class.isAssignableFrom(cls) || Boolean.class.isAssignableFrom(cls))
             return new BooleanCoder();
 
@@ -122,23 +124,24 @@ public class StateCoderUtils {
             if (apiVersion >= Build.VERSION_CODES.JELLY_BEAN_MR2)
                 return new IBinderCoder();
 
-            throw new RuntimeException("The class " + IBinderCoder.class.getName() + " is available only above api 18");
+            throw new CoderUnsupportedException("The class " + IBinderCoder.class.getName() + " is available only above api 18");
         }
 
         if (Size.class.isAssignableFrom(cls)) {
             if (apiVersion >= Build.VERSION_CODES.LOLLIPOP)
                 return new SizeCoder();
 
-            throw new RuntimeException("The class " + SizeCoder.class.getName() + " is available only above api 21");
+            throw new CoderUnsupportedException("The class " + SizeCoder.class.getName() + " is available only above api 21");
         }
 
         if (SizeF.class.isAssignableFrom(cls)) {
             if (apiVersion >= Build.VERSION_CODES.LOLLIPOP)
                 return new SizeFCoder();
 
-            throw new RuntimeException("The class " + SizeFCoder.class.getName() + " is available only above api 21");
+            throw new CoderUnsupportedException("The class " + SizeFCoder.class.getName() + " is available only above api 21");
         }
 
-        return null;
+        throw new CoderNotFoundException("You have to specify a custom " + StateCoder.class.getName() +
+                " for an object of type " + cls.getName());
     }
 }

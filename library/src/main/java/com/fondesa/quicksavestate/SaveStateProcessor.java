@@ -1,4 +1,4 @@
-package com.fondesa.quicksavestate.processor;
+package com.fondesa.quicksavestate;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,13 +8,15 @@ import android.support.v4.util.ArrayMap;
 import com.fondesa.quicksavestate.annotation.SaveState;
 import com.fondesa.quicksavestate.coder.StateCoder;
 import com.fondesa.quicksavestate.coder.utils.StateCoderUtils;
+import com.fondesa.quicksavestate.exception.CoderNotFoundException;
+import com.fondesa.quicksavestate.exception.CoderUnsupportedException;
 
 import java.lang.reflect.Field;
 
 /**
  * Created by antoniolig on 17/02/17.
  */
-public class SaveStateProcessor {
+final class SaveStateProcessor {
     private ArrayMap<Class<?>, StateCoder<?>> mNativeCachedState;
 
     public SaveStateProcessor() {
@@ -45,6 +47,7 @@ public class SaveStateProcessor {
 
             if (fieldValue != null) {
                 final StateCoder stateCoder = getStateCoder(field, saveState);
+                //noinspection unchecked
                 stateCoder.serialize(bundle, fieldName, fieldValue);
             }
 
@@ -99,10 +102,14 @@ public class SaveStateProcessor {
             if (stateCoder != null)
                 return stateCoder;
 
-            stateCoder = StateCoderUtils.getBaseCoderForClass(fieldClass);
+            try {
+                stateCoder = StateCoderUtils.getBaseCoderForClass(fieldClass);
+            } catch (CoderNotFoundException | CoderUnsupportedException e) {
+                e.printStackTrace();
+            }
+
             if (stateCoder == null) {
-                throw new RuntimeException("You have to specify a custom " + StateCoder.class.getName() +
-                        " for an object of type " + fieldClass.getName());
+                throw new RuntimeException();
             }
             mNativeCachedState.put(fieldClass, stateCoder);
         } else {
