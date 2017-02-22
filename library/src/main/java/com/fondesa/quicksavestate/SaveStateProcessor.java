@@ -9,7 +9,6 @@ import com.fondesa.quicksavestate.annotation.SaveState;
 import com.fondesa.quicksavestate.coder.StateCoder;
 import com.fondesa.quicksavestate.coder.utils.StateCoderUtils;
 import com.fondesa.quicksavestate.exception.CoderNotFoundException;
-import com.fondesa.quicksavestate.exception.CoderUnsupportedException;
 
 import java.lang.reflect.Field;
 
@@ -104,14 +103,10 @@ final class SaveStateProcessor {
 
             try {
                 stateCoder = StateCoderUtils.getBaseCoderForClass(fieldClass);
-            } catch (CoderNotFoundException | CoderUnsupportedException e) {
-                e.printStackTrace();
+                mNativeCachedState.put(fieldClass, stateCoder);
+            } catch (CoderNotFoundException e) {
+                throw new RuntimeException("Cannot get coder for class " + fieldClass, e);
             }
-
-            if (stateCoder == null) {
-                throw new RuntimeException();
-            }
-            mNativeCachedState.put(fieldClass, stateCoder);
         } else {
             try {
                 stateCoder = stateSDClass.newInstance();

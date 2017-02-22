@@ -1,6 +1,5 @@
 package com.fondesa.quicksavestate.coder.utils;
 
-import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -35,7 +34,6 @@ import com.fondesa.quicksavestate.coder.base.SizeFCoder;
 import com.fondesa.quicksavestate.coder.base.StringArrayCoder;
 import com.fondesa.quicksavestate.coder.base.StringCoder;
 import com.fondesa.quicksavestate.exception.CoderNotFoundException;
-import com.fondesa.quicksavestate.exception.CoderUnsupportedException;
 
 import java.io.Serializable;
 
@@ -49,7 +47,8 @@ public final class StateCoderUtils {
         // empty private constructor to avoid instantiation
     }
 
-    public static StateCoder getBaseCoderForClass(@NonNull Class<?> cls) throws CoderNotFoundException, CoderUnsupportedException {
+    @NonNull
+    public static StateCoder getBaseCoderForClass(@NonNull Class<?> cls) throws CoderNotFoundException {
         if (boolean.class.isAssignableFrom(cls) || Boolean.class.isAssignableFrom(cls))
             return new BooleanCoder();
 
@@ -86,6 +85,10 @@ public final class StateCoderUtils {
         if (float[].class.isAssignableFrom(cls))
             return new FloatArrayCoder();
 
+        if (IBinder.class.isAssignableFrom(cls)) {
+            return new IBinderCoder();
+        }
+
         if (int.class.isAssignableFrom(cls) || Integer.class.isAssignableFrom(cls))
             return new IntCoder();
 
@@ -119,26 +122,12 @@ public final class StateCoderUtils {
         if (String[].class.isAssignableFrom(cls))
             return new StringArrayCoder();
 
-        final int apiVersion = Build.VERSION.SDK_INT;
-        if (IBinder.class.isAssignableFrom(cls)) {
-            if (apiVersion >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                return new IBinderCoder();
-
-            throw new CoderUnsupportedException("The class " + IBinderCoder.class.getName() + " is available only above api 18");
-        }
-
         if (Size.class.isAssignableFrom(cls)) {
-            if (apiVersion >= Build.VERSION_CODES.LOLLIPOP)
-                return new SizeCoder();
-
-            throw new CoderUnsupportedException("The class " + SizeCoder.class.getName() + " is available only above api 21");
+            return new SizeCoder();
         }
 
         if (SizeF.class.isAssignableFrom(cls)) {
-            if (apiVersion >= Build.VERSION_CODES.LOLLIPOP)
-                return new SizeFCoder();
-
-            throw new CoderUnsupportedException("The class " + SizeFCoder.class.getName() + " is available only above api 21");
+            return new SizeFCoder();
         }
 
         throw new CoderNotFoundException("You have to specify a custom " + StateCoder.class.getName() +
