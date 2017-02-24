@@ -49,10 +49,7 @@ public class ParcelableArrayCoderTest {
 
     private Parcelable[] generateArrayAndFill() {
         PersonParcelable[] array = new PersonParcelable[300];
-        PersonParcelable parcelable = new PersonParcelable();
-        parcelable.name = "George";
-        parcelable.surname = "White";
-        parcelable.age = 30;
+        PersonParcelable parcelable = new PersonParcelable("George", "White", 30);
         Arrays.fill(array, parcelable);
         return array;
     }

@@ -3,16 +3,20 @@ package com.fondesa.quicksavestate.testmodel;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by antoniolig on 24/02/17.
  */
-public class PersonParcelable implements Parcelable {
+public class PersonParcelable implements Parcelable, Serializable {
     public String name;
     public String surname;
     public int age;
 
-    public PersonParcelable() {
-
+    public PersonParcelable(String name, String surname, int age) {
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
     }
 
     protected PersonParcelable(Parcel in) {
