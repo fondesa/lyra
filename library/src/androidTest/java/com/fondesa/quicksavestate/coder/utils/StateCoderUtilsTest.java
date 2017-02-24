@@ -1,5 +1,6 @@
 package com.fondesa.quicksavestate.coder.utils;
 
+import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcelable;
@@ -8,12 +9,17 @@ import android.util.Size;
 import android.util.SizeF;
 
 import com.fondesa.quicksavestate.exception.CoderNotFoundException;
+import com.fondesa.quicksavestate.testmodel.ImplementedCharSequence;
+import com.fondesa.quicksavestate.testmodel.ImplementedParcelable;
+import com.fondesa.quicksavestate.testmodel.ImplementedSerializable;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 import static junit.framework.Assert.assertNotNull;
 
@@ -67,6 +73,18 @@ public class StateCoderUtilsTest {
         }
         assertCoderNotNull(Size.class);
         assertCoderNotNull(SizeF.class);
+    }
+
+    @Test
+    public void testInheritedSupportedClassesCompatApi() throws CoderNotFoundException {
+        assertCoderNotNull(ArrayList.class);
+        assertCoderNotNull(Binder.class);
+        assertCoderNotNull(ImplementedCharSequence.class);
+        assertCoderNotNull(ImplementedCharSequence[].class);
+        assertCoderNotNull(ImplementedParcelable.class);
+        assertCoderNotNull(ImplementedParcelable[].class);
+        assertCoderNotNull(ImplementedSerializable.class);
+        assertCoderNotNull(LinkedList.class);
     }
 
     private static void assertCoderNotNull(@NonNull Class<?> cls) throws CoderNotFoundException {

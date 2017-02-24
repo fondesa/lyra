@@ -3,7 +3,7 @@ package com.fondesa.quicksavestate.coder.base;
 import android.os.Parcelable;
 
 import com.fondesa.quicksavestate.coder.base.rule.CoderRule;
-import com.fondesa.quicksavestate.testmodel.PersonParcelable;
+import com.fondesa.quicksavestate.testmodel.ImplementedParcelable;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,9 +40,8 @@ public class ParcelableArrayCoderTest {
     }
 
     private Parcelable[] generateArrayAndFill() {
-        PersonParcelable[] array = new PersonParcelable[300];
-        PersonParcelable parcelable = new PersonParcelable("George", "White", 30);
-        Arrays.fill(array, parcelable);
+        ImplementedParcelable[] array = new ImplementedParcelable[300];
+        Arrays.fill(array, ImplementedParcelable.getDefault());
         return array;
     }
 }

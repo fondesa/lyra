@@ -1,8 +1,10 @@
 package com.fondesa.quicksavestate.coder.utils;
 
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Size;
 import android.util.SizeF;
 
@@ -49,57 +51,107 @@ public final class StateCoderUtils {
 
     @NonNull
     public static StateCoder getBaseCoderForClass(@NonNull Class<?> cls) throws CoderNotFoundException {
-        if (boolean.class.isAssignableFrom(cls) || Boolean.class.isAssignableFrom(cls))
+        if (boolean.class == cls || Boolean.class == cls)
             return new BooleanCoder();
 
-        if (boolean[].class.isAssignableFrom(cls))
+        if (boolean[].class == cls)
             return new BooleanArrayCoder();
 
-        if (byte.class.isAssignableFrom(cls) || Byte.class.isAssignableFrom(cls))
+        if (byte.class == cls || Byte.class == cls)
             return new ByteCoder();
 
-        if (byte[].class.isAssignableFrom(cls))
+        if (byte[].class == cls)
             return new ByteArrayCoder();
 
-        if (char.class.isAssignableFrom(cls) || Character.class.isAssignableFrom(cls))
+        if (char.class == cls || Character.class == cls)
             return new CharCoder();
 
-        if (char[].class.isAssignableFrom(cls))
+        if (char[].class == cls)
             return new CharArrayCoder();
 
+        if (CharSequence.class == cls)
+            return new CharSequenceCoder();
+
+        if (CharSequence[].class == cls)
+            return new CharSequenceArrayCoder();
+
+        if (double.class == cls || Double.class == cls)
+            return new DoubleCoder();
+
+        if (double[].class == cls)
+            return new DoubleArrayCoder();
+
+        if (float.class == cls || Float.class == cls)
+            return new FloatCoder();
+
+        if (float[].class == cls)
+            return new FloatArrayCoder();
+
+        if (IBinder.class == cls)
+            return new IBinderCoder();
+
+        if (int.class == cls || Integer.class == cls)
+            return new IntCoder();
+
+        if (int[].class == cls)
+            return new IntArrayCoder();
+
+        if (long.class == cls || Long.class == cls)
+            return new LongCoder();
+
+        if (long[].class == cls)
+            return new LongArrayCoder();
+
+        if (Parcelable.class == cls)
+            return new ParcelableCoder();
+
+        if (Parcelable[].class == cls)
+            return new ParcelableArrayCoder();
+
+        if (Serializable.class == cls)
+            return new SerializableCoder();
+
+        if (short.class == cls || Short.class == cls)
+            return new ShortCoder();
+
+        if (short[].class == cls)
+            return new ShortArrayCoder();
+
+        if (String.class == cls)
+            return new StringCoder();
+
+        if (String[].class == cls)
+            return new StringArrayCoder();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Size.class == cls) {
+                return new SizeCoder();
+            }
+
+            if (SizeF.class == cls) {
+                return new SizeFCoder();
+            }
+        }
+
+        StateCoder inheritedCoder = getBaseCoderForInheritedClass(cls);
+        if (inheritedCoder != null)
+            return inheritedCoder;
+
+        throw new CoderNotFoundException("You have to specify a custom " + StateCoder.class.getName() +
+                " for an object of type " + cls.getName());
+    }
+
+
+    @Nullable
+    private static StateCoder getBaseCoderForInheritedClass(@NonNull Class<?> cls) {
         if (CharSequence.class.isAssignableFrom(cls))
             return new CharSequenceCoder();
 
         if (CharSequence[].class.isAssignableFrom(cls))
             return new CharSequenceArrayCoder();
 
-        if (double.class.isAssignableFrom(cls) || Double.class.isAssignableFrom(cls))
-            return new DoubleCoder();
-
-        if (double[].class.isAssignableFrom(cls))
-            return new DoubleArrayCoder();
-
-        if (float.class.isAssignableFrom(cls) || Float.class.isAssignableFrom(cls))
-            return new FloatCoder();
-
-        if (float[].class.isAssignableFrom(cls))
-            return new FloatArrayCoder();
-
-        if (IBinder.class.isAssignableFrom(cls)) {
+        if (IBinder.class.isAssignableFrom(cls))
             return new IBinderCoder();
-        }
-
-        if (int.class.isAssignableFrom(cls) || Integer.class.isAssignableFrom(cls))
-            return new IntCoder();
-
-        if (int[].class.isAssignableFrom(cls) || Integer[].class.isAssignableFrom(cls))
-            return new IntArrayCoder();
-
-        if (long.class.isAssignableFrom(cls) || Long.class.isAssignableFrom(cls))
-            return new LongCoder();
-
-        if (long[].class.isAssignableFrom(cls))
-            return new LongArrayCoder();
 
         if (Parcelable.class.isAssignableFrom(cls))
             return new ParcelableCoder();
@@ -110,27 +162,6 @@ public final class StateCoderUtils {
         if (Serializable.class.isAssignableFrom(cls))
             return new SerializableCoder();
 
-        if (short.class.isAssignableFrom(cls) || Short.class.isAssignableFrom(cls))
-            return new ShortCoder();
-
-        if (short[].class.isAssignableFrom(cls))
-            return new ShortArrayCoder();
-
-        if (String.class.isAssignableFrom(cls))
-            return new StringCoder();
-
-        if (String[].class.isAssignableFrom(cls))
-            return new StringArrayCoder();
-
-        if (Size.class.isAssignableFrom(cls)) {
-            return new SizeCoder();
-        }
-
-        if (SizeF.class.isAssignableFrom(cls)) {
-            return new SizeFCoder();
-        }
-
-        throw new CoderNotFoundException("You have to specify a custom " + StateCoder.class.getName() +
-                " for an object of type " + cls.getName());
+        return null;
     }
 }

@@ -3,7 +3,7 @@ package com.fondesa.quicksavestate.coder.base;
 import android.os.Parcelable;
 
 import com.fondesa.quicksavestate.coder.base.rule.CoderRule;
-import com.fondesa.quicksavestate.testmodel.PersonParcelable;
+import com.fondesa.quicksavestate.testmodel.ImplementedParcelable;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,19 +25,15 @@ public class ParcelableCoderTest {
 
     @Test
     public void testSerializeParcelable() {
-        Parcelable expectedValue = generateParcelable();
+        Parcelable expectedValue = ImplementedParcelable.getDefault();
         coderRule.coder.serialize(coderRule.bundle, COMMON_KEY, expectedValue);
         assertEquals(expectedValue, coderRule.bundle.getParcelable(COMMON_KEY));
     }
 
     @Test
     public void testDeserializeParcelable() {
-        Parcelable expectedValue = generateParcelable();
+        Parcelable expectedValue = ImplementedParcelable.getDefault();
         coderRule.bundle.putParcelable(COMMON_KEY, expectedValue);
         assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, COMMON_KEY));
-    }
-    
-    private Parcelable generateParcelable() {
-        return new PersonParcelable("George", "White", 30);
     }
 }
