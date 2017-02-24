@@ -1,11 +1,11 @@
 package com.fondesa.quicksavestate.coder.base;
 
-import android.os.Bundle;
+import com.fondesa.quicksavestate.coder.base.rule.CoderRule;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
+import static com.fondesa.quicksavestate.coder.base.constants.Constants.COMMON_KEY;
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -13,47 +13,39 @@ import static junit.framework.Assert.assertEquals;
  */
 @SuppressWarnings("ConstantConditions")
 public class BooleanCoderTest {
-    private static final String COMMON_KEY = "x";
-
-    private BooleanCoder coder;
-    private Bundle bundle;
-
-    @Before
-    public void initCoder() {
-        coder = new BooleanCoder();
-        bundle = new Bundle();
-    }
-
-    @After
-    public void releaseCoder() {
-        coder = null;
-    }
+    @Rule
+    public CoderRule<BooleanCoder> coderRule = new CoderRule<BooleanCoder>() {
+        @Override
+        protected BooleanCoder initCoder() {
+            return new BooleanCoder();
+        }
+    };
 
     @Test
     public void testSerializeBooleanPrimitive() {
         boolean expectedValue = true;
-        coder.serialize(bundle, COMMON_KEY, expectedValue);
-        assertEquals(expectedValue, bundle.getBoolean(COMMON_KEY));
+        coderRule.coder.serialize(coderRule.bundle, COMMON_KEY, expectedValue);
+        assertEquals(expectedValue, coderRule.bundle.getBoolean(COMMON_KEY));
     }
 
     @Test
     public void testSerializeBooleanObject() {
         Boolean expectedValue = true;
-        coder.serialize(bundle, COMMON_KEY, expectedValue);
-        assertEquals(expectedValue, ((Boolean) bundle.getBoolean(COMMON_KEY)));
+        coderRule.coder.serialize(coderRule.bundle, COMMON_KEY, expectedValue);
+        assertEquals(expectedValue, ((Boolean) coderRule.bundle.getBoolean(COMMON_KEY)));
     }
 
     @Test
     public void testDeserializeBooleanPrimitive() {
         boolean expectedValue = true;
-        bundle.putBoolean(COMMON_KEY, expectedValue);
-        assertEquals((Boolean) expectedValue, coder.deserialize(bundle, COMMON_KEY));
+        coderRule.bundle.putBoolean(COMMON_KEY, expectedValue);
+        assertEquals((Boolean) expectedValue, coderRule.coder.deserialize(coderRule.bundle, COMMON_KEY));
     }
 
     @Test
     public void testDeserializeBooleanObject() {
         Boolean expectedValue = true;
-        bundle.putBoolean(COMMON_KEY, expectedValue);
-        assertEquals(expectedValue, coder.deserialize(bundle, COMMON_KEY));
+        coderRule.bundle.putBoolean(COMMON_KEY, expectedValue);
+        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, COMMON_KEY));
     }
 }

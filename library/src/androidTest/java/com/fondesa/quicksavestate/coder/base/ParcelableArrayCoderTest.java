@@ -1,50 +1,42 @@
 package com.fondesa.quicksavestate.coder.base;
 
-import android.os.Bundle;
 import android.os.Parcelable;
 
+import com.fondesa.quicksavestate.coder.base.rule.CoderRule;
 import com.fondesa.quicksavestate.testmodel.PersonParcelable;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Arrays;
 
+import static com.fondesa.quicksavestate.coder.base.constants.Constants.COMMON_KEY;
 import static junit.framework.Assert.assertEquals;
 
 /**
  * Created by antoniolig on 24/02/17.
  */
 public class ParcelableArrayCoderTest {
-    private static final String COMMON_KEY = "x";
-
-    private ParcelableArrayCoder coder;
-    private Bundle bundle;
-
-    @Before
-    public void initCoder() {
-        coder = new ParcelableArrayCoder();
-        bundle = new Bundle();
-    }
-
-    @After
-    public void releaseCoder() {
-        coder = null;
-    }
+    @Rule
+    public CoderRule<ParcelableArrayCoder> coderRule = new CoderRule<ParcelableArrayCoder>() {
+        @Override
+        protected ParcelableArrayCoder initCoder() {
+            return new ParcelableArrayCoder();
+        }
+    };
 
     @Test
     public void testSerializeParcelableArray() {
         Parcelable[] expected = generateArrayAndFill();
-        coder.serialize(bundle, COMMON_KEY, expected);
-        assertEquals(expected, bundle.getParcelableArray(COMMON_KEY));
+        coderRule.coder.serialize(coderRule.bundle, COMMON_KEY, expected);
+        assertEquals(expected, coderRule.bundle.getParcelableArray(COMMON_KEY));
     }
 
     @Test
     public void testDeserializeParcelableArray() {
         Parcelable[] expected = generateArrayAndFill();
-        bundle.putParcelableArray(COMMON_KEY, expected);
-        assertEquals(expected, coder.deserialize(bundle, COMMON_KEY));
+        coderRule.bundle.putParcelableArray(COMMON_KEY, expected);
+        assertEquals(expected, coderRule.coder.deserialize(coderRule.bundle, COMMON_KEY));
     }
 
     private Parcelable[] generateArrayAndFill() {

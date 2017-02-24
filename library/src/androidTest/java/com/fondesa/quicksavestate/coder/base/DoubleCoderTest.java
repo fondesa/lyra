@@ -1,59 +1,50 @@
 package com.fondesa.quicksavestate.coder.base;
 
-import android.os.Bundle;
+import com.fondesa.quicksavestate.coder.base.rule.CoderRule;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
+import static com.fondesa.quicksavestate.coder.base.constants.Constants.COMMON_KEY;
 import static junit.framework.Assert.assertEquals;
 
 /**
  * Created by antoniolig on 22/02/17.
  */
-@SuppressWarnings("ConstantConditions")
 public class DoubleCoderTest {
-    private static final String COMMON_KEY = "x";
-
-    private DoubleCoder coder;
-    private Bundle bundle;
-
-    @Before
-    public void initCoder() {
-        coder = new DoubleCoder();
-        bundle = new Bundle();
-    }
-
-    @After
-    public void releaseCoder() {
-        coder = null;
-    }
+    @Rule
+    public CoderRule<DoubleCoder> coderRule = new CoderRule<DoubleCoder>() {
+        @Override
+        protected DoubleCoder initCoder() {
+            return new DoubleCoder();
+        }
+    };
 
     @Test
     public void testSerializeDoublePrimitive() {
         double expectedValue = 9.0;
-        coder.serialize(bundle, COMMON_KEY, expectedValue);
-        assertEquals(expectedValue, bundle.getDouble(COMMON_KEY), 0);
+        coderRule.coder.serialize(coderRule.bundle, COMMON_KEY, expectedValue);
+        assertEquals(expectedValue, coderRule.bundle.getDouble(COMMON_KEY), 0);
     }
 
     @Test
     public void testSerializeDoubleObject() {
         Double expectedValue = 9.0;
-        coder.serialize(bundle, COMMON_KEY, expectedValue);
-        assertEquals(expectedValue, bundle.getDouble(COMMON_KEY));
+        coderRule.coder.serialize(coderRule.bundle, COMMON_KEY, expectedValue);
+        assertEquals(expectedValue, coderRule.bundle.getDouble(COMMON_KEY));
     }
 
     @Test
     public void testDeserializeDoublePrimitive() {
         double expectedValue = 9.0;
-        bundle.putDouble(COMMON_KEY, expectedValue);
-        assertEquals(expectedValue, coder.deserialize(bundle, COMMON_KEY), 0);
+        coderRule.bundle.putDouble(COMMON_KEY, expectedValue);
+        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, COMMON_KEY), 0);
     }
 
     @Test
     public void testDeserializeDoubleObject() {
         Double expectedValue = 9.0;
-        bundle.putDouble(COMMON_KEY, expectedValue);
-        assertEquals(expectedValue, coder.deserialize(bundle, COMMON_KEY));
+        coderRule.bundle.putDouble(COMMON_KEY, expectedValue);
+        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, COMMON_KEY));
     }
 }
