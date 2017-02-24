@@ -16,7 +16,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class ParcelableCoderTest {
     @Rule
-    public CoderRule<ParcelableCoder> coderRule = new CoderRule<ParcelableCoder>() {
+    public final CoderRule<ParcelableCoder> coderRule = new CoderRule<ParcelableCoder>() {
         @Override
         protected ParcelableCoder initCoder() {
             return new ParcelableCoder();

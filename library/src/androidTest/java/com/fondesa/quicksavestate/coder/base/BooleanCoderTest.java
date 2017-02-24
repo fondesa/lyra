@@ -11,16 +11,16 @@ import static junit.framework.Assert.assertEquals;
 /**
  * Created by antoniolig on 22/02/17.
  */
-@SuppressWarnings("ConstantConditions")
 public class BooleanCoderTest {
     @Rule
-    public CoderRule<BooleanCoder> coderRule = new CoderRule<BooleanCoder>() {
+    public final CoderRule<BooleanCoder> coderRule = new CoderRule<BooleanCoder>() {
         @Override
         protected BooleanCoder initCoder() {
             return new BooleanCoder();
         }
     };
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     public void testSerializeBooleanPrimitive() {
         boolean expectedValue = true;
@@ -28,6 +28,7 @@ public class BooleanCoderTest {
         assertEquals(expectedValue, coderRule.bundle.getBoolean(COMMON_KEY));
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     public void testSerializeBooleanObject() {
         Boolean expectedValue = true;
@@ -35,6 +36,7 @@ public class BooleanCoderTest {
         assertEquals(expectedValue, ((Boolean) coderRule.bundle.getBoolean(COMMON_KEY)));
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     public void testDeserializeBooleanPrimitive() {
         boolean expectedValue = true;
@@ -42,6 +44,7 @@ public class BooleanCoderTest {
         assertEquals((Boolean) expectedValue, coderRule.coder.deserialize(coderRule.bundle, COMMON_KEY));
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     public void testDeserializeBooleanObject() {
         Boolean expectedValue = true;

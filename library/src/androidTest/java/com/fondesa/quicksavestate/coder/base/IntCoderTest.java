@@ -13,7 +13,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class IntCoderTest {
     @Rule
-    public CoderRule<IntCoder> coderRule = new CoderRule<IntCoder>() {
+    public final CoderRule<IntCoder> coderRule = new CoderRule<IntCoder>() {
         @Override
         protected IntCoder initCoder() {
             return new IntCoder();

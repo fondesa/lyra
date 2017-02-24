@@ -15,7 +15,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class BooleanArrayCoderTest {
     @Rule
-    public CoderRule<BooleanArrayCoder> coderRule = new CoderRule<BooleanArrayCoder>() {
+    public final CoderRule<BooleanArrayCoder> coderRule = new CoderRule<BooleanArrayCoder>() {
         @Override
         protected BooleanArrayCoder initCoder() {
             return new BooleanArrayCoder();

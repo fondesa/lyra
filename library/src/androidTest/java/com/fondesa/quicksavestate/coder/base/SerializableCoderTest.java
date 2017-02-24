@@ -16,7 +16,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class SerializableCoderTest {
     @Rule
-    public CoderRule<SerializableCoder> coderRule = new CoderRule<SerializableCoder>() {
+    public final CoderRule<SerializableCoder> coderRule = new CoderRule<SerializableCoder>() {
         @Override
         protected SerializableCoder initCoder() {
             return new SerializableCoder();

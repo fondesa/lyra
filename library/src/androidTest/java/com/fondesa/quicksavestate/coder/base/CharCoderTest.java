@@ -13,7 +13,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class CharCoderTest {
     @Rule
-    public CoderRule<CharCoder> coderRule = new CoderRule<CharCoder>() {
+    public final CoderRule<CharCoder> coderRule = new CoderRule<CharCoder>() {
         @Override
         protected CharCoder initCoder() {
             return new CharCoder();

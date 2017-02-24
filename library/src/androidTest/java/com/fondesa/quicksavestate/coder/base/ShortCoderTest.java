@@ -13,7 +13,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class ShortCoderTest {
     @Rule
-    public CoderRule<ShortCoder> coderRule = new CoderRule<ShortCoder>() {
+    public final CoderRule<ShortCoder> coderRule = new CoderRule<ShortCoder>() {
         @Override
         protected ShortCoder initCoder() {
             return new ShortCoder();

@@ -15,7 +15,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class IntArrayCoderTest {
     @Rule
-    public CoderRule<IntArrayCoder> coderRule = new CoderRule<IntArrayCoder>() {
+    public final CoderRule<IntArrayCoder> coderRule = new CoderRule<IntArrayCoder>() {
         @Override
         protected IntArrayCoder initCoder() {
             return new IntArrayCoder();

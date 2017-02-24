@@ -13,7 +13,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class DoubleCoderTest {
     @Rule
-    public CoderRule<DoubleCoder> coderRule = new CoderRule<DoubleCoder>() {
+    public final CoderRule<DoubleCoder> coderRule = new CoderRule<DoubleCoder>() {
         @Override
         protected DoubleCoder initCoder() {
             return new DoubleCoder();

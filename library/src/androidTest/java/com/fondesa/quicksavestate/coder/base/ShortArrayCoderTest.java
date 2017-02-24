@@ -15,7 +15,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class ShortArrayCoderTest {
     @Rule
-    public CoderRule<ShortArrayCoder> coderRule = new CoderRule<ShortArrayCoder>() {
+    public final CoderRule<ShortArrayCoder> coderRule = new CoderRule<ShortArrayCoder>() {
         @Override
         protected ShortArrayCoder initCoder() {
             return new ShortArrayCoder();

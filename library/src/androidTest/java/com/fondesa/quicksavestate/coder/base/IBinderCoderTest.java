@@ -17,7 +17,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class IBinderCoderTest {
     @Rule
-    public CoderRule<IBinderCoder> coderRule = new CoderRule<IBinderCoder>() {
+    public final CoderRule<IBinderCoder> coderRule = new CoderRule<IBinderCoder>() {
         @Override
         protected IBinderCoder initCoder() {
             return new IBinderCoder();

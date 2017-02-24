@@ -13,7 +13,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class FloatCoderTest {
     @Rule
-    public CoderRule<FloatCoder> coderRule = new CoderRule<FloatCoder>() {
+    public final CoderRule<FloatCoder> coderRule = new CoderRule<FloatCoder>() {
         @Override
         protected FloatCoder initCoder() {
             return new FloatCoder();

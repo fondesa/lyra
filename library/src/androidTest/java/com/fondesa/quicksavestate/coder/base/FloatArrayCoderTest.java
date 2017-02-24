@@ -15,7 +15,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class FloatArrayCoderTest {
     @Rule
-    public CoderRule<FloatArrayCoder> coderRule = new CoderRule<FloatArrayCoder>() {
+    public final CoderRule<FloatArrayCoder> coderRule = new CoderRule<FloatArrayCoder>() {
         @Override
         protected FloatArrayCoder initCoder() {
             return new FloatArrayCoder();

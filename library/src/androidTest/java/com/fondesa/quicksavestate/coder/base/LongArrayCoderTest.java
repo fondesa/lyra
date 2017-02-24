@@ -15,7 +15,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class LongArrayCoderTest {
     @Rule
-    public CoderRule<LongArrayCoder> coderRule = new CoderRule<LongArrayCoder>() {
+    public final CoderRule<LongArrayCoder> coderRule = new CoderRule<LongArrayCoder>() {
         @Override
         protected LongArrayCoder initCoder() {
             return new LongArrayCoder();

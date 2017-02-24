@@ -13,7 +13,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class LongCoderTest {
     @Rule
-    public CoderRule<LongCoder> coderRule = new CoderRule<LongCoder>() {
+    public final CoderRule<LongCoder> coderRule = new CoderRule<LongCoder>() {
         @Override
         protected LongCoder initCoder() {
             return new LongCoder();

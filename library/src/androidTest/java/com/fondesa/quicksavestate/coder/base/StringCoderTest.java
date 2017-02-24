@@ -13,7 +13,7 @@ import static junit.framework.Assert.assertEquals;
 public class StringCoderTest {
     private static final String COMMON_KEY = "x";
     @Rule
-    public CoderRule<StringCoder> coderRule = new CoderRule<StringCoder>() {
+    public final CoderRule<StringCoder> coderRule = new CoderRule<StringCoder>() {
         @Override
         protected StringCoder initCoder() {
             return new StringCoder();

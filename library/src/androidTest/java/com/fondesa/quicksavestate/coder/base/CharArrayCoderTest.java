@@ -15,7 +15,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class CharArrayCoderTest {
     @Rule
-    public CoderRule<CharArrayCoder> coderRule = new CoderRule<CharArrayCoder>() {
+    public final CoderRule<CharArrayCoder> coderRule = new CoderRule<CharArrayCoder>() {
         @Override
         protected CharArrayCoder initCoder() {
             return new CharArrayCoder();

@@ -15,7 +15,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class DoubleArrayCoderTest {
     @Rule
-    public CoderRule<DoubleArrayCoder> coderRule = new CoderRule<DoubleArrayCoder>() {
+    public final CoderRule<DoubleArrayCoder> coderRule = new CoderRule<DoubleArrayCoder>() {
         @Override
         protected DoubleArrayCoder initCoder() {
             return new DoubleArrayCoder();
