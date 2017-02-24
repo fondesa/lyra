@@ -1,7 +1,6 @@
 package com.fondesa.quicksavestate.sample;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,20 +10,11 @@ import com.fondesa.quicksavestate.sample.model.ParcelableModel;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseMainActivity {
     private TextView mTextView;
 
     @SaveState
     private String mText;
-
-    @SaveState
-    Byte mByte;
-
-    @SaveState
-    byte mPrimitiveByte;
-
-    @SaveState
-    ArrayList<Model> mModelList;
 
     @SaveState
     ParcelableModel mModel;
