@@ -2,6 +2,7 @@ package com.fondesa.quicksavestate;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,7 +11,7 @@ import android.util.Log;
 /**
  * Created by antoniolig on 17/02/17.
  */
-public final class QuickSaveState implements Application.ActivityLifecycleCallbacks {
+public class QuickSaveState {
     private static final String TAG = QuickSaveState.class.getSimpleName();
 
     private SaveStateProcessor mProcessor;
@@ -24,18 +25,19 @@ public final class QuickSaveState implements Application.ActivityLifecycleCallba
         instance = new QuickSaveState(application);
     }
 
-    public static void saveState(@NonNull Object stateHolder, @NonNull Bundle state) {
+    public static QuickSaveState instance() {
         if (instance == null) {
             throw getNullInstanceException();
         }
-        instance.mProcessor.saveState(stateHolder, state);
+        return instance;
     }
 
-    public static void restoreState(@NonNull Object stateHolder, @Nullable Bundle state) {
-        if (instance == null) {
-            throw getNullInstanceException();
-        }
-        instance.mProcessor.restoreState(stateHolder, state);
+    public void saveState(@NonNull Object stateHolder, @NonNull Bundle state) {
+        mProcessor.saveState(stateHolder, state);
+    }
+
+    public void restoreState(@NonNull Object stateHolder, @Nullable Bundle state) {
+        mProcessor.restoreState(stateHolder, state);
     }
 
     private static NullPointerException getNullInstanceException() {
@@ -45,31 +47,33 @@ public final class QuickSaveState implements Application.ActivityLifecycleCallba
 
     private QuickSaveState(@NonNull Application application) {
         mProcessor = new SaveStateProcessor();
-        application.registerActivityLifecycleCallbacks(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+                @Override
+                public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                    restoreState(activity, savedInstanceState);
+                }
+
+                @Override
+                public void onActivityStarted(Activity activity) { /* empty */ }
+
+                @Override
+                public void onActivityResumed(Activity activity) { /* empty */ }
+
+                @Override
+                public void onActivityPaused(Activity activity) { /* empty */ }
+
+                @Override
+                public void onActivityStopped(Activity activity) { /* empty */ }
+
+                @Override
+                public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+                    saveState(activity, outState);
+                }
+
+                @Override
+                public void onActivityDestroyed(Activity activity) { /* empty */ }
+            });
+        }
     }
-
-    @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        restoreState(activity, savedInstanceState);
-    }
-
-    @Override
-    public void onActivityStarted(Activity activity) { /* empty */ }
-
-    @Override
-    public void onActivityResumed(Activity activity) { /* empty */ }
-
-    @Override
-    public void onActivityPaused(Activity activity) { /* empty */ }
-
-    @Override
-    public void onActivityStopped(Activity activity) { /* empty */ }
-
-    @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-        saveState(activity, outState);
-    }
-
-    @Override
-    public void onActivityDestroyed(Activity activity) { /* empty */ }
 }

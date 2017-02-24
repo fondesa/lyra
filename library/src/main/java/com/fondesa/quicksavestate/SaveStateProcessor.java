@@ -11,19 +11,60 @@ import com.fondesa.quicksavestate.coder.utils.StateCoderUtils;
 import com.fondesa.quicksavestate.exception.CoderNotFoundException;
 
 import java.lang.reflect.Field;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by antoniolig on 17/02/17.
  */
 final class SaveStateProcessor {
     private ArrayMap<Class<?>, StateCoder<?>> mNativeCachedState;
+    private ArrayMap<Class<?>, Field[]> mCachedFields;
 
     public SaveStateProcessor() {
         mNativeCachedState = new ArrayMap<>();
+        mCachedFields = new ArrayMap<>();
     }
 
     public void saveState(@NonNull Object stateHolder, @NonNull Bundle bundle) {
-        Field[] fields = stateHolder.getClass().getDeclaredFields();
+        Class<?> originalClass = stateHolder.getClass();
+        Class<?> currentClass = originalClass;
+        Field[] cachedFields = mCachedFields.get(currentClass);
+        if (cachedFields == null) {
+            List<Field> futureCachedFields = new LinkedList<>();
+            do {
+                readFromFields(currentClass.getDeclaredFields(), stateHolder, bundle, futureCachedFields);
+            } while ((currentClass = currentClass.getSuperclass()) != null);
+            mCachedFields.put(originalClass, futureCachedFields.toArray(new Field[futureCachedFields.size()]));
+        } else {
+            readFromFields(cachedFields, stateHolder, bundle, null);
+        }
+    }
+
+    public void restoreState(@NonNull Object stateHolder, @Nullable Bundle bundle) {
+        if (bundle == null)
+            return;
+
+        Class<?> originalClass = stateHolder.getClass();
+        Class<?> currentClass = originalClass;
+        Field[] cachedFields = mCachedFields.get(currentClass);
+        if (cachedFields == null) {
+            List<Field> futureCachedFields = new LinkedList<>();
+            do {
+                writeToFields(currentClass.getDeclaredFields(), stateHolder, bundle, futureCachedFields);
+            } while ((currentClass = currentClass.getSuperclass()) != null);
+            mCachedFields.put(originalClass, futureCachedFields.toArray(new Field[futureCachedFields.size()]));
+        } else {
+            writeToFields(cachedFields, stateHolder, bundle, null);
+        }
+    }
+
+    private void readFromFields(@NonNull Field[] fields,
+                                @NonNull Object stateHolder,
+                                @NonNull Bundle bundle,
+                                @Nullable List<Field> listToPopulate) {
+
+        //noinspection ForLoopReplaceableByForEach
         for (int i = 0; i < fields.length; i++) {
             Field field = fields[i];
             SaveState saveState = field.getAnnotation(SaveState.class);
@@ -53,14 +94,19 @@ final class SaveStateProcessor {
             if (!accessible) {
                 field.setAccessible(false);
             }
+
+            if (listToPopulate != null) {
+                listToPopulate.add(field);
+            }
         }
     }
 
-    public void restoreState(@NonNull Object stateHolder, @Nullable Bundle bundle) {
-        if (bundle == null)
-            return;
+    private void writeToFields(@NonNull Field[] fields,
+                               @NonNull Object stateHolder,
+                               @NonNull Bundle bundle,
+                               @Nullable List<Field> listToPopulate) {
 
-        Field[] fields = stateHolder.getClass().getDeclaredFields();
+        //noinspection ForLoopReplaceableByForEach
         for (int i = 0; i < fields.length; i++) {
             Field field = fields[i];
             SaveState saveState = field.getAnnotation(SaveState.class);
@@ -88,8 +134,13 @@ final class SaveStateProcessor {
             if (!accessible) {
                 field.setAccessible(false);
             }
+
+            if (listToPopulate != null) {
+                listToPopulate.add(field);
+            }
         }
     }
+
 
     private StateCoder getStateCoder(@NonNull Field field, @NonNull SaveState saveState) {
         final Class<?> fieldClass = field.getType();
