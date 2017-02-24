@@ -7,29 +7,23 @@ import com.fondesa.quicksavestate.coder.base.BooleanCoder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
 
 import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
 
 /**
  * Created by antoniolig on 22/02/17.
  */
+@SuppressWarnings("ConstantConditions")
 public class BooleanCoderTest {
+    private static final String COMMON_KEY = "x";
 
     private BooleanCoder coder;
-
-    @Mock
     private Bundle bundle;
-
-    @Captor
-    private ArgumentCaptor<Bundle> bundleCaptor;
 
     @Before
     public void initCoder() {
         coder = new BooleanCoder();
+        bundle = new Bundle();
     }
 
     @After
@@ -38,46 +32,30 @@ public class BooleanCoderTest {
     }
 
     @Test
-    public void testSerializePrimitive() {
-        final String key = "x";
-
-        coder.serialize(bundle, key, true);
-        verify(bundle).putBoolean(key, true);
-    }
-
-    @Test
-    public void testSerialize() {
-        final String key = "x";
+    public void testSerializeBooleanPrimitive() {
         boolean expectedValue = true;
-
-        BooleanCoder coder = new BooleanCoder();
-        Bundle bundle = new Bundle();
-        coder.serialize(bundle, key, expectedValue);
-        System.out.println(bundle.getBoolean(key));
-        System.out.println(bundle.getBoolean(key));
-        System.out.println(bundle.getBoolean(key));
-        System.out.println(bundle.getBoolean(key));
-        System.out.println(bundle.getBoolean(key));
-        System.out.println(bundle.getBoolean(key));
-        System.out.println(bundle.getBoolean(key));
-        System.out.println(bundle.getBoolean(key));
-        System.out.println(bundle.getBoolean(key));
-        assertEquals(expectedValue, bundle.getBoolean(key));
+        coder.serialize(bundle, COMMON_KEY, expectedValue);
+        assertEquals(expectedValue, bundle.getBoolean(COMMON_KEY));
     }
 
     @Test
-    public void testDeserialize() {
-        final String key = "x";
-
-        coder.deserialize(bundle, key);
-        verify(bundle).get(key);
+    public void testSerializeBooleanObject() {
+        Boolean expectedValue = true;
+        coder.serialize(bundle, COMMON_KEY, expectedValue);
+        assertEquals(expectedValue, ((Boolean) bundle.getBoolean(COMMON_KEY)));
     }
 
-    private static class Person {
-        boolean prova;
+    @Test
+    public void testDeserializeBooleanPrimitive() {
+        boolean expectedValue = true;
+        bundle.putBoolean(COMMON_KEY, expectedValue);
+        assertEquals((Boolean) expectedValue, coder.deserialize(bundle, COMMON_KEY));
+    }
 
-        public void setProva(Boolean prova) {
-            this.prova = prova;
-        }
+    @Test
+    public void testDeserializeBooleanObject() {
+        Boolean expectedValue = true;
+        bundle.putBoolean(COMMON_KEY, expectedValue);
+        assertEquals(expectedValue, coder.deserialize(bundle, COMMON_KEY));
     }
 }
