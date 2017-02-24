@@ -1,8 +1,6 @@
-package quicksavestate.coder.base;
+package com.fondesa.quicksavestate.coder.base;
 
 import android.os.Bundle;
-
-import com.fondesa.quicksavestate.coder.base.BooleanArrayCoder;
 
 import org.junit.After;
 import org.junit.Before;

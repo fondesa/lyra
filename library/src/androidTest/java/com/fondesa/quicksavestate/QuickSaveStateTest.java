@@ -1,6 +1,4 @@
-package quicksavestate;
-
-import com.fondesa.quicksavestate.QuickSaveState;
+package com.fondesa.quicksavestate;
 
 import org.junit.Test;
 
