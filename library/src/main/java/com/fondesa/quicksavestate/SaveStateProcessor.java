@@ -153,7 +153,7 @@ final class SaveStateProcessor {
                 return stateCoder;
 
             try {
-                stateCoder = StateCoderUtils.getBaseCoderForClass(fieldClass);
+                stateCoder = StateCoderUtils.getBasicCoderForClass(fieldClass);
                 mNativeCachedState.put(fieldClass, stateCoder);
             } catch (CoderNotFoundException e) {
                 throw new RuntimeException("Cannot get coder for class " + fieldClass, e);

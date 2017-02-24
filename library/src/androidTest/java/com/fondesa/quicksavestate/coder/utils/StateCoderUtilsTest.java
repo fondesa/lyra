@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.util.Size;
 import android.util.SizeF;
 
+import com.fondesa.quicksavestate.coder.StateCoder;
+import com.fondesa.quicksavestate.coder.base.StringCoder;
 import com.fondesa.quicksavestate.exception.CoderNotFoundException;
 import com.fondesa.quicksavestate.testmodel.ImplementedCharSequence;
 import com.fondesa.quicksavestate.testmodel.ImplementedParcelable;
@@ -21,6 +23,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 /**
@@ -31,7 +34,7 @@ public class StateCoderUtilsTest {
     public final ExpectedException exceptionRule = ExpectedException.none();
 
     @Test
-    public void testBaseSupportedClassesCompatApi() throws CoderNotFoundException {
+    public void testBasicSupportedTypesCompatApi() throws CoderNotFoundException {
         assertCoderNotNull(boolean.class);
         assertCoderNotNull(Boolean.class);
         assertCoderNotNull(boolean[].class);
@@ -67,7 +70,7 @@ public class StateCoderUtilsTest {
     }
 
     @Test
-    public void testBaseSupportedClassesApi21() throws CoderNotFoundException {
+    public void testBasicSupportedTypesApi21() throws CoderNotFoundException {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             exceptionRule.expect(NoClassDefFoundError.class);
         }
@@ -76,7 +79,7 @@ public class StateCoderUtilsTest {
     }
 
     @Test
-    public void testInheritedSupportedClassesCompatApi() throws CoderNotFoundException {
+    public void testInheritedSupportedTypesCompatApi() throws CoderNotFoundException {
         assertCoderNotNull(ArrayList.class);
         assertCoderNotNull(Binder.class);
         assertCoderNotNull(ImplementedCharSequence.class);
@@ -87,7 +90,13 @@ public class StateCoderUtilsTest {
         assertCoderNotNull(LinkedList.class);
     }
 
+    @Test
+    public void testRightCoderForInheritedBasicSupportedType() throws CoderNotFoundException {
+        StateCoder coder = StateCoderUtils.getBasicCoderForClass(String.class);
+        assertEquals(StringCoder.class, coder.getClass());
+    }
+
     private static void assertCoderNotNull(@NonNull Class<?> cls) throws CoderNotFoundException {
-        assertNotNull(StateCoderUtils.getBaseCoderForClass(cls));
+        assertNotNull(StateCoderUtils.getBasicCoderForClass(cls));
     }
 }

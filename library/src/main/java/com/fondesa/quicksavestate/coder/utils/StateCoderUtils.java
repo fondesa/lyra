@@ -50,7 +50,7 @@ public final class StateCoderUtils {
     }
 
     @NonNull
-    public static StateCoder getBaseCoderForClass(@NonNull Class<?> cls) throws CoderNotFoundException {
+    public static StateCoder getBasicCoderForClass(@NonNull Class<?> cls) throws CoderNotFoundException {
         if (boolean.class == cls || Boolean.class == cls)
             return new BooleanCoder();
 
@@ -133,7 +133,7 @@ public final class StateCoderUtils {
             }
         }
 
-        StateCoder inheritedCoder = getBaseCoderForInheritedClass(cls);
+        StateCoder inheritedCoder = getBasicCoderForInheritedClass(cls);
         if (inheritedCoder != null)
             return inheritedCoder;
 
@@ -143,7 +143,7 @@ public final class StateCoderUtils {
 
 
     @Nullable
-    private static StateCoder getBaseCoderForInheritedClass(@NonNull Class<?> cls) {
+    private static StateCoder getBasicCoderForInheritedClass(@NonNull Class<?> cls) {
         if (CharSequence.class.isAssignableFrom(cls))
             return new CharSequenceCoder();
 
