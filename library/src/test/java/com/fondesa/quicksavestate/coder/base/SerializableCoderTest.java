@@ -1,7 +1,7 @@
 package com.fondesa.quicksavestate.coder.base;
 
-import com.fondesa.quicksavestate.coder.base.rule.CoderRule;
 import com.fondesa.quicksavestate.testhelper.model.ImplementedSerializable;
+import com.fondesa.quicksavestate.testhelper.rule.CoderRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,7 +10,6 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.io.Serializable;
 
-import static com.fondesa.quicksavestate.coder.base.constants.Constants.COMMON_KEY;
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -24,14 +23,14 @@ public class SerializableCoderTest {
     @Test
     public void testSerializeSerializable() {
         Serializable expectedValue = ImplementedSerializable.getDefault();
-        coderRule.coder.serialize(coderRule.bundle, COMMON_KEY, expectedValue);
-        assertEquals(expectedValue, coderRule.bundle.getSerializable(COMMON_KEY));
+        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
+        assertEquals(expectedValue, coderRule.bundle.getSerializable(coderRule.randomKey));
     }
 
     @Test
     public void testDeserializeSerializable() {
         Serializable expectedValue = ImplementedSerializable.getDefault();
-        coderRule.bundle.putSerializable(COMMON_KEY, expectedValue);
-        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, COMMON_KEY));
+        coderRule.bundle.putSerializable(coderRule.randomKey, expectedValue);
+        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
     }
 }

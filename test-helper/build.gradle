@@ -12,5 +12,7 @@ android {
 }
 
 dependencies {
+    compile "junit:junit:$JUNIT_VERSION"
     compile "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
+    compile "com.android.support:support-annotations:$ANDROID_SUPPORT_VERSION"
 }

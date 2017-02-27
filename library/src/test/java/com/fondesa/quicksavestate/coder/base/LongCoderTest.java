@@ -1,13 +1,12 @@
 package com.fondesa.quicksavestate.coder.base;
 
-import com.fondesa.quicksavestate.coder.base.rule.CoderRule;
+import com.fondesa.quicksavestate.testhelper.rule.CoderRule;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static com.fondesa.quicksavestate.coder.base.constants.Constants.COMMON_KEY;
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -21,28 +20,28 @@ public class LongCoderTest {
     @Test
     public void testSerializeLongPrimitive() {
         long expectedValue = 9L;
-        coderRule.coder.serialize(coderRule.bundle, COMMON_KEY, expectedValue);
-        assertEquals(expectedValue, coderRule.bundle.getLong(COMMON_KEY));
+        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
+        assertEquals(expectedValue, coderRule.bundle.getLong(coderRule.randomKey));
     }
 
     @Test
     public void testSerializeLongObject() {
         Long expectedValue = 9L;
-        coderRule.coder.serialize(coderRule.bundle, COMMON_KEY, expectedValue);
-        assertEquals(expectedValue, ((Long) coderRule.bundle.getLong(COMMON_KEY)));
+        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
+        assertEquals(expectedValue, ((Long) coderRule.bundle.getLong(coderRule.randomKey)));
     }
 
     @Test
     public void testDeserializeLongPrimitive() {
         long expectedValue = 9L;
-        coderRule.bundle.putLong(COMMON_KEY, expectedValue);
-        assertEquals((Long) expectedValue, coderRule.coder.deserialize(coderRule.bundle, COMMON_KEY));
+        coderRule.bundle.putLong(coderRule.randomKey, expectedValue);
+        assertEquals((Long) expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
     }
 
     @Test
     public void testDeserializeLongObject() {
         Long expectedValue = 9L;
-        coderRule.bundle.putLong(COMMON_KEY, expectedValue);
-        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, COMMON_KEY));
+        coderRule.bundle.putLong(coderRule.randomKey, expectedValue);
+        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
     }
 }

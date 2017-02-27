@@ -4,14 +4,13 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.BundleCompat;
 
-import com.fondesa.quicksavestate.coder.base.rule.CoderRule;
+import com.fondesa.quicksavestate.testhelper.rule.CoderRule;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static com.fondesa.quicksavestate.coder.base.constants.Constants.COMMON_KEY;
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -25,14 +24,14 @@ public class IBinderCoderTest {
     @Test
     public void testSerializeIBinder() {
         IBinder expectedValue = new Binder();
-        coderRule.coder.serialize(coderRule.bundle, COMMON_KEY, expectedValue);
-        assertEquals(expectedValue, BundleCompat.getBinder(coderRule.bundle, COMMON_KEY));
+        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
+        assertEquals(expectedValue, BundleCompat.getBinder(coderRule.bundle, coderRule.randomKey));
     }
 
     @Test
     public void testDeserializeIBinder() {
         IBinder expectedValue = new Binder();
-        BundleCompat.putBinder(coderRule.bundle, COMMON_KEY, expectedValue);
-        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, COMMON_KEY));
+        BundleCompat.putBinder(coderRule.bundle, coderRule.randomKey, expectedValue);
+        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
     }
 }

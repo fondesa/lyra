@@ -1,6 +1,6 @@
 package com.fondesa.quicksavestate.coder.base;
 
-import com.fondesa.quicksavestate.coder.base.rule.CoderRule;
+import com.fondesa.quicksavestate.testhelper.rule.CoderRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -9,7 +9,6 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Arrays;
 
-import static com.fondesa.quicksavestate.coder.base.constants.Constants.COMMON_KEY;
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -23,15 +22,15 @@ public class CharSequenceArrayCoderTest {
     @Test
     public void testSerializeCharSequenceArray() {
         CharSequence[] expected = generateArrayAndFill();
-        coderRule.coder.serialize(coderRule.bundle, COMMON_KEY, expected);
-        assertEquals(expected, coderRule.bundle.getCharSequenceArray(COMMON_KEY));
+        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expected);
+        assertEquals(expected, coderRule.bundle.getCharSequenceArray(coderRule.randomKey));
     }
 
     @Test
     public void testDeserializeCharSequenceArray() {
         CharSequence[] expected = generateArrayAndFill();
-        coderRule.bundle.putCharSequenceArray(COMMON_KEY, expected);
-        assertEquals(expected, coderRule.coder.deserialize(coderRule.bundle, COMMON_KEY));
+        coderRule.bundle.putCharSequenceArray(coderRule.randomKey, expected);
+        assertEquals(expected, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
     }
 
     private CharSequence[] generateArrayAndFill() {
