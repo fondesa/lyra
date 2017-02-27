@@ -1,19 +1,16 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion Integer.parseInt(ANDROID_COMPILE_SDK_VERSION)
     buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
-        applicationId "com.fondesa.quicksavestate.sample"
         minSdkVersion Integer.parseInt(ANDROID_MIN_SDK_VERSION)
         targetSdkVersion Integer.parseInt(ANDROID_TARGET_SDK_VERSION)
-        versionCode 1
-        versionName "debug"
+        return true
     }
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
-    compile project(":library")
+    compile "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
 }
