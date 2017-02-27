@@ -8,8 +8,6 @@ android {
         applicationId "com.fondesa.quicksavestate.sample"
         minSdkVersion Integer.parseInt(ANDROID_MIN_SDK_VERSION)
         targetSdkVersion Integer.parseInt(ANDROID_TARGET_SDK_VERSION)
-        versionCode 1
-        versionName "debug"
     }
 }
 

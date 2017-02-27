@@ -1,9 +1,13 @@
 package com.fondesa.quicksavestate.sample.model;
 
+import java.io.Serializable;
+
 /**
  * Created by antoniolig on 18/02/17.
  */
-public class Model {
+public class Model implements Serializable {
+    private static final long serialVersionUID = 83186996445369715L;
+
     public int id;
     public String value;
 
