@@ -4,7 +4,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.BundleCompat;
 
-import com.fondesa.quicksavestate.testhelper.rule.CoderRule;
+import com.fondesa.quicksavestate.coder.CoderRule;
 
 import org.junit.Rule;
 import org.junit.Test;

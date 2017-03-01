@@ -2,8 +2,8 @@ package com.fondesa.quicksavestate.coder.base;
 
 import android.os.Parcelable;
 
-import com.fondesa.quicksavestate.testhelper.model.ImplementedParcelable;
-import com.fondesa.quicksavestate.testhelper.rule.CoderRule;
+import com.fondesa.quicksavestate.coder.CoderRule;
+import com.fondesa.quicksavestate.common.TestModels;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,14 +22,14 @@ public class ParcelableCoderTest {
 
     @Test
     public void testSerializeParcelable() {
-        Parcelable expectedValue = ImplementedParcelable.getDefault();
+        Parcelable expectedValue = TestModels.ImplementedParcelable.getDefault();
         coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
         assertEquals(expectedValue, coderRule.bundle.getParcelable(coderRule.randomKey));
     }
 
     @Test
     public void testDeserializeParcelable() {
-        Parcelable expectedValue = ImplementedParcelable.getDefault();
+        Parcelable expectedValue = TestModels.ImplementedParcelable.getDefault();
         coderRule.bundle.putParcelable(coderRule.randomKey, expectedValue);
         assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
     }

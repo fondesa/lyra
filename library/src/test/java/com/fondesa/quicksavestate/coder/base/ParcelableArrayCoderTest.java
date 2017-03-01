@@ -2,8 +2,8 @@ package com.fondesa.quicksavestate.coder.base;
 
 import android.os.Parcelable;
 
-import com.fondesa.quicksavestate.testhelper.model.ImplementedParcelable;
-import com.fondesa.quicksavestate.testhelper.rule.CoderRule;
+import com.fondesa.quicksavestate.coder.CoderRule;
+import com.fondesa.quicksavestate.common.TestModels;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,8 +37,8 @@ public class ParcelableArrayCoderTest {
     }
 
     private Parcelable[] generateArrayAndFill() {
-        ImplementedParcelable[] array = new ImplementedParcelable[300];
-        Arrays.fill(array, ImplementedParcelable.getDefault());
+        TestModels.ImplementedParcelable[] array = new TestModels.ImplementedParcelable[300];
+        Arrays.fill(array, TestModels.ImplementedParcelable.getDefault());
         return array;
     }
 }

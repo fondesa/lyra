@@ -3,8 +3,8 @@ package com.fondesa.quicksavestate.coder.base;
 
 import android.util.SizeF;
 
-import com.fondesa.quicksavestate.testhelper.rule.CoderRule;
-import com.fondesa.quicksavestate.testhelper.util.TestUtil;
+import com.fondesa.quicksavestate.coder.CoderRule;
+import com.fondesa.quicksavestate.common.TestUtils;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,7 +24,7 @@ public class SizeFCoderTest {
     @SuppressWarnings("NewApi")
     @Test
     public void testSerializeSizeF() {
-        TestUtil.setApiVersion(21);
+        TestUtils.setApiVersion(21);
         SizeF expectedValue = new SizeF(9, 5);
         coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
         assertEquals(expectedValue, coderRule.bundle.getSizeF(coderRule.randomKey));
@@ -34,7 +34,7 @@ public class SizeFCoderTest {
     @SuppressWarnings("NewApi")
     @Test
     public void testDeserializeSizeF() {
-        TestUtil.setApiVersion(21);
+        TestUtils.setApiVersion(21);
         SizeF expectedValue = new SizeF(9, 5);
         coderRule.bundle.putSizeF(coderRule.randomKey, expectedValue);
         assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));

@@ -1,4 +1,4 @@
-package com.fondesa.quicksavestate.testhelper.rule;
+package com.fondesa.quicksavestate.coder;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

@@ -1,6 +1,6 @@
 package com.fondesa.quicksavestate.coder.base;
 
-import com.fondesa.quicksavestate.testhelper.rule.CoderRule;
+import com.fondesa.quicksavestate.coder.CoderRule;
 
 import org.junit.Rule;
 import org.junit.Test;

@@ -9,11 +9,9 @@ import android.util.SizeF;
 
 import com.fondesa.quicksavestate.coder.StateCoder;
 import com.fondesa.quicksavestate.coder.base.StringCoder;
+import com.fondesa.quicksavestate.common.TestModels;
+import com.fondesa.quicksavestate.common.TestUtils;
 import com.fondesa.quicksavestate.exception.CoderNotFoundException;
-import com.fondesa.quicksavestate.testhelper.model.ImplementedCharSequence;
-import com.fondesa.quicksavestate.testhelper.model.ImplementedParcelable;
-import com.fondesa.quicksavestate.testhelper.model.ImplementedSerializable;
-import com.fondesa.quicksavestate.testhelper.util.TestUtil;
 
 import org.junit.Test;
 
@@ -66,14 +64,14 @@ public class StateCoderUtilsTest {
 
     @Test
     public void testCoderApi21NotNullAbove21() throws CoderNotFoundException {
-        TestUtil.setApiVersion(21);
+        TestUtils.setApiVersion(21);
         assertCoderNotNull(Size.class);
         assertCoderNotNull(SizeF.class);
     }
 
     @Test(expected = CoderNotFoundException.class)
     public void testCoderApi21ThrowsBelowApi21() throws CoderNotFoundException {
-        TestUtil.setApiVersion(9);
+        TestUtils.setApiVersion(9);
         assertCoderNotNull(Size.class);
         assertCoderNotNull(SizeF.class);
     }
@@ -82,11 +80,11 @@ public class StateCoderUtilsTest {
     public void testInheritedSupportedTypesCompatApi() throws CoderNotFoundException {
         assertCoderNotNull(ArrayList.class);
         assertCoderNotNull(Binder.class);
-        assertCoderNotNull(ImplementedCharSequence.class);
-        assertCoderNotNull(ImplementedCharSequence[].class);
-        assertCoderNotNull(ImplementedParcelable.class);
-        assertCoderNotNull(ImplementedParcelable[].class);
-        assertCoderNotNull(ImplementedSerializable.class);
+        assertCoderNotNull(TestModels.ImplementedCharSequence.class);
+        assertCoderNotNull(TestModels.ImplementedCharSequence[].class);
+        assertCoderNotNull(TestModels.ImplementedParcelable.class);
+        assertCoderNotNull(TestModels.ImplementedParcelable[].class);
+        assertCoderNotNull(TestModels.ImplementedSerializable.class);
         assertCoderNotNull(LinkedList.class);
     }
 
