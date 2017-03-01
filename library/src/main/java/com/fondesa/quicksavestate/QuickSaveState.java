@@ -1,11 +1,11 @@
 package com.fondesa.quicksavestate;
 
-import android.app.Activity;
 import android.app.Application;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.fondesa.quicksavestate.annotation.SaveState;
@@ -24,16 +24,13 @@ public final class QuickSaveState {
 
     private static QuickSaveState instance;
 
-    public static void init(@NonNull Application application) {
-        if (instance != null) {
-            Log.w(TAG, "The instance is initialized. You have called init() multiple times.");
-        }
-        instance = new QuickSaveState(application);
+    public static Builder with(@NonNull Application application) {
+        return new QuickSaveState.Builder().with(application);
     }
 
     public static QuickSaveState instance() {
         if (instance == null) {
-            throw getNullInstanceException();
+            throw new NullPointerException("Instance not initialized. You have to build it in your application.");
         }
         return instance;
     }
@@ -108,41 +105,63 @@ public final class QuickSaveState {
         }
     }
 
-    private static NullPointerException getNullInstanceException() {
-        return new NullPointerException("Instance not initialized. You have to call " +
-                QuickSaveState.class.getSimpleName() + "init() in your application.");
+    private QuickSaveState(@NonNull CoderRetriever coderRetriever, @NonNull FieldsRetriever fieldsRetriever) {
+        mCoderRetriever = coderRetriever;
+        mFieldsRetriever = fieldsRetriever;
     }
 
-    private QuickSaveState(@NonNull Application application) {
-        mCoderRetriever = new DefaultCoderRetriever();
-        mFieldsRetriever = new DefaultFieldsRetriever(SaveState.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
-                @Override
-                public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                    restoreState(activity, savedInstanceState);
-                }
+    public static final class Builder {
+        private Application mApplication;
+        private CoderRetriever mCoderRetriever;
+        private FieldsRetriever mFieldsRetriever;
+        private boolean mAutoSaveActivities;
+        private boolean mAutoSaveSupportFragments;
 
-                @Override
-                public void onActivityStarted(Activity activity) { /* empty */ }
+        Builder with(@NonNull Application application) {
+            mApplication = application;
+            return this;
+        }
 
-                @Override
-                public void onActivityResumed(Activity activity) { /* empty */ }
+        public Builder coderRetriever(@Nullable CoderRetriever coderRetriever) {
+            mCoderRetriever = coderRetriever;
+            return this;
+        }
 
-                @Override
-                public void onActivityPaused(Activity activity) { /* empty */ }
+        public Builder fieldsRetriever(@Nullable FieldsRetriever fieldsRetriever) {
+            mFieldsRetriever = fieldsRetriever;
+            return this;
+        }
 
-                @Override
-                public void onActivityStopped(Activity activity) { /* empty */ }
+        @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+        public Builder autoSaveActivities() {
+            mAutoSaveActivities = true;
+            return this;
+        }
 
-                @Override
-                public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-                    saveState(activity, outState);
-                }
+        @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+        public Builder autoSaveSupportFragments() {
+            mAutoSaveSupportFragments = true;
+            return this;
+        }
 
-                @Override
-                public void onActivityDestroyed(Activity activity) { /* empty */ }
-            });
+        public void build() {
+            if (mCoderRetriever == null) {
+                mCoderRetriever = new DefaultCoderRetriever();
+            }
+
+            if (mFieldsRetriever == null) {
+                mFieldsRetriever = new DefaultFieldsRetriever();
+            }
+
+            if (instance != null) {
+                Log.w(TAG, "The instance is initialized. You are building it multiple times.");
+            }
+            instance = new QuickSaveState(mCoderRetriever, mFieldsRetriever);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
+                    (mAutoSaveActivities || mAutoSaveSupportFragments)) {
+                new AutomaticSaveStateManager(mApplication, mAutoSaveActivities, mAutoSaveSupportFragments);
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ public class QuickSaveStateTest {
     @Test
     public void testInit() {
         Application app = ApplicationTestUtil.newApplication(Application.class);
-        QuickSaveState.init(app);
+        QuickSaveState.with(app).build();
         assertNotNull(QuickSaveState.instance());
     }
 

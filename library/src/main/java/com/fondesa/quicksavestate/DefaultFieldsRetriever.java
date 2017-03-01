@@ -3,6 +3,8 @@ package com.fondesa.quicksavestate;
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 
+import com.fondesa.quicksavestate.annotation.SaveState;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.LinkedList;
@@ -13,11 +15,9 @@ import java.util.List;
  */
 public class DefaultFieldsRetriever implements FieldsRetriever {
     private ArrayMap<Class<?>, Field[]> mCachedFields;
-    private Class<? extends Annotation> mAnnotationClass;
 
-    public DefaultFieldsRetriever(@NonNull Class<? extends Annotation> annotationClass) {
+    public DefaultFieldsRetriever() {
         mCachedFields = new ArrayMap<>();
-        mAnnotationClass = annotationClass;
     }
 
     public Field[] getFields(@NonNull Class<?> cls) {
@@ -31,7 +31,7 @@ public class DefaultFieldsRetriever implements FieldsRetriever {
             Field[] declaredFields = currentClass.getDeclaredFields();
             for (int i = 0; i < currentClass.getDeclaredFields().length; i++) {
                 Field field = declaredFields[i];
-                Annotation annotation = field.getAnnotation(mAnnotationClass);
+                Annotation annotation = field.getAnnotation(SaveState.class);
                 if (annotation == null)
                     continue;
 
