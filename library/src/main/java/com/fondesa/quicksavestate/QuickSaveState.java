@@ -8,13 +8,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.fondesa.quicksavestate.annotation.SaveState;
+import com.fondesa.quicksavestate.coder.StateCoder;
+
+import java.lang.reflect.Field;
+
 /**
  * Created by antoniolig on 17/02/17.
  */
-public class QuickSaveState {
+public final class QuickSaveState {
     private static final String TAG = QuickSaveState.class.getSimpleName();
 
-    private SaveStateProcessor mProcessor;
+    private CoderRetriever mCoderRetriever;
+    private FieldsRetriever mFieldsRetriever;
 
     private static QuickSaveState instance;
 
@@ -32,12 +38,74 @@ public class QuickSaveState {
         return instance;
     }
 
+    public static void destroy() {
+        instance = null;
+    }
+
     public void saveState(@NonNull Object stateHolder, @NonNull Bundle state) {
-        mProcessor.saveState(stateHolder, state);
+        Field[] cachedFields = mFieldsRetriever.getFields(stateHolder.getClass());
+
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < cachedFields.length; i++) {
+            Field field = cachedFields[i];
+            SaveState saveState = field.getAnnotation(SaveState.class);
+            boolean accessible = field.isAccessible();
+            if (!accessible) {
+                field.setAccessible(true);
+            }
+
+            final String fieldName = field.getName();
+            final Object fieldValue;
+            try {
+                fieldValue = field.get(stateHolder);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Cannot access to field " + fieldName +
+                        " of class " + stateHolder.getClass().getName());
+            }
+
+            if (fieldValue != null) {
+                final StateCoder stateCoder = mCoderRetriever.getCoder(saveState, field.getType());
+                //noinspection unchecked
+                stateCoder.serialize(state, fieldName, fieldValue);
+            }
+
+            if (!accessible) {
+                field.setAccessible(false);
+            }
+        }
     }
 
     public void restoreState(@NonNull Object stateHolder, @Nullable Bundle state) {
-        mProcessor.restoreState(stateHolder, state);
+        if (state == null)
+            return;
+
+        Field[] cachedFields = mFieldsRetriever.getFields(stateHolder.getClass());
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < cachedFields.length; i++) {
+            Field field = cachedFields[i];
+            SaveState saveState = field.getAnnotation(SaveState.class);
+            boolean accessible = field.isAccessible();
+            if (!accessible) {
+                field.setAccessible(true);
+            }
+
+            final StateCoder stateCoder = mCoderRetriever.getCoder(saveState, field.getType());
+
+            final String fieldName = field.getName();
+            final Object fieldValue = stateCoder.deserialize(state, fieldName);
+            if (fieldValue != null) {
+                try {
+                    field.set(stateHolder, fieldValue);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException("Cannot access to field " + fieldName +
+                            " of class " + stateHolder.getClass().getName());
+                }
+            }
+
+            if (!accessible) {
+                field.setAccessible(false);
+            }
+        }
     }
 
     private static NullPointerException getNullInstanceException() {
@@ -46,7 +114,8 @@ public class QuickSaveState {
     }
 
     private QuickSaveState(@NonNull Application application) {
-        mProcessor = new SaveStateProcessor();
+        mCoderRetriever = new DefaultCoderRetriever();
+        mFieldsRetriever = new DefaultFieldsRetriever(SaveState.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
                 @Override
