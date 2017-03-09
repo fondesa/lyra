@@ -19,15 +19,15 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(RobolectricTestRunner.class)
 public class SizeFCoderTest {
     @Rule
-    public final CoderRule<SizeFCoder> coderRule = new CoderRule<>(SizeFCoder.class);
+    public final CoderRule<SizeFCoder> mCoderRule = new CoderRule<>(SizeFCoder.class);
 
     @SuppressWarnings("NewApi")
     @Test
     public void testSerializeSizeF() {
         TestUtils.setApiVersion(21);
         SizeF expectedValue = new SizeF(9, 5);
-        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.bundle.getSizeF(coderRule.randomKey));
+        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.bundle().getSizeF(mCoderRule.randomKey()));
 
     }
 
@@ -36,7 +36,7 @@ public class SizeFCoderTest {
     public void testDeserializeSizeF() {
         TestUtils.setApiVersion(21);
         SizeF expectedValue = new SizeF(9, 5);
-        coderRule.bundle.putSizeF(coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
+        mCoderRule.bundle().putSizeF(mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
     }
 }

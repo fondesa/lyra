@@ -18,19 +18,19 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(RobolectricTestRunner.class)
 public class ParcelableCoderTest {
     @Rule
-    public final CoderRule<ParcelableCoder> coderRule = new CoderRule<>(ParcelableCoder.class);
+    public final CoderRule<ParcelableCoder> mCoderRule = new CoderRule<>(ParcelableCoder.class);
 
     @Test
     public void testSerializeParcelable() {
         Parcelable expectedValue = TestModels.ImplementedParcelable.getDefault();
-        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.bundle.getParcelable(coderRule.randomKey));
+        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.bundle().getParcelable(mCoderRule.randomKey()));
     }
 
     @Test
     public void testDeserializeParcelable() {
         Parcelable expectedValue = TestModels.ImplementedParcelable.getDefault();
-        coderRule.bundle.putParcelable(coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
+        mCoderRule.bundle().putParcelable(mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
     }
 }

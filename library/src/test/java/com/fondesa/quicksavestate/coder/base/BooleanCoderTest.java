@@ -15,37 +15,37 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(RobolectricTestRunner.class)
 public class BooleanCoderTest {
     @Rule
-    public final CoderRule<BooleanCoder> coderRule = new CoderRule<>(BooleanCoder.class);
+    public final CoderRule<BooleanCoder> mCoderRule = new CoderRule<>(BooleanCoder.class);
 
     @SuppressWarnings("ConstantConditions")
     @Test
     public void testSerializeBooleanPrimitive() {
         boolean expectedValue = true;
-        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.bundle.getBoolean(coderRule.randomKey));
+        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.bundle().getBoolean(mCoderRule.randomKey()));
     }
 
     @SuppressWarnings("ConstantConditions")
     @Test
     public void testSerializeBooleanObject() {
         Boolean expectedValue = true;
-        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, ((Boolean) coderRule.bundle.getBoolean(coderRule.randomKey)));
+        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, ((Boolean) mCoderRule.bundle().getBoolean(mCoderRule.randomKey())));
     }
 
     @SuppressWarnings("ConstantConditions")
     @Test
     public void testDeserializeBooleanPrimitive() {
         boolean expectedValue = true;
-        coderRule.bundle.putBoolean(coderRule.randomKey, expectedValue);
-        assertEquals((Boolean) expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
+        mCoderRule.bundle().putBoolean(mCoderRule.randomKey(), expectedValue);
+        assertEquals((Boolean) expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
     }
 
     @SuppressWarnings("ConstantConditions")
     @Test
     public void testDeserializeBooleanObject() {
         Boolean expectedValue = true;
-        coderRule.bundle.putBoolean(coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
+        mCoderRule.bundle().putBoolean(mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
     }
 }

@@ -19,19 +19,19 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(RobolectricTestRunner.class)
 public class IBinderCoderTest {
     @Rule
-    public final CoderRule<IBinderCoder> coderRule = new CoderRule<>(IBinderCoder.class);
+    public final CoderRule<IBinderCoder> mCoderRule = new CoderRule<>(IBinderCoder.class);
 
     @Test
     public void testSerializeIBinder() {
         IBinder expectedValue = new Binder();
-        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, BundleCompat.getBinder(coderRule.bundle, coderRule.randomKey));
+        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, BundleCompat.getBinder(mCoderRule.bundle(), mCoderRule.randomKey()));
     }
 
     @Test
     public void testDeserializeIBinder() {
         IBinder expectedValue = new Binder();
-        BundleCompat.putBinder(coderRule.bundle, coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
+        BundleCompat.putBinder(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
     }
 }

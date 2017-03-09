@@ -18,19 +18,19 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(RobolectricTestRunner.class)
 public class SerializableCoderTest {
     @Rule
-    public final CoderRule<SerializableCoder> coderRule = new CoderRule<>(SerializableCoder.class);
+    public final CoderRule<SerializableCoder> mCoderRule = new CoderRule<>(SerializableCoder.class);
 
     @Test
     public void testSerializeSerializable() {
         Serializable expectedValue = TestModels.ImplementedSerializable.getDefault();
-        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.bundle.getSerializable(coderRule.randomKey));
+        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.bundle().getSerializable(mCoderRule.randomKey()));
     }
 
     @Test
     public void testDeserializeSerializable() {
         Serializable expectedValue = TestModels.ImplementedSerializable.getDefault();
-        coderRule.bundle.putSerializable(coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
+        mCoderRule.bundle().putSerializable(mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
     }
 }

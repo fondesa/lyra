@@ -15,33 +15,33 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(RobolectricTestRunner.class)
 public class FloatCoderTest {
     @Rule
-    public final CoderRule<FloatCoder> coderRule = new CoderRule<>(FloatCoder.class);
+    public final CoderRule<FloatCoder> mCoderRule = new CoderRule<>(FloatCoder.class);
 
     @Test
     public void testSerializeFloatPrimitive() {
         float expectedValue = 9.0f;
-        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.bundle.getFloat(coderRule.randomKey), 0);
+        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.bundle().getFloat(mCoderRule.randomKey()), 0);
     }
 
     @Test
     public void testSerializeFloatObject() {
         Float expectedValue = 9.0f;
-        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.bundle.getFloat(coderRule.randomKey));
+        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.bundle().getFloat(mCoderRule.randomKey()));
     }
 
     @Test
     public void testDeserializeFloatPrimitive() {
         float expectedValue = 9.0f;
-        coderRule.bundle.putFloat(coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey), 0);
+        mCoderRule.bundle().putFloat(mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()), 0);
     }
 
     @Test
     public void testDeserializeFloatObject() {
         Float expectedValue = 9.0f;
-        coderRule.bundle.putFloat(coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
+        mCoderRule.bundle().putFloat(mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
     }
 }

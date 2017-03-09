@@ -17,20 +17,20 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(RobolectricTestRunner.class)
 public class ByteArrayCoderTest {
     @Rule
-    public final CoderRule<ByteArrayCoder> coderRule = new CoderRule<>(ByteArrayCoder.class);
+    public final CoderRule<ByteArrayCoder> mCoderRule = new CoderRule<>(ByteArrayCoder.class);
 
     @Test
     public void testSerializeByteArray() {
         byte[] expected = generateArrayAndFill();
-        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expected);
-        assertEquals(expected, coderRule.bundle.getByteArray(coderRule.randomKey));
+        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expected);
+        assertEquals(expected, mCoderRule.bundle().getByteArray(mCoderRule.randomKey()));
     }
 
     @Test
     public void testDeserializeByteArray() {
         byte[] expected = generateArrayAndFill();
-        coderRule.bundle.putByteArray(coderRule.randomKey, expected);
-        assertEquals(expected, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
+        mCoderRule.bundle().putByteArray(mCoderRule.randomKey(), expected);
+        assertEquals(expected, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
     }
 
     private byte[] generateArrayAndFill() {

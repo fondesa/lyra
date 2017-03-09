@@ -35,6 +35,7 @@ public class DefaultCoderRetriever implements CoderRetriever {
                 throw new RuntimeException("Cannot get coder for class " + annotatedFieldClass, e);
             }
         } else {
+            /* A custom coder won't be cached to support multiple implementations for the same class. */
             try {
                 stateCoder = stateSDClass.newInstance();
             } catch (Exception e) {

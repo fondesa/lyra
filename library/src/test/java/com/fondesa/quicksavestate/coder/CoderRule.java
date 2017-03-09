@@ -11,35 +11,48 @@ import java.util.UUID;
  * Created by antoniolig on 24/02/17.
  */
 public class CoderRule<Coder> extends ExternalResource {
-    public Coder coder;
-    private Class<? extends Coder> coderClass;
-    public Bundle bundle;
-    public final String randomKey;
+    private Coder mCoder;
+    private Bundle mBundle;
+
+    private final Class<? extends Coder> mCoderClass;
+    private final String mRandomKey;
 
     public CoderRule(@NonNull Class<? extends Coder> coderClass) {
-        this.coderClass = coderClass;
-        randomKey = UUID.randomUUID().toString();
+        mCoderClass = coderClass;
+        mRandomKey = UUID.randomUUID().toString();
     }
 
     @Override
     protected void before() throws Throwable {
-        coder = initCoder();
-        bundle = new Bundle();
+        mCoder = initCoder();
+        mBundle = new Bundle();
     }
 
     @Override
     protected void after() {
-        coder = null;
-        bundle = null;
+        mCoder = null;
+        mBundle = null;
     }
 
     private Coder initCoder() {
         Coder coder = null;
         try {
-            coder = coderClass.newInstance();
+            coder = mCoderClass.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return coder;
+    }
+
+    public Bundle bundle() {
+        return mBundle;
+    }
+
+    public Coder coder() {
+        return mCoder;
+    }
+
+    public String randomKey() {
+        return mRandomKey;
     }
 }

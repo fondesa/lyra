@@ -11,8 +11,8 @@ import java.lang.reflect.Field;
  * Created by antoniolig on 05/03/17.
  */
 public class FieldMatcher extends BaseMatcher<Field[]> {
-    private String[] fieldsName;
-    private boolean exactly;
+    private String[] mFieldsName;
+    private boolean mMatchExactly;
 
     public static FieldMatcher containsNames(@NonNull String... fieldsName) {
         return new FieldMatcher(fieldsName, false);
@@ -22,9 +22,9 @@ public class FieldMatcher extends BaseMatcher<Field[]> {
         return new FieldMatcher(fieldsName, true);
     }
 
-    private FieldMatcher(@NonNull String[] fieldsName, boolean exactly) {
-        this.fieldsName = fieldsName;
-        this.exactly = exactly;
+    private FieldMatcher(@NonNull String[] fieldsName, boolean matchExactly) {
+        mFieldsName = fieldsName;
+        mMatchExactly = matchExactly;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class FieldMatcher extends BaseMatcher<Field[]> {
 
         Field[] fields = (Field[]) item;
         int contained = 0;
-        for (String fieldName : fieldsName) {
+        for (String fieldName : mFieldsName) {
             for (Field field : fields) {
                 if (field.getName().equals(fieldName)) {
                     contained++;
@@ -43,10 +43,10 @@ public class FieldMatcher extends BaseMatcher<Field[]> {
             }
         }
 
-        if (exactly) {
+        if (mMatchExactly) {
             return contained == fields.length;
         } else {
-            return contained == fieldsName.length;
+            return contained == mFieldsName.length;
         }
     }
 

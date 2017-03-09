@@ -17,20 +17,20 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(RobolectricTestRunner.class)
 public class StringArrayCoderTest {
     @Rule
-    public final CoderRule<StringArrayCoder> coderRule = new CoderRule<>(StringArrayCoder.class);
+    public final CoderRule<StringArrayCoder> mCoderRule = new CoderRule<>(StringArrayCoder.class);
 
     @Test
     public void testSerializeStringArray() {
         String[] expected = generateArrayAndFill();
-        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expected);
-        assertEquals(expected, coderRule.bundle.getStringArray(coderRule.randomKey));
+        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expected);
+        assertEquals(expected, mCoderRule.bundle().getStringArray(mCoderRule.randomKey()));
     }
 
     @Test
     public void testDeserializeStringArray() {
         String[] expected = generateArrayAndFill();
-        coderRule.bundle.putStringArray(coderRule.randomKey, expected);
-        assertEquals(expected, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
+        mCoderRule.bundle().putStringArray(mCoderRule.randomKey(), expected);
+        assertEquals(expected, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
     }
 
     private String[] generateArrayAndFill() {

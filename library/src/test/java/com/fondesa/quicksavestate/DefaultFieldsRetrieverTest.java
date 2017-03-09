@@ -21,67 +21,67 @@ import static org.junit.Assert.assertThat;
 @RunWith(RobolectricTestRunner.class)
 public class DefaultFieldsRetrieverTest {
 
-    private DefaultFieldsRetriever retriever;
+    private DefaultFieldsRetriever mRetriever;
 
     @Before
     public void initRetriever() {
-        retriever = new DefaultFieldsRetriever();
+        mRetriever = new DefaultFieldsRetriever();
     }
 
     @After
     public void releaseRetriever() {
-        retriever = null;
+        mRetriever = null;
     }
 
     @Test
     public void testRetrieveZeroFields() {
-        Field[] fields = retriever.getFields(ZeroFields.class);
+        Field[] fields = mRetriever.getFields(ZeroFields.class);
         assertNotNull(fields);
         assertEquals(fields.length, 0);
     }
 
     @Test
     public void testRetrieveZeroAnnotatedFields() {
-        Field[] fields = retriever.getFields(ZeroAnnotatedFields.class);
+        Field[] fields = mRetriever.getFields(ZeroAnnotatedFields.class);
         assertNotNull(fields);
         assertEquals(fields.length, 0);
     }
 
     @Test
     public void testRetrievePublicAnnotatedFields() {
-        Field[] fields = retriever.getFields(PublicAnnotatedFields.class);
+        Field[] fields = mRetriever.getFields(PublicAnnotatedFields.class);
         assertNotNull(fields);
         assertThat(fields, withNames("a", "b"));
     }
 
     @Test
     public void testRetrieveMixedAnnotatedFields() {
-        Field[] fields = retriever.getFields(MixedPublicFields.class);
+        Field[] fields = mRetriever.getFields(MixedPublicFields.class);
         assertNotNull(fields);
         assertThat(fields, withNames("b"));
     }
 
     @Test
     public void testRetrieveAnnotatedFieldsWithAllModifiers() {
-        Field[] fields = retriever.getFields(AllModifiersAnnotatedFields.class);
+        Field[] fields = mRetriever.getFields(AllModifiersAnnotatedFields.class);
         assertNotNull(fields);
         assertThat(fields, withNames("a", "b", "c", "d"));
     }
 
     @Test
     public void testRetrieveAnnotatedFieldsInheritance() {
-        Field[] fields = retriever.getFields(SubClassAllModifiersAnnotatedFields.class);
+        Field[] fields = mRetriever.getFields(SubClassAllModifiersAnnotatedFields.class);
         assertNotNull(fields);
         assertThat(fields, withNames("a", "b", "c", "d", "e", "f", "g", "h"));
     }
 
     @Test
     public void testRetrieveCachedAnnotatedFieldsInheritance() {
-        Field[] fields = retriever.getFields(SubClassAllModifiersAnnotatedFields.class);
+        Field[] fields = mRetriever.getFields(SubClassAllModifiersAnnotatedFields.class);
         assertNotNull(fields);
         assertThat(fields, withNames("a", "b", "c", "d", "e", "f", "g", "h"));
         /* When the method is called for the second time, the fields will be in cache. */
-        fields = retriever.getFields(SubClassAllModifiersAnnotatedFields.class);
+        fields = mRetriever.getFields(SubClassAllModifiersAnnotatedFields.class);
         assertNotNull(fields);
         assertThat(fields, withNames("a", "b", "c", "d", "e", "f", "g", "h"));
     }

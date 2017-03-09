@@ -15,33 +15,33 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(RobolectricTestRunner.class)
 public class LongCoderTest {
     @Rule
-    public final CoderRule<LongCoder> coderRule = new CoderRule<>(LongCoder.class);
+    public final CoderRule<LongCoder> mCoderRule = new CoderRule<>(LongCoder.class);
 
     @Test
     public void testSerializeLongPrimitive() {
         long expectedValue = 9L;
-        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.bundle.getLong(coderRule.randomKey));
+        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.bundle().getLong(mCoderRule.randomKey()));
     }
 
     @Test
     public void testSerializeLongObject() {
         Long expectedValue = 9L;
-        coderRule.coder.serialize(coderRule.bundle, coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, ((Long) coderRule.bundle.getLong(coderRule.randomKey)));
+        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, ((Long) mCoderRule.bundle().getLong(mCoderRule.randomKey())));
     }
 
     @Test
     public void testDeserializeLongPrimitive() {
         long expectedValue = 9L;
-        coderRule.bundle.putLong(coderRule.randomKey, expectedValue);
-        assertEquals((Long) expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
+        mCoderRule.bundle().putLong(mCoderRule.randomKey(), expectedValue);
+        assertEquals((Long) expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
     }
 
     @Test
     public void testDeserializeLongObject() {
         Long expectedValue = 9L;
-        coderRule.bundle.putLong(coderRule.randomKey, expectedValue);
-        assertEquals(expectedValue, coderRule.coder.deserialize(coderRule.bundle, coderRule.randomKey));
+        mCoderRule.bundle().putLong(mCoderRule.randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
     }
 }
