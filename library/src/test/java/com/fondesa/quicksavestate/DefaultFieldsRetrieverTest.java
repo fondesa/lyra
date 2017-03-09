@@ -75,6 +75,17 @@ public class DefaultFieldsRetrieverTest {
         assertThat(fields, withNames("a", "b", "c", "d", "e", "f", "g", "h"));
     }
 
+    @Test
+    public void testRetrieveCachedAnnotatedFieldsInheritance() {
+        Field[] fields = retriever.getFields(SubClassAllModifiersAnnotatedFields.class);
+        assertNotNull(fields);
+        assertThat(fields, withNames("a", "b", "c", "d", "e", "f", "g", "h"));
+        /* When the method is called for the second time, the fields will be in cache. */
+        fields = retriever.getFields(SubClassAllModifiersAnnotatedFields.class);
+        assertNotNull(fields);
+        assertThat(fields, withNames("a", "b", "c", "d", "e", "f", "g", "h"));
+    }
+
     private static class ZeroFields {
         /* empty */
     }
@@ -100,6 +111,11 @@ public class DefaultFieldsRetrieverTest {
     }
 
     private static class AllModifiersAnnotatedFields {
+        private int _a;
+        protected String _b;
+        public double _c;
+        float _d;
+
         @SaveState
         private int a;
         @SaveState
@@ -111,6 +127,11 @@ public class DefaultFieldsRetrieverTest {
     }
 
     private static class SubClassAllModifiersAnnotatedFields extends AllModifiersAnnotatedFields {
+        private int _e;
+        protected String _f;
+        public double _g;
+        float _h;
+
         @SaveState
         private int e;
         @SaveState
