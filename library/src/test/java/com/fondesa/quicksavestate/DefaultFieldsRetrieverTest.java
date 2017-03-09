@@ -34,31 +34,45 @@ public class DefaultFieldsRetrieverTest {
     }
 
     @Test
-    public void testZeroFieldsClass() {
+    public void testRetrieveZeroFields() {
         Field[] fields = retriever.getFields(ZeroFields.class);
         assertNotNull(fields);
         assertEquals(fields.length, 0);
     }
 
     @Test
-    public void testZeroAnnotatedFieldsClass() {
+    public void testRetrieveZeroAnnotatedFields() {
         Field[] fields = retriever.getFields(ZeroAnnotatedFields.class);
         assertNotNull(fields);
         assertEquals(fields.length, 0);
     }
 
     @Test
-    public void testPublicAnnotatedFieldsClass() {
+    public void testRetrievePublicAnnotatedFields() {
         Field[] fields = retriever.getFields(PublicAnnotatedFields.class);
         assertNotNull(fields);
         assertThat(fields, withNames("a", "b"));
     }
 
     @Test
-    public void testAllModifiersAnnotatedFieldsClass() {
+    public void testRetrieveMixedAnnotatedFields() {
+        Field[] fields = retriever.getFields(MixedPublicFields.class);
+        assertNotNull(fields);
+        assertThat(fields, withNames("b"));
+    }
+
+    @Test
+    public void testRetrieveAnnotatedFieldsWithAllModifiers() {
         Field[] fields = retriever.getFields(AllModifiersAnnotatedFields.class);
         assertNotNull(fields);
         assertThat(fields, withNames("a", "b", "c", "d"));
+    }
+
+    @Test
+    public void testRetrieveAnnotatedFieldsInheritance() {
+        Field[] fields = retriever.getFields(SubClassAllModifiersAnnotatedFields.class);
+        assertNotNull(fields);
+        assertThat(fields, withNames("a", "b", "c", "d", "e", "f", "g", "h"));
     }
 
     private static class ZeroFields {
@@ -79,6 +93,12 @@ public class DefaultFieldsRetrieverTest {
         public String b;
     }
 
+    private static class MixedPublicFields {
+        public int a;
+        @SaveState
+        public String b;
+    }
+
     private static class AllModifiersAnnotatedFields {
         @SaveState
         private int a;
@@ -88,5 +108,16 @@ public class DefaultFieldsRetrieverTest {
         public double c;
         @SaveState
         float d;
+    }
+
+    private static class SubClassAllModifiersAnnotatedFields extends AllModifiersAnnotatedFields {
+        @SaveState
+        private int e;
+        @SaveState
+        protected String f;
+        @SaveState
+        public double g;
+        @SaveState
+        float h;
     }
 }
