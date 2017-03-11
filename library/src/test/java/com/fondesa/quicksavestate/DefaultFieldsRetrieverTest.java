@@ -10,7 +10,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Field;
 
-import static com.fondesa.quicksavestate.FieldMatcher.withNames;
+import static com.fondesa.quicksavestate.FieldMatcher.haveNames;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -51,39 +51,39 @@ public class DefaultFieldsRetrieverTest {
     public void testRetrievePublicAnnotatedFields() {
         Field[] fields = mRetriever.getFields(PublicAnnotatedFields.class);
         assertNotNull(fields);
-        assertThat(fields, withNames("a", "b"));
+        assertThat(fields, haveNames("a", "b"));
     }
 
     @Test
     public void testRetrieveMixedAnnotatedFields() {
         Field[] fields = mRetriever.getFields(MixedPublicFields.class);
         assertNotNull(fields);
-        assertThat(fields, withNames("b"));
+        assertThat(fields, haveNames("b"));
     }
 
     @Test
     public void testRetrieveAnnotatedFieldsWithAllModifiers() {
         Field[] fields = mRetriever.getFields(AllModifiersAnnotatedFields.class);
         assertNotNull(fields);
-        assertThat(fields, withNames("a", "b", "c", "d"));
+        assertThat(fields, haveNames("a", "b", "c", "d"));
     }
 
     @Test
     public void testRetrieveAnnotatedFieldsInheritance() {
         Field[] fields = mRetriever.getFields(SubClassAllModifiersAnnotatedFields.class);
         assertNotNull(fields);
-        assertThat(fields, withNames("a", "b", "c", "d", "e", "f", "g", "h"));
+        assertThat(fields, haveNames("a", "b", "c", "d", "e", "f", "g", "h"));
     }
 
     @Test
     public void testRetrieveCachedAnnotatedFieldsInheritance() {
         Field[] fields = mRetriever.getFields(SubClassAllModifiersAnnotatedFields.class);
         assertNotNull(fields);
-        assertThat(fields, withNames("a", "b", "c", "d", "e", "f", "g", "h"));
+        assertThat(fields, haveNames("a", "b", "c", "d", "e", "f", "g", "h"));
         /* When the method is called for the second time, the fields will be in cache. */
         fields = mRetriever.getFields(SubClassAllModifiersAnnotatedFields.class);
         assertNotNull(fields);
-        assertThat(fields, withNames("a", "b", "c", "d", "e", "f", "g", "h"));
+        assertThat(fields, haveNames("a", "b", "c", "d", "e", "f", "g", "h"));
     }
 
     private static class ZeroFields {

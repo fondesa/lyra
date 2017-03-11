@@ -14,11 +14,11 @@ public class FieldMatcher extends BaseMatcher<Field[]> {
     private String[] mFieldsName;
     private boolean mMatchExactly;
 
-    public static FieldMatcher containsNames(@NonNull String... fieldsName) {
+    public static FieldMatcher containNames(@NonNull String... fieldsName) {
         return new FieldMatcher(fieldsName, false);
     }
 
-    public static FieldMatcher withNames(@NonNull String... fieldsName) {
+    public static FieldMatcher haveNames(@NonNull String... fieldsName) {
         return new FieldMatcher(fieldsName, true);
     }
 
