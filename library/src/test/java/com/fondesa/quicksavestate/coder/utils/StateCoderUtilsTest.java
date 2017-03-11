@@ -1,19 +1,23 @@
 package com.fondesa.quicksavestate.coder.utils;
 
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.util.Size;
 import android.util.SizeF;
 
 import com.fondesa.quicksavestate.coder.StateCoder;
 import com.fondesa.quicksavestate.coder.base.StringCoder;
 import com.fondesa.quicksavestate.common.TestModels;
-import com.fondesa.quicksavestate.common.TestUtils;
 import com.fondesa.quicksavestate.exception.CoderNotFoundException;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +29,7 @@ import static junit.framework.Assert.assertNotNull;
 /**
  * Created by antoniolig on 24/02/17.
  */
+@RunWith(RobolectricTestRunner.class)
 public class StateCoderUtilsTest {
     @Test
     public void testBasicSupportedTypesCompatApi() throws CoderNotFoundException {
@@ -62,16 +67,18 @@ public class StateCoderUtilsTest {
         assertCoderNotNull(String[].class);
     }
 
+    @Config(minSdk = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Test
     public void testCoderApi21NotNullAbove21() throws CoderNotFoundException {
-        TestUtils.setApiVersion(21);
         assertCoderNotNull(Size.class);
         assertCoderNotNull(SizeF.class);
     }
 
+    @Config(maxSdk = Build.VERSION_CODES.KITKAT)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Test(expected = CoderNotFoundException.class)
     public void testCoderApi21ThrowsBelowApi21() throws CoderNotFoundException {
-        TestUtils.setApiVersion(9);
         assertCoderNotNull(Size.class);
         assertCoderNotNull(SizeF.class);
     }

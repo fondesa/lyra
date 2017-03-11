@@ -1,5 +1,6 @@
 package com.fondesa.quicksavestate.common;
 
+import android.app.Activity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -144,9 +145,25 @@ public class TestModels {
         float _h;
 
         @SaveState
-        private int e;
+        private ImplementedParcelable e;
         @SaveState
-        protected String f;
+        protected ImplementedSerializable f;
+        @SaveState
+        public double g;
+        @SaveState
+        float h;
+    }
+
+    public static class SaveStateActivity extends Activity {
+        private int _e;
+        protected String _f;
+        public double _g;
+        float _h;
+
+        @SaveState
+        private ImplementedParcelable e;
+        @SaveState
+        protected ImplementedSerializable f;
         @SaveState
         public double g;
         @SaveState
