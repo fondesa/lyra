@@ -28,19 +28,12 @@ public final class QuickSaveState {
         return new QuickSaveState.Builder().with(application);
     }
 
-    public static QuickSaveState instance() {
-        if (instance == null) {
-            throw new NullPointerException("Instance not initialized. You have to build it in your application.");
-        }
-        return instance;
-    }
-
     public static void destroy() {
         instance = null;
     }
 
-    public void saveState(@NonNull Object stateHolder, @NonNull Bundle state) {
-        Field[] cachedFields = mFieldsRetriever.getFields(stateHolder.getClass());
+    public static void saveState(@NonNull Object stateHolder, @NonNull Bundle state) {
+        Field[] cachedFields = instance().mFieldsRetriever.getFields(stateHolder.getClass());
 
         //noinspection ForLoopReplaceableByForEach
         for (int i = 0; i < cachedFields.length; i++) {
@@ -61,7 +54,7 @@ public final class QuickSaveState {
             }
 
             if (fieldValue != null) {
-                final StateCoder stateCoder = mCoderRetriever.getCoder(saveState, field.getType());
+                final StateCoder stateCoder = instance().mCoderRetriever.getCoder(saveState, field.getType());
                 //noinspection unchecked
                 stateCoder.serialize(state, fieldName, fieldValue);
             }
@@ -72,11 +65,11 @@ public final class QuickSaveState {
         }
     }
 
-    public void restoreState(@NonNull Object stateHolder, @Nullable Bundle state) {
+    public static void restoreState(@NonNull Object stateHolder, @Nullable Bundle state) {
         if (state == null)
             return;
 
-        Field[] cachedFields = mFieldsRetriever.getFields(stateHolder.getClass());
+        Field[] cachedFields = instance().mFieldsRetriever.getFields(stateHolder.getClass());
         //noinspection ForLoopReplaceableByForEach
         for (int i = 0; i < cachedFields.length; i++) {
             Field field = cachedFields[i];
@@ -86,7 +79,7 @@ public final class QuickSaveState {
                 field.setAccessible(true);
             }
 
-            final StateCoder stateCoder = mCoderRetriever.getCoder(saveState, field.getType());
+            final StateCoder stateCoder = instance().mCoderRetriever.getCoder(saveState, field.getType());
 
             final String fieldName = field.getName();
             final Object fieldValue = stateCoder.deserialize(state, fieldName);
@@ -103,6 +96,17 @@ public final class QuickSaveState {
                 field.setAccessible(false);
             }
         }
+    }
+
+    public static boolean isInitialized() {
+        return instance != null;
+    }
+
+    private static QuickSaveState instance() {
+        if (!isInitialized()) {
+            throw new NullPointerException("Instance not initialized. You have to build it in your application.");
+        }
+        return instance;
     }
 
     private QuickSaveState(@NonNull CoderRetriever coderRetriever, @NonNull FieldsRetriever fieldsRetriever) {

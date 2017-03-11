@@ -8,6 +8,8 @@ import com.fondesa.quicksavestate.coder.StateCoder;
 import com.fondesa.quicksavestate.coder.utils.StateCoderUtils;
 import com.fondesa.quicksavestate.exception.CoderNotFoundException;
 
+import java.lang.reflect.Constructor;
+
 /**
  * Created by antoniolig on 01/03/17.
  */
@@ -37,7 +39,15 @@ public class DefaultCoderRetriever implements CoderRetriever {
         } else {
             /* A custom coder won't be cached to support multiple implementations for the same class. */
             try {
-                stateCoder = stateSDClass.newInstance();
+                Constructor<? extends StateCoder> constructor = stateSDClass.getConstructor();
+                boolean accessible = constructor.isAccessible();
+                if (!accessible) {
+                    constructor.setAccessible(true);
+                }
+                stateCoder = constructor.newInstance();
+                if (!accessible) {
+                    constructor.setAccessible(false);
+                }
             } catch (Exception e) {
                 throw new RuntimeException("Cannot instantiate a " + StateCoder.class.getSimpleName() +
                         " of class " + stateSDClass.getName());

@@ -2,13 +2,14 @@ package com.fondesa.quicksavestate;
 
 import android.app.Application;
 
-import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.util.ApplicationTestUtil;
 
-import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 
 /**
  * Created by antoniolig on 01/03/17.
@@ -16,21 +17,23 @@ import static junit.framework.Assert.assertNotNull;
 @RunWith(RobolectricTestRunner.class)
 public class QuickSaveStateTest {
 
-    @After
-    public void tearDown() {
-        // destroy the instance after each test
+    @BeforeClass
+    public static void initInstance() {
+        // init the instance before run all tests
+        Application app = ApplicationTestUtil.newApplication(Application.class);
+        QuickSaveState.with(app).build();
+    }
+
+    @AfterClass
+    public static void destroyInstance() {
+        // destroy the instance after all tests
         QuickSaveState.destroy();
     }
 
     @Test
     public void testInit() {
-        Application app = ApplicationTestUtil.newApplication(Application.class);
-        QuickSaveState.with(app).build();
-        assertNotNull(QuickSaveState.instance());
+        assertTrue(QuickSaveState.isInitialized());
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testCallInstanceThrowExceptionWithoutInit() {
-        QuickSaveState.instance();
-    }
+
 }

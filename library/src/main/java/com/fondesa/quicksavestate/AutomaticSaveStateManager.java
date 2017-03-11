@@ -29,7 +29,7 @@ public class AutomaticSaveStateManager implements Application.ActivityLifecycleC
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         if (mAutoSaveActivities) {
-            QuickSaveState.instance().restoreState(activity, savedInstanceState);
+            QuickSaveState.restoreState(activity, savedInstanceState);
         }
 
         if (mAutoSaveSupportFragments && activity instanceof FragmentActivity) {
@@ -53,7 +53,7 @@ public class AutomaticSaveStateManager implements Application.ActivityLifecycleC
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
         if (mAutoSaveActivities) {
-            QuickSaveState.instance().saveState(activity, outState);
+            QuickSaveState.saveState(activity, outState);
         }
     }
 
@@ -63,12 +63,12 @@ public class AutomaticSaveStateManager implements Application.ActivityLifecycleC
     private static final class FragmentAutomaticSaveState extends FragmentManager.FragmentLifecycleCallbacks {
         @Override
         public void onFragmentCreated(FragmentManager fm, android.support.v4.app.Fragment f, Bundle savedInstanceState) {
-            QuickSaveState.instance().restoreState(f, savedInstanceState);
+            QuickSaveState.restoreState(f, savedInstanceState);
         }
 
         @Override
         public void onFragmentSaveInstanceState(FragmentManager fm, android.support.v4.app.Fragment f, Bundle outState) {
-            QuickSaveState.instance().saveState(f, outState);
+            QuickSaveState.saveState(f, outState);
         }
     }
 }
