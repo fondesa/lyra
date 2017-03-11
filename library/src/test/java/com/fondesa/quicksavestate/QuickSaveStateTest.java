@@ -1,21 +1,18 @@
 package com.fondesa.quicksavestate;
 
-import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.fondesa.quicksavestate.annotation.SaveState;
 import com.fondesa.quicksavestate.coder.StateCoder;
-import com.fondesa.quicksavestate.common.TestSaveStateActivity;
+import com.fondesa.quicksavestate.common.TestModels;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.util.ActivityController;
 import org.robolectric.util.ApplicationTestUtil;
 
 import java.lang.reflect.Field;
@@ -52,56 +49,47 @@ public class QuickSaveStateTest {
     }
 
     @Test
-    public void testInit() {
+    public void testIsInitialized() {
         assertTrue(QuickSaveState.isInitialized());
     }
 
     @Test
     public void testActivitySaveState() throws Exception {
-        final Class<? extends Activity> activityClass = TestSaveStateActivity.class;
-        final Bundle outState = new Bundle();
         final DefaultFieldsRetriever retriever = new DefaultFieldsRetriever();
+        final Bundle stateBundle = new Bundle();
+        final TestModels.SubClassAllModifiersAnnotatedFields saveStateObject =
+                new TestModels.SubClassAllModifiersAnnotatedFields();
 
-        ActivityController<? extends Activity> controller = Robolectric.buildActivity(activityClass).create();
-        final Activity activity = controller.get();
-
-        Field[] fields = retriever.getFields(activityClass);
+        Field[] fields = retriever.getFields(saveStateObject.getClass());
         for (Field field : fields) {
             runWithAccessibleField(field, new FieldAccessibleRunnable() {
                 @Override
                 public void runWithField(@NonNull Field field) throws Exception {
-                    field.set(activity, mRandomizer.nextObject(field.getType()));
+                    field.set(saveStateObject, mRandomizer.nextObject(field.getType()));
                 }
             });
         }
 
-        controller.saveInstanceState(outState);
+        QuickSaveState.saveState(saveStateObject, stateBundle);
 
-        Object[] fieldValues = getValuesFromFields(activity, fields);
-        boolean valueContained = false;
-        for (Object value : fieldValues) {
-            valueContained = false;
-            for (String key : outState.keySet()) {
-                Object bundleValue = outState.get(key);
-                if (value.equals(bundleValue)) {
-                    valueContained = true;
-                    break;
-                }
-            }
-            if (!valueContained)
-                break;
+        List<Object> fieldValues = listOfValuesFromFields(saveStateObject, fields);
+        List<Object> savedValues = new ArrayList<>(fieldValues.size());
+        for (String key : stateBundle.keySet()) {
+            savedValues.add(stateBundle.get(key));
         }
-        assertTrue(valueContained);
+
+        assertThat(savedValues, containsInAnyOrder(fieldValues.toArray()));
     }
 
     @Test
-    public void testActivityRestoreState() throws Exception {
-        final Class<? extends Activity> activityClass = TestSaveStateActivity.class;
-        final Bundle savedState = new Bundle();
+    public void testRestoreState() throws Exception {
         final DefaultFieldsRetriever retriever = new DefaultFieldsRetriever();
         final DefaultCoderRetriever coderRetriever = new DefaultCoderRetriever();
+        final Bundle stateBundle = new Bundle();
+        final TestModels.SubClassAllModifiersAnnotatedFields saveStateObject =
+                new TestModels.SubClassAllModifiersAnnotatedFields();
 
-        Field[] fields = retriever.getFields(activityClass);
+        Field[] fields = retriever.getFields(saveStateObject.getClass());
         List<Object> savedValues = new ArrayList<>(fields.length);
         for (Field field : fields) {
             SaveState saveState = field.getAnnotation(SaveState.class);
@@ -110,19 +98,43 @@ public class QuickSaveStateTest {
             Object randomObj = mRandomizer.nextObject(fieldType);
             savedValues.add(randomObj);
             //noinspection unchecked
-            stateCoder.serialize(savedState, field.getName(), randomObj);
+            stateCoder.serialize(stateBundle, field.getName(), randomObj);
         }
 
-        Activity activity = Robolectric.buildActivity(activityClass)
-                .create(savedState)
-                .get();
+        QuickSaveState.restoreState(saveStateObject, stateBundle);
 
-
-        Object[] fieldValues = getValuesFromFields(activity, fields);
-        assertThat(savedValues, containsInAnyOrder(fieldValues));
+        List<Object> fieldValues = listOfValuesFromFields(saveStateObject, fields);
+        assertThat(savedValues, containsInAnyOrder(fieldValues.toArray()));
     }
 
-    private static Object[] getValuesFromFields(@NonNull final Object holder, @NonNull Field[] fields) throws Exception {
+    @Test
+    public void testSaveAndRestoreState() throws Exception {
+        final DefaultFieldsRetriever retriever = new DefaultFieldsRetriever();
+        final Bundle stateBundle = new Bundle();
+        final TestModels.SubClassAllModifiersAnnotatedFields saveStateObject =
+                new TestModels.SubClassAllModifiersAnnotatedFields();
+
+        Field[] fields = retriever.getFields(saveStateObject.getClass());
+        for (Field field : fields) {
+            runWithAccessibleField(field, new FieldAccessibleRunnable() {
+                @Override
+                public void runWithField(@NonNull Field field) throws Exception {
+                    field.set(saveStateObject, mRandomizer.nextObject(field.getType()));
+                }
+            });
+        }
+
+        List<Object> fieldSavedValues = listOfValuesFromFields(saveStateObject, fields);
+
+        QuickSaveState.saveState(saveStateObject, stateBundle);
+        QuickSaveState.restoreState(saveStateObject, stateBundle);
+
+        List<Object> fieldRestoredValues = listOfValuesFromFields(saveStateObject, fields);
+
+        assertThat(fieldRestoredValues, containsInAnyOrder(fieldSavedValues.toArray()));
+    }
+
+    private static List<Object> listOfValuesFromFields(@NonNull final Object holder, @NonNull Field[] fields) throws Exception {
         final List<Object> fieldValues = new ArrayList<>(fields.length);
         for (Field field : fields) {
             runWithAccessibleField(field, new FieldAccessibleRunnable() {
@@ -132,7 +144,7 @@ public class QuickSaveStateTest {
                 }
             });
         }
-        return fieldValues.toArray();
+        return fieldValues;
     }
 
     private static void runWithAccessibleField(@NonNull Field field, @NonNull FieldAccessibleRunnable runnable) throws Exception {

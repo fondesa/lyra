@@ -3,6 +3,8 @@ package com.fondesa.quicksavestate.common;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fondesa.quicksavestate.annotation.SaveState;
+
 import java.io.Serializable;
 
 /**
@@ -93,5 +95,61 @@ public class TestModels {
             this.secondParam = secondParam;
             this.thirdParam = thirdParam;
         }
+    }
+
+    public static class ZeroFields {
+        /* empty */
+    }
+
+    public static class ZeroAnnotatedFields {
+        private int a;
+        protected String b;
+        public double c;
+        float d;
+    }
+
+    public static class PublicAnnotatedFields {
+        @SaveState
+        public int a;
+        @SaveState
+        public String b;
+    }
+
+    public static class MixedPublicFields {
+        public int a;
+        @SaveState
+        public String b;
+    }
+
+    public static class AllModifiersAnnotatedFields {
+        private int _a;
+        protected String _b;
+        public double _c;
+        float _d;
+
+        @SaveState
+        private int a;
+        @SaveState
+        protected String b;
+        @SaveState
+        public double c;
+        @SaveState
+        float d;
+    }
+
+    public static class SubClassAllModifiersAnnotatedFields extends AllModifiersAnnotatedFields {
+        private int _e;
+        protected String _f;
+        public double _g;
+        float _h;
+
+        @SaveState
+        private int e;
+        @SaveState
+        protected String f;
+        @SaveState
+        public double g;
+        @SaveState
+        float h;
     }
 }
