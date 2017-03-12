@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.fondesa.quicksavestate.QuickSaveState;
 import com.fondesa.quicksavestate.annotation.SaveState;
 import com.fondesa.quicksavestate.sample.model.Model;
 import com.fondesa.quicksavestate.sample.model.ParcelableModel;
@@ -22,7 +23,7 @@ public class MainActivity extends BaseMainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        QuickSaveState.restoreState(this, savedInstanceState);
+        QuickSaveState.instance().restoreState(this, savedInstanceState);
 
         setContentView(R.layout.activity_main);
         mTextView = (TextView) findViewById(R.id.text_view);
@@ -50,7 +51,7 @@ public class MainActivity extends BaseMainActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        QuickSaveState.saveState(this, outState);
+        QuickSaveState.instance().saveState(this, outState);
     }
 
     private void printInfo() {

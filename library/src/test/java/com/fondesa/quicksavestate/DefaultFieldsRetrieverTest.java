@@ -2,7 +2,6 @@ package com.fondesa.quicksavestate;
 
 import com.fondesa.quicksavestate.common.TestModels;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,13 +23,8 @@ public class DefaultFieldsRetrieverTest {
     private DefaultFieldsRetriever mRetriever;
 
     @Before
-    public void initRetriever() {
+    public void setUp() {
         mRetriever = new DefaultFieldsRetriever();
-    }
-
-    @After
-    public void releaseRetriever() {
-        mRetriever = null;
     }
 
     @Test

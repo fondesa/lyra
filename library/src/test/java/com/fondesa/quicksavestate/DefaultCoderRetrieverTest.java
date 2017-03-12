@@ -8,7 +8,6 @@ import com.fondesa.quicksavestate.coder.StateCoder;
 import com.fondesa.quicksavestate.coder.utils.StateCoderUtils;
 import com.fondesa.quicksavestate.exception.CoderNotFoundException;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,13 +29,8 @@ public class DefaultCoderRetrieverTest {
     private DefaultCoderRetriever mRetriever;
 
     @Before
-    public void initRetriever() {
+    public void setUp() {
         mRetriever = new DefaultCoderRetriever();
-    }
-
-    @After
-    public void releaseRetriever() {
-        mRetriever = null;
     }
 
     @Test
