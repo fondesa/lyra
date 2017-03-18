@@ -1,6 +1,7 @@
 package com.fondesa.quicksavestate.sample;
 
 import android.app.Application;
+import android.os.Build;
 
 import com.fondesa.quicksavestate.DefaultCoderRetriever;
 import com.fondesa.quicksavestate.DefaultFieldsRetriever;
@@ -15,9 +16,13 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        QuickSaveState.with(this)
+        QuickSaveState.Builder builder = QuickSaveState.with(this)
                 .coderRetriever(new DefaultCoderRetriever())
-                .fieldsRetriever(new DefaultFieldsRetriever())
-                .build();
+                .fieldsRetriever(new DefaultFieldsRetriever());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            builder.autoSaveActivities();
+        }
+        builder.build();
     }
 }

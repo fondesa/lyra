@@ -10,7 +10,6 @@ import java.util.ArrayList;
 /**
  * Created by antoniolig on 24/02/17.
  */
-
 public class BaseMainActivity extends AppCompatActivity {
     @SaveState
     Byte mByte;

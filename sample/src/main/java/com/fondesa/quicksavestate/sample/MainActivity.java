@@ -1,7 +1,12 @@
 package com.fondesa.quicksavestate.sample;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.fondesa.quicksavestate.QuickSaveState;
@@ -23,14 +28,17 @@ public class MainActivity extends BaseMainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        QuickSaveState.instance().restoreState(this, savedInstanceState);
 
-        setContentView(R.layout.activity_main);
-        mTextView = (TextView) findViewById(R.id.text_view);
+        FrameLayout root = new FrameLayout(this);
+        int defaultPadding = getResources().getDimensionPixelSize(R.dimen.default_inner_padding);
+        root.setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding);
 
-        printInfo();
+        mTextView = new TextView(this);
+        root.addView(mTextView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        findViewById(R.id.btn_change_value).setOnClickListener(new View.OnClickListener() {
+        Button button = new Button(this);
+        button.setText(R.string.change_value);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mText = (mText == null) ? "first" : null;
@@ -46,12 +54,26 @@ public class MainActivity extends BaseMainActivity {
                 printInfo();
             }
         });
+        FrameLayout.LayoutParams buttonParams =
+                new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        buttonParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+
+        root.addView(button, buttonParams);
+        setContentView(root, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            QuickSaveState.instance().restoreState(this, savedInstanceState);
+        }
+
+        printInfo();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        QuickSaveState.instance().saveState(this, outState);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            QuickSaveState.instance().saveState(this, outState);
+        }
     }
 
     private void printInfo() {
