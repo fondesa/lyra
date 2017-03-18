@@ -7,34 +7,21 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 
 /**
  * Created by antoniolig on 01/03/17.
  */
 @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class AutomaticSaveStateManager implements Application.ActivityLifecycleCallbacks {
-    private boolean mAutoSaveActivities;
-    private boolean mAutoSaveSupportFragments;
     private Listener mListener;
 
-    public AutomaticSaveStateManager(boolean autoSaveActivities, boolean autoSaveSupportFragments, @NonNull Listener listener) {
-        mAutoSaveActivities = autoSaveActivities;
-        mAutoSaveSupportFragments = autoSaveSupportFragments;
+    public AutomaticSaveStateManager(@NonNull Listener listener) {
         mListener = listener;
     }
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        if (mAutoSaveActivities) {
-            mListener.onRestoreState(activity, savedInstanceState);
-        }
-
-        if (mAutoSaveSupportFragments && activity instanceof FragmentActivity) {
-            FragmentActivity fragmentActivity = (FragmentActivity) activity;
-            fragmentActivity.getSupportFragmentManager().registerFragmentLifecycleCallbacks(new FragmentAutomaticSaveState(), true);
-        }
+        mListener.onRestoreState(activity, savedInstanceState);
     }
 
     @Override
@@ -51,25 +38,11 @@ public class AutomaticSaveStateManager implements Application.ActivityLifecycleC
 
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-        if (mAutoSaveActivities) {
-            mListener.onSaveState(activity, outState);
-        }
+        mListener.onSaveState(activity, outState);
     }
 
     @Override
     public void onActivityDestroyed(Activity activity) { /* empty */ }
-
-    private final class FragmentAutomaticSaveState extends FragmentManager.FragmentLifecycleCallbacks {
-        @Override
-        public void onFragmentCreated(FragmentManager fm, android.support.v4.app.Fragment f, Bundle savedInstanceState) {
-            mListener.onRestoreState(f, savedInstanceState);
-        }
-
-        @Override
-        public void onFragmentSaveInstanceState(FragmentManager fm, android.support.v4.app.Fragment f, Bundle outState) {
-            mListener.onSaveState(f, outState);
-        }
-    }
 
     public interface Listener {
         void onSaveState(@NonNull Object holder, @NonNull Bundle outState);

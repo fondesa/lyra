@@ -23,7 +23,6 @@ import static org.mockito.Mockito.verify;
  * Created by antoniolig on 11/03/17.
  */
 @RunWith(RobolectricTestRunner.class)
-//@Config(sdk = 24)
 @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class AutomaticSaveStateManagerTest {
     @Mock
@@ -34,7 +33,7 @@ public class AutomaticSaveStateManagerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        mSaveStateManager = new AutomaticSaveStateManager(true, true, mListener);
+        mSaveStateManager = new AutomaticSaveStateManager(mListener);
         RuntimeEnvironment.application.registerActivityLifecycleCallbacks(mSaveStateManager);
     }
 

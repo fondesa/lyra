@@ -123,29 +123,31 @@ public class QuickSaveState {
     private QuickSaveState(@NonNull Application application,
                            @NonNull CoderRetriever coderRetriever,
                            @NonNull FieldsRetriever fieldsRetriever,
-                           boolean autoSaveActivities,
-                           boolean autoSaveSupportFragments) {
+                           boolean autoSaveActivities) {
 
         mApplication = application;
         mCoderRetriever = coderRetriever;
         mFieldsRetriever = fieldsRetriever;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
-                (autoSaveActivities || autoSaveSupportFragments)) {
+        if (autoSaveActivities) {
+            final int neededApi = Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+            if (Build.VERSION.SDK_INT >= neededApi) {
+                AutomaticSaveStateManager.Listener listener = new AutomaticSaveStateManager.Listener() {
+                    @Override
+                    public void onSaveState(@NonNull Object holder, @NonNull Bundle outState) {
+                        QuickSaveState.instance().saveState(holder, outState);
+                    }
 
-            AutomaticSaveStateManager.Listener listener = new AutomaticSaveStateManager.Listener() {
-                @Override
-                public void onSaveState(@NonNull Object holder, @NonNull Bundle outState) {
-                    QuickSaveState.instance().saveState(holder, outState);
-                }
-
-                @Override
-                public void onRestoreState(@NonNull Object holder, @Nullable Bundle savedState) {
-                    QuickSaveState.instance().restoreState(holder, savedState);
-                }
-            };
-            mAutomaticSaveStateManager = new AutomaticSaveStateManager(autoSaveActivities, autoSaveSupportFragments, listener);
-            mApplication.registerActivityLifecycleCallbacks(mAutomaticSaveStateManager);
+                    @Override
+                    public void onRestoreState(@NonNull Object holder, @Nullable Bundle savedState) {
+                        QuickSaveState.instance().restoreState(holder, savedState);
+                    }
+                };
+                mAutomaticSaveStateManager = new AutomaticSaveStateManager(listener);
+                mApplication.registerActivityLifecycleCallbacks(mAutomaticSaveStateManager);
+            } else {
+                Log.e(TAG, "State can't be automatically saved below api " + neededApi);
+            }
         }
     }
 
@@ -154,7 +156,6 @@ public class QuickSaveState {
         private CoderRetriever mCoderRetriever;
         private FieldsRetriever mFieldsRetriever;
         private boolean mAutoSaveActivities;
-        private boolean mAutoSaveSupportFragments;
 
         Builder with(@NonNull Application application) {
             mApplication = application;
@@ -177,12 +178,6 @@ public class QuickSaveState {
             return this;
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-        public Builder autoSaveSupportFragments() {
-            mAutoSaveSupportFragments = true;
-            return this;
-        }
-
         public void build() {
             if (mCoderRetriever == null) {
                 mCoderRetriever = new DefaultCoderRetriever();
@@ -199,8 +194,7 @@ public class QuickSaveState {
             instance = new QuickSaveState(mApplication,
                     mCoderRetriever,
                     mFieldsRetriever,
-                    mAutoSaveActivities,
-                    mAutoSaveSupportFragments);
+                    mAutoSaveActivities);
         }
     }
 }
