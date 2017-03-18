@@ -19,7 +19,7 @@ public class AutomaticSaveStateManager implements Application.ActivityLifecycleC
     private boolean mAutoSaveSupportFragments;
     private Listener mListener;
 
-    public AutomaticSaveStateManager(boolean autoSaveActivities, boolean autoSaveSupportFragments, Listener listener) {
+    public AutomaticSaveStateManager(boolean autoSaveActivities, boolean autoSaveSupportFragments, @NonNull Listener listener) {
         mAutoSaveActivities = autoSaveActivities;
         mAutoSaveSupportFragments = autoSaveSupportFragments;
         mListener = listener;
@@ -59,12 +59,6 @@ public class AutomaticSaveStateManager implements Application.ActivityLifecycleC
     @Override
     public void onActivityDestroyed(Activity activity) { /* empty */ }
 
-    public interface Listener {
-        void onSaveState(@NonNull Object holder, @NonNull Bundle outState);
-
-        void onRestoreState(@NonNull Object holder, @Nullable Bundle savedState);
-    }
-
     private final class FragmentAutomaticSaveState extends FragmentManager.FragmentLifecycleCallbacks {
         @Override
         public void onFragmentCreated(FragmentManager fm, android.support.v4.app.Fragment f, Bundle savedInstanceState) {
@@ -75,5 +69,11 @@ public class AutomaticSaveStateManager implements Application.ActivityLifecycleC
         public void onFragmentSaveInstanceState(FragmentManager fm, android.support.v4.app.Fragment f, Bundle outState) {
             mListener.onSaveState(f, outState);
         }
+    }
+
+    public interface Listener {
+        void onSaveState(@NonNull Object holder, @NonNull Bundle outState);
+
+        void onRestoreState(@NonNull Object holder, @Nullable Bundle savedState);
     }
 }

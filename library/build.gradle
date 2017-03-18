@@ -15,7 +15,8 @@ dependencies {
     testCompile "junit:junit:$JUNIT_VERSION"
     testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
     testCompile "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
-    testCompile "io.github.benas:random-beans:3.6.0"
+    testCompile "org.robolectric:shadows-support-v4:$ROBOLECTRIC_VERSION"
+    testCompile "io.github.benas:random-beans:$RANDOM_BEANS_VERSION"
 
     compile "com.android.support:support-annotations:$ANDROID_SUPPORT_VERSION"
     compile "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
