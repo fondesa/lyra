@@ -47,6 +47,7 @@ public class QuickSaveState {
     private static QuickSaveState instance;
 
     /**
+     *
      * @param application
      * @return
      */
