@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2017 Fondesa
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.fondesa.quicksavestate;
 
 import android.annotation.SuppressLint;
@@ -15,7 +31,9 @@ import com.fondesa.quicksavestate.coder.StateCoder;
 import java.lang.reflect.Field;
 
 /**
- * Created by antoniolig on 17/02/17.
+ * Manager to save/restore the state of an {@link Object}'s instance into/from a {@link Bundle}.
+ * This class uses the singleton pattern so you must initialize it once using the provided {@link Builder}.
+ * After, you can access to instance methods with {@link QuickSaveState#instance()}.
  */
 public class QuickSaveState {
     private static final String TAG = QuickSaveState.class.getSimpleName();
@@ -25,8 +43,13 @@ public class QuickSaveState {
     private FieldsRetriever mFieldsRetriever;
     private AutomaticSaveStateManager mAutomaticSaveStateManager;
 
+    @SuppressLint("StaticFieldLeak")
     private static QuickSaveState instance;
 
+    /**
+     * @param application
+     * @return
+     */
     public static Builder with(@NonNull Application application) {
         return new QuickSaveState.Builder().with(application);
     }

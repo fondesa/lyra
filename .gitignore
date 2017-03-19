@@ -60,5 +60,3 @@ crashlytics.keystore.properties
 crashlytics-build.properties
 
 .log
-
-app/keystore.properties
