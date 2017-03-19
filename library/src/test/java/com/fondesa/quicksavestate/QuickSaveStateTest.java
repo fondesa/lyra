@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.util.ApplicationTestUtil;
+import org.robolectric.android.ApplicationTestUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
