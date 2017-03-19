@@ -17,7 +17,9 @@
 package com.fondesa.quicksavestate;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -233,6 +235,7 @@ public class QuickSaveState {
                     }
                 };
                 mAutomaticSaveStateManager = new AutomaticSaveStateManager(listener);
+                // Register the AutomaticSaveStateManager for activities' lifecycle events.
                 mApplication.registerActivityLifecycleCallbacks(mAutomaticSaveStateManager);
             } else {
                 Log.e(TAG, "State can't be automatically saved below api " + neededApi);
@@ -240,33 +243,78 @@ public class QuickSaveState {
         }
     }
 
+    /**
+     * Builder class used to create the singleton instance of {@link QuickSaveState}.
+     * <br>
+     * To create a new instance of this {@link Builder} use {@link QuickSaveState#with(Application)}.
+     */
     public static final class Builder {
         private Application mApplication;
         private CoderRetriever mCoderRetriever;
         private FieldsRetriever mFieldsRetriever;
         private boolean mAutoSaveActivities;
 
+        Builder() {
+            // Package protected constructor to avoid the instantiation outside this package.
+        }
+
+        /**
+         * Set the {@link Application} that must be used as {@link Context} for this {@link Builder}.
+         *
+         * @param application instance of {@link Application} in which the {@link Builder} is created
+         * @return instance of the previously created {@link Builder}
+         */
         Builder with(@NonNull Application application) {
             mApplication = application;
             return this;
         }
 
+        /**
+         * Set the {@link CoderRetriever} that must be used to retrieve the coder related to a java class.
+         * <br>
+         * DEFAULT: {@link DefaultCoderRetriever}
+         *
+         * @param coderRetriever instance of {@link CoderRetriever} used to retrieve a {@link StateCoder}
+         * @return instance of the previously created {@link Builder}
+         */
         public Builder coderRetriever(@Nullable CoderRetriever coderRetriever) {
             mCoderRetriever = coderRetriever;
             return this;
         }
 
+        /**
+         * Set the {@link FieldsRetriever} that must be used to retrieve the fields declared in a java class.
+         * <br>
+         * DEFAULT: {@link DefaultFieldsRetriever}
+         *
+         * @param fieldsRetriever instance of {@link FieldsRetriever} used to retrieve the list of fields
+         * @return instance of the previously created {@link Builder}
+         */
         public Builder fieldsRetriever(@Nullable FieldsRetriever fieldsRetriever) {
             mFieldsRetriever = fieldsRetriever;
             return this;
         }
 
+        /**
+         * Allows the automatic save/restore of the state in every {@link Activity}.
+         * It can be done through {@link Application#registerActivityLifecycleCallbacks(Application.ActivityLifecycleCallbacks)}.
+         * An instance of {@link AutomaticSaveStateManager} will be attached to the {@link QuickSaveState} to manage
+         * the automatic save/restore of the state.
+         * <br>
+         * DEFAULT: false (the save/restore of the state must be called manually)
+         *
+         * @return instance of the previously created {@link Builder}
+         */
         @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
         public Builder autoSaveActivities() {
             mAutoSaveActivities = true;
             return this;
         }
 
+        /**
+         * Creates an instance of {@link QuickSaveState} with the previously specified {@link Builder}'s
+         * configurations or defaults if those are not defined.
+         */
         public void build() {
             if (mCoderRetriever == null) {
                 mCoderRetriever = new DefaultCoderRetriever();
