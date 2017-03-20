@@ -27,6 +27,7 @@ import android.util.Log;
 
 import com.fondesa.quicksavestate.annotation.SaveState;
 import com.fondesa.quicksavestate.coder.StateCoder;
+import com.fondesa.quicksavestate.exception.CoderNotFoundException;
 
 import java.lang.reflect.Field;
 
@@ -92,7 +93,12 @@ public class QuickSaveState {
             }
 
             if (fieldValue != null) {
-                final StateCoder stateCoder = instance().mCoderRetriever.getCoder(saveState, field.getType());
+                final StateCoder stateCoder;
+                try {
+                    stateCoder = instance().mCoderRetriever.getCoder(saveState, field.getType());
+                } catch (CoderNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
                 //noinspection unchecked
                 stateCoder.serialize(state, fieldName, fieldValue);
             }
@@ -117,7 +123,12 @@ public class QuickSaveState {
                 field.setAccessible(true);
             }
 
-            final StateCoder stateCoder = instance().mCoderRetriever.getCoder(saveState, field.getType());
+            final StateCoder stateCoder;
+            try {
+                stateCoder = instance().mCoderRetriever.getCoder(saveState, field.getType());
+            } catch (CoderNotFoundException e) {
+                throw new RuntimeException(e);
+            }
 
             final String fieldName = field.getName();
             final Object fieldValue = stateCoder.deserialize(state, fieldName);

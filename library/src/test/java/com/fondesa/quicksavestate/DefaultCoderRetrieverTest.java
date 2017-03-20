@@ -76,7 +76,7 @@ public class DefaultCoderRetrieverTest {
     }
 
     @Test
-    public void testRetrieveCustomCoder() {
+    public void testRetrieveCustomCoder() throws CoderNotFoundException {
         Class fieldClass = String.class;
         SaveState mockedSaveState = mock(SaveState.class);
         when(mockedSaveState.value()).thenAnswer(new Answer<Class<? extends StateCoder>>() {
