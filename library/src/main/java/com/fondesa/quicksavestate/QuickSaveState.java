@@ -328,10 +328,8 @@ public class QuickSaveState {
                 Log.w(TAG, "The instance is initialized. You are building it multiple times.");
             }
 
-            instance = new QuickSaveState(mApplication,
-                    mCoderRetriever,
-                    mFieldsRetriever,
-                    mAutoSaveActivities);
+            // Create the singleton instance.
+            instance = new QuickSaveState(mApplication, mCoderRetriever, mFieldsRetriever, mAutoSaveActivities);
         }
     }
 }
