@@ -20,8 +20,9 @@ public class DefaultCoderRetriever implements CoderRetriever {
         mCachedCoders = new ArrayMap<>();
     }
 
+    @NonNull
     @Override
-    public StateCoder getCoder(@NonNull SaveState saveState, @NonNull Class<?> annotatedFieldClass) {
+    public StateCoder getCoder(@NonNull SaveState saveState, @NonNull Class<?> annotatedFieldClass) throws CoderNotFoundException {
         StateCoder stateCoder;
 
         final Class<? extends StateCoder> stateSDClass = saveState.value();
@@ -30,12 +31,8 @@ public class DefaultCoderRetriever implements CoderRetriever {
             if (stateCoder != null)
                 return stateCoder;
 
-            try {
-                stateCoder = StateCoderUtils.getBasicCoderForClass(annotatedFieldClass);
-                mCachedCoders.put(annotatedFieldClass, stateCoder);
-            } catch (CoderNotFoundException e) {
-                throw new RuntimeException("Cannot get coder for class " + annotatedFieldClass, e);
-            }
+            stateCoder = StateCoderUtils.getBasicCoderForClass(annotatedFieldClass);
+            mCachedCoders.put(annotatedFieldClass, stateCoder);
         } else {
             /* A custom coder won't be cached to support multiple implementations for the same class. */
             try {
