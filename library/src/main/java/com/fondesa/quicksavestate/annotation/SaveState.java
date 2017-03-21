@@ -30,6 +30,13 @@ import java.lang.annotation.Target;
  * Used to annotate the fields that you want to save/restore.
  * You can pass a custom {@link StateCoder} to save/restore a field, otherwise,
  * a default {@link StateCoder} will be used.
+ * <br>
+ * The possibilities are:
+ * <ul>
+ * <li>{@code @StateCoder} -> StateCoder.class</li>
+ * <li>{@code @StateCoder(CustomCoder.class)} -> CustomCoder.class</li>
+ * <li>{@code @StateCoder(value = CustomCoder.class)} -> CustomCoder.class</li>
+ * </ul>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
