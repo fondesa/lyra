@@ -29,7 +29,7 @@ import com.fondesa.quicksavestate.exception.CoderNotFoundException;
  * The default implementation is: {@link DefaultCoderRetriever}.
  * You can implement your own {@link CoderRetriever} and set it in your singleton instance
  * with {@link QuickSaveState.Builder#coderRetriever(CoderRetriever)} (for example to
- * optimize performance or to handle the cache differently).
+ * optimize performance, to handle the cache differently, to handle the creation of coders manually).
  */
 public interface CoderRetriever {
 
