@@ -236,13 +236,13 @@ public class QuickSaveState {
                 // Set the listener to handle the save and the restore of the state.
                 AutomaticSaveStateManager.Listener listener = new AutomaticSaveStateManager.Listener() {
                     @Override
-                    public void onSaveState(@NonNull Object holder, @NonNull Bundle outState) {
-                        QuickSaveState.instance().saveState(holder, outState);
+                    public void onSaveState(@NonNull Activity activity, @NonNull Bundle outState) {
+                        QuickSaveState.instance().saveState(activity, outState);
                     }
 
                     @Override
-                    public void onRestoreState(@NonNull Object holder, @Nullable Bundle savedState) {
-                        QuickSaveState.instance().restoreState(holder, savedState);
+                    public void onRestoreState(@NonNull Activity activity, @Nullable Bundle savedState) {
+                        QuickSaveState.instance().restoreState(activity, savedState);
                     }
                 };
                 mAutomaticSaveStateManager = new AutomaticSaveStateManager(listener);
