@@ -19,11 +19,29 @@ package com.fondesa.quicksavestate.coder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.fondesa.quicksavestate.annotation.SaveState;
+
 /**
- * Created by antoniolig on 17/02/17.
+ * Interface used to specify a custom serializer/deserializer for a save state {@link Bundle}.
+ * The custom coder can be passed to the annotation with {@link SaveState#value()}.
  */
 public interface StateCoder<FieldType> {
+
+    /**
+     * Write a field's value into the saved state {@link Bundle}.
+     *
+     * @param state      {@link Bundle} used to save the state
+     * @param fieldName  name of the field
+     * @param fieldValue value of field
+     */
     void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull FieldType fieldValue);
 
+    /**
+     * Read a field's value from the saved state {@link Bundle}.
+     *
+     * @param state     {@link Bundle} used to save the state
+     * @param fieldName name of the field
+     * @return value of the field
+     */
     FieldType deserialize(@NonNull Bundle state, @NonNull String fieldName);
 }

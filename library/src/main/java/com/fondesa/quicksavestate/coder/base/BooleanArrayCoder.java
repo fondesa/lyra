@@ -19,10 +19,20 @@ package com.fondesa.quicksavestate.coder.base;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.fondesa.quicksavestate.coder.StateCoder;
+
 /**
- * Created by antoniolig on 22/02/17.
+ * Implementation of {@link StateCoder} to manage {@code boolean array} fields.
  */
 public class BooleanArrayCoder extends BaseCoder<boolean[]> {
+
+    /**
+     * Write a field's value into the saved state {@link Bundle}.
+     *
+     * @param state      {@link Bundle} used to save the state
+     * @param fieldName  name of the field
+     * @param fieldValue value of field
+     */
     @Override
     public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull boolean[] fieldValue) {
         state.putBooleanArray(fieldName, fieldValue);
