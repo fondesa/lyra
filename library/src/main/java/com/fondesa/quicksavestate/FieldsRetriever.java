@@ -18,11 +18,25 @@ package com.fondesa.quicksavestate;
 
 import android.support.annotation.NonNull;
 
+import com.fondesa.quicksavestate.annotation.SaveState;
+
 import java.lang.reflect.Field;
 
 /**
- * Created by antoniolig on 01/03/17.
+ * Interface that manages the retrieving of fields in a java class.
+ * <br>
+ * The default implementation is: {@link DefaultFieldsRetriever}.
+ * You can implement your own {@link FieldsRetriever} and set it in the singleton instance
+ * of {@link QuickSaveState} with {@link QuickSaveState.Builder#fieldsRetriever(FieldsRetriever)}
+ * (for example to optimize performance or handle the cache differently).
  */
 public interface FieldsRetriever {
+
+    /**
+     * Retrieve an array of {@link Field} from a class.
+     *
+     * @param cls java class containing the fields that will be saved
+     * @return array of {@link Field} annotated with {@link SaveState}
+     */
     Field[] getFields(@NonNull Class<?> cls);
 }

@@ -27,35 +27,56 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by antoniolig on 01/03/17.
+ * Default implementation of {@link FieldsRetriever} that handles the cache for retrieved fields.
+ * <br>
+ * The fields are retrieved from the full list of fields of the class and each superclass.
+ * In this implementation, all visibility modifiers in fields are accepted.
+ * <br>
+ * The class used as key for the cache, will be the class passed to the method {@link #getFields(Class)}.
+ * This means that referring to A, B and C as three classes with fields annotated with {@link SaveState},
+ * if A extends B and C extends B, the classes inserted in cache are A and C.
  */
 public class DefaultFieldsRetriever implements FieldsRetriever {
     private ArrayMap<Class<?>, Field[]> mCachedFields;
 
+    /**
+     * Creates a new instance of {@link DefaultFieldsRetriever} and initialize the cache map.
+     */
     public DefaultFieldsRetriever() {
         mCachedFields = new ArrayMap<>();
     }
 
+    /**
+     * Retrieve an array of {@link Field} from a class.
+     *
+     * @param cls java class containing the fields that will be saved
+     * @return array of {@link Field} annotated with {@link SaveState}
+     */
     public Field[] getFields(@NonNull Class<?> cls) {
         Field[] cachedFields = mCachedFields.get(cls);
+        // If the cache is valid, fields will be returned.
         if (cachedFields != null)
             return cachedFields;
 
         Class<?> currentClass = cls;
-        List<Field> futureCachedFields = new LinkedList<>();
+        final List<Field> futureCachedFields = new LinkedList<>();
         do {
             Field[] declaredFields = currentClass.getDeclaredFields();
             for (int i = 0; i < currentClass.getDeclaredFields().length; i++) {
-                Field field = declaredFields[i];
-                Annotation annotation = field.getAnnotation(SaveState.class);
+                final Field field = declaredFields[i];
+                // If the field isn't annotated with @SaveState, the loop will continue to the next field.
+                final Annotation annotation = field.getAnnotation(SaveState.class);
                 if (annotation == null)
                     continue;
 
                 futureCachedFields.add(field);
             }
-        } while ((currentClass = currentClass.getSuperclass()) != null);
+        } while // Loop again if there's a superclass of this class.
+                ((currentClass = currentClass.getSuperclass()) != null);
 
+        // Create the array from the list.
         cachedFields = futureCachedFields.toArray(new Field[futureCachedFields.size()]);
+        // Put the fields in cache.
         mCachedFields.put(cls, cachedFields);
         return cachedFields;
     }
