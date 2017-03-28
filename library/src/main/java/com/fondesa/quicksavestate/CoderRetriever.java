@@ -27,9 +27,9 @@ import com.fondesa.quicksavestate.exception.CoderNotFoundException;
  * Interface that manages the way in which a {@link StateCoder} is retrieved from an annotation.
  * <br>
  * The default implementation is: {@link DefaultCoderRetriever}.
- * You can implement your own {@link CoderRetriever} and set it in your singleton instance
- * with {@link QuickSaveState.Builder#coderRetriever(CoderRetriever)} (for example to
- * optimize performance, to handle the cache differently, to handle the creation of coders manually).
+ * You can implement your own {@link CoderRetriever} and set it in the singleton instance
+ * of {@link QuickSaveState} with {@link QuickSaveState.Builder#coderRetriever(CoderRetriever)}
+ * (for example to optimize performance or handle the cache differently).
  */
 public interface CoderRetriever {
 

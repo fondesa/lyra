@@ -20,10 +20,20 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.fondesa.quicksavestate.coder.StateCoder;
+
 /**
- * Created by antoniolig on 22/02/17.
+ * Implementation of {@link StateCoder} to manage {@code Parcelable} fields.
  */
 public class ParcelableCoder extends BaseCoder<Parcelable> {
+
+    /**
+     * Write a field's value into the saved state {@link Bundle}.
+     *
+     * @param state      {@link Bundle} used to save the state
+     * @param fieldName  name of the field
+     * @param fieldValue value of field
+     */
     @Override
     public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull Parcelable fieldValue) {
         state.putParcelable(fieldName, fieldValue);

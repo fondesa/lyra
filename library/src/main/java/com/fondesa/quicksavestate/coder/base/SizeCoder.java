@@ -22,11 +22,23 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.Size;
 
+import com.fondesa.quicksavestate.coder.StateCoder;
+
 /**
- * Created by antoniolig on 22/02/17.
+ * Implementation of {@link StateCoder} to manage {@code Size} fields.
+ * <br>
+ * This coder is available only on api above or equal to 21.
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class SizeCoder extends BaseCoder<Size> {
+
+    /**
+     * Write a field's value into the saved state {@link Bundle}.
+     *
+     * @param state      {@link Bundle} used to save the state
+     * @param fieldName  name of the field
+     * @param fieldValue value of field
+     */
     @Override
     public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull Size fieldValue) {
         state.putSize(fieldName, fieldValue);

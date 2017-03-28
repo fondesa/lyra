@@ -22,12 +22,21 @@ import android.support.annotation.NonNull;
 import com.fondesa.quicksavestate.coder.StateCoder;
 
 /**
- * Created by antoniolig on 22/02/17.
+ * Basic implementation of {@link StateCoder} that will deserialize the field from
+ * the {@link Bundle} and automatically cast it.
  */
 abstract class BaseCoder<FieldType> implements StateCoder<FieldType> {
+
+    /**
+     * Read a field's value from the saved state {@link Bundle}.
+     *
+     * @param state     {@link Bundle} used to save the state
+     * @param fieldName name of the field
+     * @return value of the field
+     */
     @Override
-    public FieldType deserialize(@NonNull Bundle manager, @NonNull String fieldName) {
+    public FieldType deserialize(@NonNull Bundle state, @NonNull String fieldName) {
         //noinspection unchecked
-        return (FieldType) manager.get(fieldName);
+        return (FieldType) state.get(fieldName);
     }
 }

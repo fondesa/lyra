@@ -21,10 +21,20 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.BundleCompat;
 
+import com.fondesa.quicksavestate.coder.StateCoder;
+
 /**
- * Created by antoniolig on 22/02/17.
+ * Implementation of {@link StateCoder} to manage {@code IBinder} fields.
  */
 public class IBinderCoder extends BaseCoder<IBinder> {
+
+    /**
+     * Write a field's value into the saved state {@link Bundle}.
+     *
+     * @param state      {@link Bundle} used to save the state
+     * @param fieldName  name of the field
+     * @param fieldValue value of field
+     */
     @Override
     public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull IBinder fieldValue) {
         BundleCompat.putBinder(state, fieldName, fieldValue);
