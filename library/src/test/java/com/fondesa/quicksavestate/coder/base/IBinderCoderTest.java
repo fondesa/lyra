@@ -20,7 +20,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.BundleCompat;
 
-import com.fondesa.quicksavestate.coder.CoderRule;
+import com.fondesa.quicksavestate.common.CoderRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,7 +30,7 @@ import org.robolectric.RobolectricTestRunner;
 import static junit.framework.Assert.assertEquals;
 
 /**
- * Created by antoniolig on 22/02/17.
+ * Unit test class for {@link IBinderCoder}.
  */
 @RunWith(RobolectricTestRunner.class)
 public class IBinderCoderTest {

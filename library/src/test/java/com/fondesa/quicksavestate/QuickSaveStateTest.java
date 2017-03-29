@@ -44,7 +44,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertThat;
 
 /**
- * Created by antoniolig on 01/03/17.
+ * Unit test class for {@link QuickSaveState}.
  */
 @RunWith(RobolectricTestRunner.class)
 public class QuickSaveStateTest {

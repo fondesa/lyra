@@ -21,7 +21,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Size;
 
-import com.fondesa.quicksavestate.coder.CoderRule;
+import com.fondesa.quicksavestate.common.CoderRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,7 +32,7 @@ import org.robolectric.annotation.Config;
 import static junit.framework.Assert.assertEquals;
 
 /**
- * Created by antoniolig on 22/02/17.
+ * Unit test class for {@link SizeCoder}.
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(minSdk = Build.VERSION_CODES.LOLLIPOP)

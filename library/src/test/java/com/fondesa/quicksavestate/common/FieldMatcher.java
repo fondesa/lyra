@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fondesa.quicksavestate;
+package com.fondesa.quicksavestate.common;
 
 import android.support.annotation.NonNull;
 

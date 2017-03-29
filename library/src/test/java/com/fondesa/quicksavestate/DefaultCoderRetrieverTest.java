@@ -37,7 +37,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by antoniolig on 09/03/17.
+ * Unit test class for {@link DefaultCoderRetriever}.
  */
 @RunWith(RobolectricTestRunner.class)
 public class DefaultCoderRetrieverTest {
