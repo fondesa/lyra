@@ -36,7 +36,7 @@ import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 
 /**
- * Created by antoniolig on 11/03/17.
+ * Unit test class for {@link AutomaticSaveStateManager}.
  */
 @RunWith(RobolectricTestRunner.class)
 @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)

@@ -16,7 +16,7 @@
 
 package com.fondesa.quicksavestate.coder.base;
 
-import com.fondesa.quicksavestate.coder.CoderRule;
+import com.fondesa.quicksavestate.common.CoderRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,7 +26,7 @@ import org.robolectric.RobolectricTestRunner;
 import static junit.framework.Assert.assertEquals;
 
 /**
- * Created by antoniolig on 22/02/17.
+ * Unit test class for {@link BooleanCoder}.
  */
 @RunWith(RobolectricTestRunner.class)
 public class BooleanCoderTest {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fondesa.quicksavestate;
+package com.fondesa.quicksavestate.common;
 
 import android.support.annotation.NonNull;
 
@@ -24,16 +24,30 @@ import org.hamcrest.Description;
 import java.lang.reflect.Field;
 
 /**
- * Created by antoniolig on 05/03/17.
+ * Custom matcher to match a group of {@link Field} with their names.
  */
 public class FieldMatcher extends BaseMatcher<Field[]> {
     private String[] mFieldsName;
     private boolean mMatchExactly;
 
+    /**
+     * Creates a new instance of {@link FieldMatcher} to check if each name passed as parameter
+     * matches at least one {@link Field}.
+     *
+     * @param fieldsName varargs of java fields
+     * @return a new instance of {@link FieldMatcher}
+     */
     public static FieldMatcher containNames(@NonNull String... fieldsName) {
         return new FieldMatcher(fieldsName, false);
     }
 
+    /**
+     * Creates a new instance of {@link FieldMatcher} to check if all compared fields have
+     * names equals to those passed as parameter.
+     *
+     * @param fieldsName varargs of java fields
+     * @return a new instance of {@link FieldMatcher}
+     */
     public static FieldMatcher haveNames(@NonNull String... fieldsName) {
         return new FieldMatcher(fieldsName, true);
     }

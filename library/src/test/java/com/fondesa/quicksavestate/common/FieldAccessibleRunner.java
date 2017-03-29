@@ -21,19 +21,35 @@ import android.support.annotation.NonNull;
 import java.lang.reflect.Field;
 
 /**
- * Created by antoniolig on 11/03/17.
+ * Abstract class used to run a code block when a {@link Field} is accessible.
+ * If a {@link Field} isn't accessible, it will be modified in accessible and it will
+ * return with its original visibility modifier after the execution of the method {@link #runWithField(Field)}.
  */
 public abstract class FieldAccessibleRunner {
+
+    /**
+     * Creates a new instance of {@link FieldAccessibleRunner} for a given {@link Field}.
+     *
+     * @param field instance of {@link Field} that must be modified in accessible
+     * @throws Exception if the {@link Field} can't be modified in accessible
+     */
     public FieldAccessibleRunner(@NonNull Field field) throws Exception {
         boolean accessible = field.isAccessible();
         if (!accessible) {
             field.setAccessible(true);
         }
+        // Run the code block with an accessible field.
         runWithField(field);
         if (!accessible) {
             field.setAccessible(false);
         }
     }
 
+    /**
+     * Run a block of code with an accessible {@link Field}.
+     *
+     * @param field the accessible {@link Field} instance
+     * @throws Exception if you want to block the test method's execution
+     */
     protected abstract void runWithField(@NonNull Field field) throws Exception;
 }

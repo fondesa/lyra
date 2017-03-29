@@ -43,7 +43,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 /**
- * Created by antoniolig on 24/02/17.
+ * Unit test class for {@link StateCoderUtils}.
  */
 @RunWith(RobolectricTestRunner.class)
 public class StateCoderUtilsTest {

@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-package com.fondesa.quicksavestate.coder;
+package com.fondesa.quicksavestate.common;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+
+import com.fondesa.quicksavestate.coder.StateCoder;
 
 import org.junit.rules.ExternalResource;
 
 import java.util.UUID;
 
 /**
- * Created by antoniolig on 24/02/17.
+ * Rule used to initialize a {@link StateCoder} before a test method.
+ * This coder can be used to serialize/deserialize a value into/from a {@link Bundle}.
  */
 public class CoderRule<Coder> extends ExternalResource {
     private Coder mCoder;
@@ -33,8 +36,16 @@ public class CoderRule<Coder> extends ExternalResource {
     private final Class<? extends Coder> mCoderClass;
     private final String mRandomKey;
 
+    /**
+     * Creates an instance of {@link CoderRule} from a coder class.
+     * The initialization will be done through reflection so a provided empty constructor
+     * in the {@link StateCoder} is needed.
+     *
+     * @param coderClass coder to initialize
+     */
     public CoderRule(@NonNull Class<? extends Coder> coderClass) {
         mCoderClass = coderClass;
+        // Random key using UUID.
         mRandomKey = UUID.randomUUID().toString();
     }
 
@@ -60,14 +71,23 @@ public class CoderRule<Coder> extends ExternalResource {
         return coder;
     }
 
+    /**
+     * @return {@link Bundle} in/from which a value will be serialized/deserialized
+     */
     public Bundle bundle() {
         return mBundle;
     }
 
+    /**
+     * @return instance of {@link StateCoder} created before the test method
+     */
     public Coder coder() {
         return mCoder;
     }
 
+    /**
+     * @return key that can be used to insert/retrieve a value into/from the {@link Bundle}
+     */
     public String randomKey() {
         return mRandomKey;
     }

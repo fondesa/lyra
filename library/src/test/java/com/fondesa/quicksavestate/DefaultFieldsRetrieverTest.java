@@ -25,13 +25,13 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Field;
 
-import static com.fondesa.quicksavestate.FieldMatcher.haveNames;
+import static com.fondesa.quicksavestate.common.FieldMatcher.haveNames;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 /**
- * Created by antoniolig on 05/03/17.
+ * Unit test class for {@link DefaultFieldsRetriever}.
  */
 @RunWith(RobolectricTestRunner.class)
 public class DefaultFieldsRetrieverTest {
