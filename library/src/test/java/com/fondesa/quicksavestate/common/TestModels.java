@@ -25,9 +25,8 @@ import com.fondesa.quicksavestate.annotation.SaveState;
 import java.io.Serializable;
 
 /**
- * Created by antoniolig on 01/03/17.
+ * Wrapper class of generic models that could be used in test classes.
  */
-
 public class TestModels {
     private TestModels() {
         // private empty constructor to avoid instantiation
