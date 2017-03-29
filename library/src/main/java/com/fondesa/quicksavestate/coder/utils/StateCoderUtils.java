@@ -20,7 +20,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Size;
 import android.util.SizeF;
 
@@ -56,15 +55,26 @@ import com.fondesa.quicksavestate.exception.CoderNotFoundException;
 import java.io.Serializable;
 
 /**
- * Created by antoniolig on 22/02/17.
+ * Utilities class to get a {@link StateCoder} from a class.
+ * <br>
+ * Only default coders are used in this class.
  */
-
 public final class StateCoderUtils {
 
     private StateCoderUtils() {
         // empty private constructor to avoid instantiation
     }
 
+    /**
+     * Get the default {@link StateCoder} from a class.
+     * If the class is equal to the coder class or the coder class extends/implements the class
+     * passed as parameter, the class is supported.
+     * In the other cases, you have to implement your own {@link StateCoder}.
+     *
+     * @param cls class that can be serialized/deserialized with a {@link StateCoder}
+     * @return coder related to the class passed as parameter
+     * @throws CoderNotFoundException if the coder wasn't found
+     */
     @NonNull
     public static StateCoder getBasicCoderForClass(@NonNull Class<?> cls) throws CoderNotFoundException {
         if (boolean.class == cls || Boolean.class == cls)
@@ -140,26 +150,25 @@ public final class StateCoderUtils {
             return new StringArrayCoder();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (Size.class == cls) {
+            if (Size.class == cls)
                 return new SizeCoder();
-            }
 
-            if (SizeF.class == cls) {
+            if (SizeF.class == cls)
                 return new SizeFCoder();
-            }
         }
 
-        StateCoder inheritedCoder = getBasicCoderForInheritedClass(cls);
-        if (inheritedCoder != null)
-            return inheritedCoder;
-
-        throw new CoderNotFoundException("You have to specify a custom " + StateCoder.class.getName() +
-                " for an object of type " + cls.getName());
+        return getBasicCoderForInheritedClass(cls);
     }
 
-
-    @Nullable
-    private static StateCoder getBasicCoderForInheritedClass(@NonNull Class<?> cls) {
+    /**
+     * Get the {@link StateCoder} if the class passed as parameter is a subclass of the supported ones.
+     *
+     * @param cls class that can be serialized/deserialized with a {@link StateCoder}
+     * @return coder related to the class passed as parameter
+     * @throws CoderNotFoundException if the coder wasn't found
+     */
+    @NonNull
+    private static StateCoder getBasicCoderForInheritedClass(@NonNull Class<?> cls) throws CoderNotFoundException {
         if (CharSequence.class.isAssignableFrom(cls))
             return new CharSequenceCoder();
 
@@ -178,6 +187,7 @@ public final class StateCoderUtils {
         if (Serializable.class.isAssignableFrom(cls))
             return new SerializableCoder();
 
-        return null;
+        throw new CoderNotFoundException("You have to specify a custom " + StateCoder.class.getName() +
+                " for an object of type " + cls.getName());
     }
 }
