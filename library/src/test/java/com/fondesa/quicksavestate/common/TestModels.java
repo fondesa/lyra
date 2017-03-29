@@ -16,6 +16,7 @@
 
 package com.fondesa.quicksavestate.common;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -169,6 +170,7 @@ public class TestModels {
         float h;
     }
 
+    @SuppressLint("Registered")
     public static class SaveStateActivity extends Activity {
         private int _e;
         protected String _f;
