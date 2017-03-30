@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fondesa.quicksavestate;
+package com.fondesa.quicksavestate.field;
 
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;

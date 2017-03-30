@@ -3,8 +3,8 @@ package com.fondesa.quicksavestate.sample;
 import android.app.Application;
 import android.os.Build;
 
-import com.fondesa.quicksavestate.DefaultCoderRetriever;
-import com.fondesa.quicksavestate.DefaultFieldsRetriever;
+import com.fondesa.quicksavestate.coder.DefaultCoderRetriever;
+import com.fondesa.quicksavestate.field.DefaultFieldsRetriever;
 import com.fondesa.quicksavestate.QuickSaveState;
 
 /**

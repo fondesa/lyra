@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package com.fondesa.quicksavestate;
+package com.fondesa.quicksavestate.coder;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.fondesa.quicksavestate.annotation.SaveState;
-import com.fondesa.quicksavestate.coder.StateCoder;
 import com.fondesa.quicksavestate.coder.utils.StateCoderUtils;
 import com.fondesa.quicksavestate.exception.CoderNotFoundException;
+
+import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +32,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
 
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -65,7 +65,7 @@ public class DefaultCoderRetrieverTest {
         assertNotNull(retrieverCoder);
 
         StateCoder basicCoder = StateCoderUtils.getBasicCoderForClass(fieldClass);
-        assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
+        Assert.assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
     }
 
     @Test
@@ -84,11 +84,11 @@ public class DefaultCoderRetrieverTest {
         assertNotNull(retrieverCoder);
 
         StateCoder basicCoder = StateCoderUtils.getBasicCoderForClass(fieldClass);
-        assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
+        Assert.assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
 
         retrieverCoder = mRetriever.getCoder(mockedSaveState, fieldClass);
         assertNotNull(retrieverCoder);
-        assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
+        Assert.assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class DefaultCoderRetrieverTest {
         });
         StateCoder retrieverCoder = mRetriever.getCoder(mockedSaveState, fieldClass);
         assertNotNull(retrieverCoder);
-        assertEquals(retrieverCoder.getClass(), CustomStateCoder.class);
+        Assert.assertEquals(retrieverCoder.getClass(), CustomStateCoder.class);
     }
 
     public static class CustomStateCoder implements StateCoder<String> {

@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package com.fondesa.quicksavestate;
+package com.fondesa.quicksavestate.field;
 
 import android.support.annotation.NonNull;
 
+import com.fondesa.quicksavestate.QuickSaveState;
 import com.fondesa.quicksavestate.annotation.SaveState;
 
 import java.lang.reflect.Field;

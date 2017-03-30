@@ -1,1 +1,4 @@
-include ':library', ':sample'
+//include ':library'
+include ':library:core'
+include ':library:coder-gson'
+//include ':sample'

@@ -21,9 +21,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.fondesa.quicksavestate.annotation.SaveState;
+import com.fondesa.quicksavestate.coder.DefaultCoderRetriever;
 import com.fondesa.quicksavestate.coder.StateCoder;
 import com.fondesa.quicksavestate.common.FieldAccessibleRunner;
 import com.fondesa.quicksavestate.common.TestModels;
+import com.fondesa.quicksavestate.field.DefaultFieldsRetriever;
 
 import org.junit.After;
 import org.junit.Before;

@@ -28,8 +28,12 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.fondesa.quicksavestate.annotation.SaveState;
+import com.fondesa.quicksavestate.coder.CoderRetriever;
+import com.fondesa.quicksavestate.coder.DefaultCoderRetriever;
 import com.fondesa.quicksavestate.coder.StateCoder;
 import com.fondesa.quicksavestate.exception.CoderNotFoundException;
+import com.fondesa.quicksavestate.field.DefaultFieldsRetriever;
+import com.fondesa.quicksavestate.field.FieldsRetriever;
 
 import java.lang.reflect.Field;
 
