@@ -1,1 +1,3 @@
-include ':library', ':sample'
+include ':ouroboros'
+include ':ouroboros-coder-gson'
+include ':sample'
