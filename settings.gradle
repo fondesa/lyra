@@ -1,4 +1,3 @@
-//include ':library'
-include ':library:core'
-include ':library:coder-gson'
-//include ':sample'
+include ':quick-save-state-core'
+include ':quick-save-state-gson'
+include ':sample'

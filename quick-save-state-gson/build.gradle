@@ -17,5 +17,5 @@ dependencies {
     testCompile "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
     testCompile "io.github.benas:random-beans:$RANDOM_BEANS_VERSION"
 
-    compile project(':library:core')
+    compile project(':quick-save-state-core')
 }

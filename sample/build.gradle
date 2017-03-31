@@ -13,5 +13,6 @@ android {
 
 dependencies {
     compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
-    compile project(":library:core")
+    compile project(':quick-save-state-core')
+    compile project(':quick-save-state-gson')
 }
