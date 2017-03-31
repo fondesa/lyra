@@ -1,3 +1,3 @@
-include ':quick-save-state-core'
-include ':quick-save-state-gson'
+include ':ouroboros'
+include ':ouroboros-coder-gson'
 include ':sample'
