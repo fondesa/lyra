@@ -17,5 +17,11 @@ dependencies {
     testCompile "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
     testCompile "io.github.benas:random-beans:$RANDOM_BEANS_VERSION"
 
+    compile "com.google.code.gson:gson:$GSON_VERSION"
+
+//    compile "com.github.fondesa:ouroboros:$BINTRAY_LIB_VERSION"
     compile project(':ouroboros')
 }
+
+apply from: "${rootDir}/gradle/scripts/pom_generator.gradle"
+apply from: "${rootDir}/gradle/scripts/bintray_uploader.gradle"
