@@ -33,9 +33,9 @@ import java.lang.annotation.Target;
  * <br>
  * The possibilities are:
  * <ul>
- * <li>{@code @StateCoder} -> StateCoder.class</li>
- * <li>{@code @StateCoder(CustomCoder.class)} -> CustomCoder.class</li>
- * <li>{@code @StateCoder(value = CustomCoder.class)} -> CustomCoder.class</li>
+ * <li>{@code @StateCoder}: StateCoder.class</li>
+ * <li>{@code @StateCoder(CustomCoder.class)}: CustomCoder.class</li>
+ * <li>{@code @StateCoder(value = CustomCoder.class)}: CustomCoder.class</li>
  * </ul>
  */
 @Retention(RetentionPolicy.RUNTIME)

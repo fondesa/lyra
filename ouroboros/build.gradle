@@ -20,3 +20,6 @@ dependencies {
     compile "com.android.support:support-annotations:$ANDROID_SUPPORT_VERSION"
     compile "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
 }
+
+apply from: "${rootDir}/gradle/scripts/pom_generator.gradle"
+apply from: "${rootDir}/gradle/scripts/bintray_uploader.gradle"
