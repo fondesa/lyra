@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.fondesa.ouroboros.Ouroboros;
 import com.fondesa.ouroboros.annotation.SaveState;
+import com.fondesa.ouroboros.coder.gson.base.DefaultGsonCoder;
 import com.fondesa.ouroboros.sample.model.Model;
 import com.fondesa.ouroboros.sample.model.ParcelableModel;
 
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 public class MainActivity extends BaseMainActivity {
     private TextView mTextView;
 
-    @SaveState
+    @SaveState(DefaultGsonCoder.class)
     private String mText;
 
     @SaveState

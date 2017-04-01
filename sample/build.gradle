@@ -9,15 +9,20 @@ android {
         minSdkVersion Integer.parseInt(ANDROID_MIN_SDK_VERSION)
         targetSdkVersion Integer.parseInt(ANDROID_TARGET_SDK_VERSION)
     }
+
+    productFlavors {
+        local
+        maven
+    }
 }
 
 dependencies {
     compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
     compile "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
 
-//    compile project(':ouroboros')
-//    compile project(':ouroboros-coder-gson')
-//
-    compile 'com.github.fondesa:ouroboros:0.0.1-a2'
-    compile 'com.github.fondesa:ouroboros-coder-gson:0.0.1-a2'
+    localCompile project(':ouroboros')
+    localCompile project(':ouroboros-coder-gson')
+
+    mavenCompile 'com.github.fondesa:ouroboros:0.0.1-a2'
+    mavenCompile 'com.github.fondesa:ouroboros-coder-gson:0.0.1-a2'
 }
