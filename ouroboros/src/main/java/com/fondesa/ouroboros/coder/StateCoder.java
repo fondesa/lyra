@@ -24,6 +24,8 @@ import com.fondesa.ouroboros.annotation.SaveState;
 /**
  * Interface used to specify a custom serializer/deserializer for a save state {@link Bundle}.
  * The custom coder can be passed to the annotation with {@link SaveState#value()}.
+ *
+ * @param <FieldType> type of the value that will be serialized/deserialized
  */
 public interface StateCoder<FieldType> {
 

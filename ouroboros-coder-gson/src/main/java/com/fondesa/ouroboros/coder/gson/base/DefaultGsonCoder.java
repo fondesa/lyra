@@ -21,13 +21,22 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 
+import java.lang.reflect.Field;
+
 /**
- * Created by antoniolig on 01/04/17.
+ * Default implementation of {@link GsonCoder} to serialize every object with {@link Gson}.
+ * Considering that {@link Gson} needs a class for the deserialize, the class of the {@link Field}
+ * is passed in the {@link Bundle}.
  */
 public class DefaultGsonCoder extends GsonCoder<Object> {
     private final static String CLASS_KEY = "c";
     private final static String VALUE_KEY = "v";
 
+    /**
+     * Creates a new instance of {@link DefaultGsonCoder} with a given {@link Gson} instance.
+     *
+     * @param gson instance of {@link Gson} used to serialize/deserialize a field value
+     */
     public DefaultGsonCoder(@NonNull Gson gson) {
         super(gson);
     }

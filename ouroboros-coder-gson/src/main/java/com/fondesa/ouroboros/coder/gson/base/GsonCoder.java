@@ -21,13 +21,29 @@ import android.support.annotation.NonNull;
 import com.fondesa.ouroboros.coder.StateCoder;
 import com.google.gson.Gson;
 
+/**
+ * Basic class to implement a {@link Gson} coder that adds a {@link Gson} instance to
+ * serialize/deserialize a field value.
+ *
+ * @param <ValueType> type of the object serialized/deserialized by {@link Gson}
+ */
 public abstract class GsonCoder<ValueType> implements StateCoder<ValueType> {
     private Gson mGson;
 
+    /**
+     * Creates a new instance of {@link GsonCoder} with a given {@link Gson} instance.
+     *
+     * @param gson instance of {@link Gson} used to serialize/deserialize a field value
+     */
     public GsonCoder(@NonNull Gson gson) {
         mGson = gson;
     }
 
+    /**
+     * Getter for {@link Gson} instance to access it in a {@link GsonCoder} subclass.
+     *
+     * @return the {@link Gson} instance passed in the constructor
+     */
     protected Gson gson() {
         return mGson;
     }

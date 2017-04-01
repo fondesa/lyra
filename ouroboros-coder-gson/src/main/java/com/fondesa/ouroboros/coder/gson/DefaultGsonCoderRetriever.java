@@ -18,31 +18,37 @@ package com.fondesa.ouroboros.coder.gson;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.util.ArrayMap;
 
 import com.fondesa.ouroboros.annotation.SaveState;
-import com.fondesa.ouroboros.coder.CoderRetriever;
+import com.fondesa.ouroboros.coder.DefaultCoderRetriever;
 import com.fondesa.ouroboros.coder.StateCoder;
 import com.fondesa.ouroboros.coder.gson.base.GsonCoder;
-import com.fondesa.ouroboros.coder.utils.StateCoderUtils;
 import com.fondesa.ouroboros.exception.CoderNotFoundException;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Constructor;
 
 /**
- * Created by antoniolig on 01/04/17.
+ * Default implementation to retrieve a {@link GsonCoder}.
+ * This implementation is based on {@link DefaultCoderRetriever} adding {@link Gson} capabilities.
  */
-public class GsonCoderRetriever implements CoderRetriever {
-    private ArrayMap<Class<?>, StateCoder<?>> mCachedCoders;
+public class DefaultGsonCoderRetriever extends DefaultCoderRetriever {
     private Gson mGson;
 
-    public GsonCoderRetriever() {
+    /**
+     * Creates a new instance of {@link DefaultGsonCoderRetriever} using a base {@link Gson} instance.
+     */
+    public DefaultGsonCoderRetriever() {
         this(new Gson());
     }
 
-    public GsonCoderRetriever(@NonNull Gson gson) {
-        mCachedCoders = new ArrayMap<>();
+    /**
+     * Creates a new instance of {@link DefaultGsonCoderRetriever} with a given {@link Gson} instance.
+     * This constructor is useful if you want to pass a custom instance with adapters or serializers.
+     *
+     * @param gson instance of {@link Gson} that will be used in the serialization/deserialization process
+     */
+    public DefaultGsonCoderRetriever(@NonNull Gson gson) {
         mGson = gson;
     }
 
@@ -60,44 +66,27 @@ public class GsonCoderRetriever implements CoderRetriever {
         StateCoder stateCoder;
         // Get the coder class from the annotation.
         final Class<? extends StateCoder> stateSDClass = saveState.value();
-        if (stateSDClass == StateCoder.class) {
-            // Get the coder from cache, if present.
-            stateCoder = mCachedCoders.get(annotatedFieldClass);
-            if (stateCoder != null)
-                return stateCoder;
-
-            // Get the coder if it's supported by default or throw a new CoderNotFoundException.
-            stateCoder = StateCoderUtils.getBasicCoderForClass(annotatedFieldClass);
-            // Put the coder in cache.
-            mCachedCoders.put(annotatedFieldClass, stateCoder);
-        } else {
-            boolean isGsonCoder = GsonCoder.class.isAssignableFrom(stateSDClass);
-            // A custom coder won't be cached to support multiple implementations for the same class.
+        if (GsonCoder.class.isAssignableFrom(stateSDClass)) {
             try {
                 Constructor<? extends StateCoder> constructor;
-                if (isGsonCoder) {
-                    constructor = stateSDClass.getConstructor(Gson.class);
-                } else {
-                    constructor = stateSDClass.getConstructor();
-                }
+                // The constructor must have one argument of Gson type.
+                constructor = stateSDClass.getConstructor(Gson.class);
                 boolean accessible = constructor.isAccessible();
                 // If the constructor can't be accessed, it will be modified in accessible and will return inaccessible after.
                 if (!accessible) {
                     constructor.setAccessible(true);
                 }
                 // Creates the instance.
-                if (isGsonCoder) {
-                    stateCoder = constructor.newInstance(mGson);
-                } else {
-                    stateCoder = constructor.newInstance();
-                }
+                stateCoder = constructor.newInstance(mGson);
                 if (!accessible) {
                     constructor.setAccessible(false);
                 }
             } catch (Exception e) {
-                throw new RuntimeException("Cannot instantiate a " + StateCoder.class.getSimpleName() +
-                        " of class " + stateSDClass.getName());
+                throw new RuntimeException("You must provide an instance of " + GsonCoder.class.getName());
             }
+        } else {
+            // Use default implementation.
+            stateCoder = super.getCoder(saveState, annotatedFieldClass);
         }
         return stateCoder;
     }
