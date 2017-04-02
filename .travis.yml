@@ -20,6 +20,7 @@ branches:
     - master
 
 script:
+  - ./gradlew :ouroboros-shared-test:build --continue --stacktrace
   - ./gradlew :ouroboros:build --continue --stacktrace
   - ./gradlew :ouroboros-coder-gson:build --continue --stacktrace
   - ./gradlew :sample:assembleLocal --continue --stacktrace

@@ -9,6 +9,10 @@ android {
         targetSdkVersion Integer.parseInt(ANDROID_TARGET_SDK_VERSION)
         return true
     }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
 }
 
 dependencies {

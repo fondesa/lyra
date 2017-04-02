@@ -15,7 +15,6 @@ dependencies {
     testCompile project(':ouroboros-shared-test')
 
     compile project(':ouroboros')
-//    compile "com.github.fondesa:ouroboros:$BINTRAY_LIB_VERSION"
 
     compile "com.google.code.gson:gson:$GSON_VERSION"
 }
