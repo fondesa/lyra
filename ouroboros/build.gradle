@@ -12,14 +12,10 @@ android {
 }
 
 dependencies {
-    testCompile "junit:junit:$JUNIT_VERSION"
-    testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
-    testCompile "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
-    testCompile "io.github.benas:random-beans:$RANDOM_BEANS_VERSION"
+    testCompile project(':ouroboros-shared-test')
 
     compile "com.android.support:support-annotations:$ANDROID_SUPPORT_VERSION"
     compile "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
 }
 
-apply from: "${rootDir}/gradle/scripts/pom_generator.gradle"
-apply from: "${rootDir}/gradle/scripts/bintray_uploader.gradle"
+apply from: "${rootDir}/gradle/scripts/bintray-deployer.gradle"

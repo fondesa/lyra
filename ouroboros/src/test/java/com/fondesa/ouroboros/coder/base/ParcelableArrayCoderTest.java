@@ -18,10 +18,9 @@ package com.fondesa.ouroboros.coder.base;
 
 import android.os.Parcelable;
 
-import com.fondesa.ouroboros.common.CoderRule;
 import com.fondesa.ouroboros.common.TestModels;
+import com.fondesa.ouroboros.sharedtest.BundleTestCase;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -34,22 +33,21 @@ import static junit.framework.Assert.assertEquals;
  * Unit test class for {@link ParcelableArrayCoder}.
  */
 @RunWith(RobolectricTestRunner.class)
-public class ParcelableArrayCoderTest {
-    @Rule
-    public final CoderRule<ParcelableArrayCoder> mCoderRule = new CoderRule<>(ParcelableArrayCoder.class);
+public class ParcelableArrayCoderTest extends BundleTestCase {
+    private ParcelableArrayCoder mCoder = new ParcelableArrayCoder();
 
     @Test
     public void testSerializeParcelableArray() {
         Parcelable[] expected = generateArrayAndFill();
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expected);
-        assertEquals(expected, mCoderRule.bundle().getParcelableArray(mCoderRule.randomKey()));
+        mCoder.serialize(bundle(), randomKey(), expected);
+        assertEquals(expected, bundle().getParcelableArray(randomKey()));
     }
 
     @Test
     public void testDeserializeParcelableArray() {
         Parcelable[] expected = generateArrayAndFill();
-        mCoderRule.bundle().putParcelableArray(mCoderRule.randomKey(), expected);
-        assertEquals(expected, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
+        bundle().putParcelableArray(randomKey(), expected);
+        assertEquals(expected, mCoder.deserialize(bundle(), randomKey()));
     }
 
     private Parcelable[] generateArrayAndFill() {

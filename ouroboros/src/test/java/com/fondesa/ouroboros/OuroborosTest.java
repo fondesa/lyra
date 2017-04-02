@@ -23,9 +23,9 @@ import android.support.annotation.NonNull;
 import com.fondesa.ouroboros.annotation.SaveState;
 import com.fondesa.ouroboros.coder.DefaultCoderRetriever;
 import com.fondesa.ouroboros.coder.StateCoder;
-import com.fondesa.ouroboros.common.FieldAccessibleRunner;
 import com.fondesa.ouroboros.common.TestModels;
 import com.fondesa.ouroboros.field.DefaultFieldsRetriever;
+import com.fondesa.ouroboros.sharedtest.FieldAccessibleRunner;
 
 import org.junit.After;
 import org.junit.Before;

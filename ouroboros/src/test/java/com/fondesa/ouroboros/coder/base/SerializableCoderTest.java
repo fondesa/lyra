@@ -16,10 +16,9 @@
 
 package com.fondesa.ouroboros.coder.base;
 
-import com.fondesa.ouroboros.common.CoderRule;
 import com.fondesa.ouroboros.common.TestModels;
+import com.fondesa.ouroboros.sharedtest.BundleTestCase;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -32,21 +31,20 @@ import static junit.framework.Assert.assertEquals;
  * Unit test class for {@link SerializableCoder}.
  */
 @RunWith(RobolectricTestRunner.class)
-public class SerializableCoderTest {
-    @Rule
-    public final CoderRule<SerializableCoder> mCoderRule = new CoderRule<>(SerializableCoder.class);
+public class SerializableCoderTest extends BundleTestCase {
+    private SerializableCoder mCoder = new SerializableCoder();
 
     @Test
     public void testSerializeSerializable() {
         Serializable expectedValue = TestModels.ImplementedSerializable.getDefault();
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.bundle().getSerializable(mCoderRule.randomKey()));
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, bundle().getSerializable(randomKey()));
     }
 
     @Test
     public void testDeserializeSerializable() {
         Serializable expectedValue = TestModels.ImplementedSerializable.getDefault();
-        mCoderRule.bundle().putSerializable(mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
+        bundle().putSerializable(randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoder.deserialize(bundle(), randomKey()));
     }
 }

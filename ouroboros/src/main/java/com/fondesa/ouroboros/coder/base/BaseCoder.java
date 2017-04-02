@@ -24,6 +24,8 @@ import com.fondesa.ouroboros.coder.StateCoder;
 /**
  * Basic implementation of {@link StateCoder} that will deserialize the field from
  * the {@link Bundle} and automatically cast it.
+ *
+ * @param <FieldType> type of the value that will be serialized/deserialized
  */
 abstract class BaseCoder<FieldType> implements StateCoder<FieldType> {
 

@@ -16,9 +16,8 @@
 
 package com.fondesa.ouroboros.coder.base;
 
-import com.fondesa.ouroboros.common.CoderRule;
+import com.fondesa.ouroboros.sharedtest.BundleTestCase;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -31,22 +30,21 @@ import static junit.framework.Assert.assertEquals;
  * Unit test class for {@link CharSequenceArrayCoder}.
  */
 @RunWith(RobolectricTestRunner.class)
-public class CharSequenceArrayCoderTest {
-    @Rule
-    public final CoderRule<CharSequenceArrayCoder> mCoderRule = new CoderRule<>(CharSequenceArrayCoder.class);
+public class CharSequenceArrayCoderTest extends BundleTestCase {
+    private CharSequenceArrayCoder mCoder = new CharSequenceArrayCoder();
 
     @Test
     public void testSerializeCharSequenceArray() {
         CharSequence[] expected = generateArrayAndFill();
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expected);
-        assertEquals(expected, mCoderRule.bundle().getCharSequenceArray(mCoderRule.randomKey()));
+        mCoder.serialize(bundle(), randomKey(), expected);
+        assertEquals(expected, bundle().getCharSequenceArray(randomKey()));
     }
 
     @Test
     public void testDeserializeCharSequenceArray() {
         CharSequence[] expected = generateArrayAndFill();
-        mCoderRule.bundle().putCharSequenceArray(mCoderRule.randomKey(), expected);
-        assertEquals(expected, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
+        bundle().putCharSequenceArray(randomKey(), expected);
+        assertEquals(expected, mCoder.deserialize(bundle(), randomKey()));
     }
 
     private CharSequence[] generateArrayAndFill() {

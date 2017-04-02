@@ -20,9 +20,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.BundleCompat;
 
-import com.fondesa.ouroboros.common.CoderRule;
+import com.fondesa.ouroboros.sharedtest.BundleTestCase;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -33,21 +32,20 @@ import static junit.framework.Assert.assertEquals;
  * Unit test class for {@link IBinderCoder}.
  */
 @RunWith(RobolectricTestRunner.class)
-public class IBinderCoderTest {
-    @Rule
-    public final CoderRule<IBinderCoder> mCoderRule = new CoderRule<>(IBinderCoder.class);
+public class IBinderCoderTest extends BundleTestCase {
+    private IBinderCoder mCoder = new IBinderCoder();
 
     @Test
     public void testSerializeIBinder() {
         IBinder expectedValue = new Binder();
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, BundleCompat.getBinder(mCoderRule.bundle(), mCoderRule.randomKey()));
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, BundleCompat.getBinder(bundle(), randomKey()));
     }
 
     @Test
     public void testDeserializeIBinder() {
         IBinder expectedValue = new Binder();
-        BundleCompat.putBinder(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
+        BundleCompat.putBinder(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoder.deserialize(bundle(), randomKey()));
     }
 }

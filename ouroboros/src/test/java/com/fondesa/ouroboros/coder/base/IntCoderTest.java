@@ -16,9 +16,8 @@
 
 package com.fondesa.ouroboros.coder.base;
 
-import com.fondesa.ouroboros.common.CoderRule;
+import com.fondesa.ouroboros.sharedtest.BundleTestCase;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -29,35 +28,34 @@ import static junit.framework.Assert.assertEquals;
  * Unit test class for {@link IntCoder}.
  */
 @RunWith(RobolectricTestRunner.class)
-public class IntCoderTest {
-    @Rule
-    public final CoderRule<IntCoder> mCoderRule = new CoderRule<>(IntCoder.class);
+public class IntCoderTest extends BundleTestCase {
+    private IntCoder mCoder = new IntCoder();
 
     @Test
     public void testSerializeIntPrimitive() {
         int expectedValue = 9;
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.bundle().getInt(mCoderRule.randomKey()));
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, bundle().getInt(randomKey()));
     }
 
     @Test
     public void testSerializeIntObject() {
         Integer expectedValue = 9;
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, (Integer) mCoderRule.bundle().getInt(mCoderRule.randomKey()));
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, (Integer) bundle().getInt(randomKey()));
     }
 
     @Test
     public void testDeserializeIntPrimitive() {
         int expectedValue = 9;
-        mCoderRule.bundle().putInt(mCoderRule.randomKey(), expectedValue);
-        assertEquals((Integer) expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
+        bundle().putInt(randomKey(), expectedValue);
+        assertEquals((Integer) expectedValue, mCoder.deserialize(bundle(), randomKey()));
     }
 
     @Test
     public void testDeserializeIntObject() {
         Integer expectedValue = 9;
-        mCoderRule.bundle().putInt(mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
+        bundle().putInt(randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoder.deserialize(bundle(), randomKey()));
     }
 }

@@ -21,9 +21,8 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Size;
 
-import com.fondesa.ouroboros.common.CoderRule;
+import com.fondesa.ouroboros.sharedtest.BundleTestCase;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -37,23 +36,22 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(RobolectricTestRunner.class)
 @Config(minSdk = Build.VERSION_CODES.LOLLIPOP)
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-public class SizeCoderTest {
-    @Rule
-    public final CoderRule<SizeCoder> mCoderRule = new CoderRule<>(SizeCoder.class);
+public class SizeCoderTest extends BundleTestCase {
+    private SizeCoder mCoder = new SizeCoder();
 
     @SuppressWarnings("NewApi")
     @Test
     public void testSerializeSize() {
         Size expectedValue = new Size(9, 5);
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.bundle().getSize(mCoderRule.randomKey()));
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, bundle().getSize(randomKey()));
 
     }
 
     @Test
     public void testDeserializeSize() {
         Size expectedValue = new Size(9, 5);
-        mCoderRule.bundle().putSize(mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
+        bundle().putSize(randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoder.deserialize(bundle(), randomKey()));
     }
 }
