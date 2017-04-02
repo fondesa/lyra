@@ -14,42 +14,39 @@
  * limitations under the License.
  */
 
-package com.fondesa.ouroboros.coder.base;
+package com.fondesa.ouroboros.coder.gson.base;
 
 import com.fondesa.ouroboros.sharedtest.BundleTestCase;
+import com.google.gson.Gson;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.Arrays;
-
 import static junit.framework.Assert.assertEquals;
 
 /**
- * Unit test class for {@link IntArrayCoder}.
+ * Unit test class for {@link DefaultGsonCoder}.
  */
 @RunWith(RobolectricTestRunner.class)
-public class IntArrayCoderTest extends BundleTestCase {
-    private IntArrayCoder mCoder = new IntArrayCoder();
+public class DefaultGsonCoderTest extends BundleTestCase {
+    private Gson mGson = new Gson();
+    private DefaultGsonCoder<GsonPersonModel> mCoder = new DefaultGsonCoder<>(mGson);
 
     @Test
-    public void testSerializeIntArray() {
-        int[] expected = generateArrayAndFill();
-        mCoder.serialize(bundle(), randomKey(), expected);
-        assertEquals(expected, bundle().getIntArray(randomKey()));
+    public void testSerializeDeserializeGson() {
+        GsonPersonModel expectedValue = new GsonPersonModel();
+        expectedValue.name = "Giorgio";
+        expectedValue.age = 22;
+
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        GsonPersonModel obtainedValue = mCoder.deserialize(bundle(), randomKey());
+        assertEquals(expectedValue.name, obtainedValue.name);
+        assertEquals(expectedValue.age, obtainedValue.age);
     }
 
-    @Test
-    public void testDeserializeIntArray() {
-        int[] expected = generateArrayAndFill();
-        bundle().putIntArray(randomKey(), expected);
-        assertEquals(expected, mCoder.deserialize(bundle(), randomKey()));
-    }
-
-    private int[] generateArrayAndFill() {
-        int[] array = new int[300];
-        Arrays.fill(array, 9);
-        return array;
+    public static class GsonPersonModel {
+        public String name;
+        public int age;
     }
 }

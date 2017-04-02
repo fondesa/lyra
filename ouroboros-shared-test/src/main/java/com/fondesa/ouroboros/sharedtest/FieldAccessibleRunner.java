@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fondesa.ouroboros.common;
+package com.fondesa.ouroboros.sharedtest;
 
 import android.support.annotation.NonNull;
 

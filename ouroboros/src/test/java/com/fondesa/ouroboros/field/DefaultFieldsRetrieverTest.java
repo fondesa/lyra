@@ -16,8 +16,8 @@
 
 package com.fondesa.ouroboros.field;
 
-import com.fondesa.ouroboros.common.FieldMatcher;
 import com.fondesa.ouroboros.common.TestModels;
+import com.fondesa.ouroboros.sharedtest.FieldMatcher;
 
 import org.junit.Before;
 import org.junit.Test;

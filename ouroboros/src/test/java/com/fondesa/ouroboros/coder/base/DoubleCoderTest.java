@@ -16,9 +16,8 @@
 
 package com.fondesa.ouroboros.coder.base;
 
-import com.fondesa.ouroboros.common.CoderRule;
+import com.fondesa.ouroboros.sharedtest.BundleTestCase;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -29,35 +28,34 @@ import static junit.framework.Assert.assertEquals;
  * Unit test class for {@link DoubleCoder}.
  */
 @RunWith(RobolectricTestRunner.class)
-public class DoubleCoderTest {
-    @Rule
-    public final CoderRule<DoubleCoder> mCoderRule = new CoderRule<>(DoubleCoder.class);
+public class DoubleCoderTest extends BundleTestCase {
+    private DoubleCoder mCoder = new DoubleCoder();
 
     @Test
     public void testSerializeDoublePrimitive() {
         double expectedValue = 9.0;
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.bundle().getDouble(mCoderRule.randomKey()), 0);
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, bundle().getDouble(randomKey()), 0);
     }
 
     @Test
     public void testSerializeDoubleObject() {
         Double expectedValue = 9.0;
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.bundle().getDouble(mCoderRule.randomKey()));
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, bundle().getDouble(randomKey()));
     }
 
     @Test
     public void testDeserializeDoublePrimitive() {
         double expectedValue = 9.0;
-        mCoderRule.bundle().putDouble(mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()), 0);
+        bundle().putDouble(randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoder.deserialize(bundle(), randomKey()), 0);
     }
 
     @Test
     public void testDeserializeDoubleObject() {
         Double expectedValue = 9.0;
-        mCoderRule.bundle().putDouble(mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
+        bundle().putDouble(randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoder.deserialize(bundle(), randomKey()));
     }
 }

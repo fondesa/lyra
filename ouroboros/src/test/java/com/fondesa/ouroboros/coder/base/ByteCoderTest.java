@@ -16,9 +16,8 @@
 
 package com.fondesa.ouroboros.coder.base;
 
-import com.fondesa.ouroboros.common.CoderRule;
+import com.fondesa.ouroboros.sharedtest.BundleTestCase;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -29,35 +28,34 @@ import static junit.framework.Assert.assertEquals;
  * Unit test class for {@link ByteCoder}.
  */
 @RunWith(RobolectricTestRunner.class)
-public class ByteCoderTest {
-    @Rule
-    public final CoderRule<ByteCoder> mCoderRule = new CoderRule<>(ByteCoder.class);
+public class ByteCoderTest extends BundleTestCase {
+    private ByteCoder mCoder = new ByteCoder();
 
     @Test
     public void testSerializeBytePrimitive() {
         byte expectedValue = 2;
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.bundle().getByte(mCoderRule.randomKey()));
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, bundle().getByte(randomKey()));
     }
 
     @Test
     public void testSerializeByteObject() {
         Byte expectedValue = 2;
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, ((Byte) mCoderRule.bundle().getByte(mCoderRule.randomKey())));
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, ((Byte) bundle().getByte(randomKey())));
     }
 
     @Test
     public void testDeserializeBytePrimitive() {
         byte expectedValue = 2;
-        mCoderRule.bundle().putByte(mCoderRule.randomKey(), expectedValue);
-        assertEquals((Byte) expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
+        bundle().putByte(randomKey(), expectedValue);
+        assertEquals((Byte) expectedValue, mCoder.deserialize(bundle(), randomKey()));
     }
 
     @Test
     public void testDeserializeByteObject() {
         Byte expectedValue = 2;
-        mCoderRule.bundle().putByte(mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
+        bundle().putByte(randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoder.deserialize(bundle(), randomKey()));
     }
 }

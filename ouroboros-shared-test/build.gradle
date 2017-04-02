@@ -12,10 +12,10 @@ android {
 }
 
 dependencies {
-    testCompile project(':ouroboros-shared-test')
+    compile "junit:junit:$JUNIT_VERSION"
+    compile "org.mockito:mockito-core:$MOCKITO_VERSION"
+    compile "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
+    compile "io.github.benas:random-beans:$RANDOM_BEANS_VERSION"
 
     compile "com.android.support:support-annotations:$ANDROID_SUPPORT_VERSION"
-    compile "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
 }
-
-apply from: "${rootDir}/gradle/scripts/bintray-deployer.gradle"

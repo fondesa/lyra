@@ -21,9 +21,8 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.SizeF;
 
-import com.fondesa.ouroboros.common.CoderRule;
+import com.fondesa.ouroboros.sharedtest.BundleTestCase;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -37,22 +36,21 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(RobolectricTestRunner.class)
 @Config(minSdk = Build.VERSION_CODES.LOLLIPOP)
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-public class SizeFCoderTest {
-    @Rule
-    public final CoderRule<SizeFCoder> mCoderRule = new CoderRule<>(SizeFCoder.class);
+public class SizeFCoderTest extends BundleTestCase {
+    private SizeFCoder mCoder = new SizeFCoder();
 
     @Test
     public void testSerializeSizeF() {
         SizeF expectedValue = new SizeF(9, 5);
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.bundle().getSizeF(mCoderRule.randomKey()));
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, bundle().getSizeF(randomKey()));
 
     }
 
     @Test
     public void testDeserializeSizeF() {
         SizeF expectedValue = new SizeF(9, 5);
-        mCoderRule.bundle().putSizeF(mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
+        bundle().putSizeF(randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoder.deserialize(bundle(), randomKey()));
     }
 }

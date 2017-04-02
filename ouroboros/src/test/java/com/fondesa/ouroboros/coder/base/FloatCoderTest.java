@@ -16,9 +16,8 @@
 
 package com.fondesa.ouroboros.coder.base;
 
-import com.fondesa.ouroboros.common.CoderRule;
+import com.fondesa.ouroboros.sharedtest.BundleTestCase;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -29,35 +28,34 @@ import static junit.framework.Assert.assertEquals;
  * Unit test class for {@link FloatCoder}.
  */
 @RunWith(RobolectricTestRunner.class)
-public class FloatCoderTest {
-    @Rule
-    public final CoderRule<FloatCoder> mCoderRule = new CoderRule<>(FloatCoder.class);
+public class FloatCoderTest extends BundleTestCase {
+    private FloatCoder mCoder = new FloatCoder();
 
     @Test
     public void testSerializeFloatPrimitive() {
         float expectedValue = 9.0f;
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.bundle().getFloat(mCoderRule.randomKey()), 0);
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, bundle().getFloat(randomKey()), 0);
     }
 
     @Test
     public void testSerializeFloatObject() {
         Float expectedValue = 9.0f;
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.bundle().getFloat(mCoderRule.randomKey()));
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, bundle().getFloat(randomKey()));
     }
 
     @Test
     public void testDeserializeFloatPrimitive() {
         float expectedValue = 9.0f;
-        mCoderRule.bundle().putFloat(mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()), 0);
+        bundle().putFloat(randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoder.deserialize(bundle(), randomKey()), 0);
     }
 
     @Test
     public void testDeserializeFloatObject() {
         Float expectedValue = 9.0f;
-        mCoderRule.bundle().putFloat(mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
+        bundle().putFloat(randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoder.deserialize(bundle(), randomKey()));
     }
 }

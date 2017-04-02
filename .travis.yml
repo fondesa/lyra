@@ -20,7 +20,9 @@ branches:
     - master
 
 script:
-  - ./gradlew build --continue --stacktrace
+  - ./gradlew :ouroboros:build --continue --stacktrace
+  - ./gradlew :ouroboros-coder-gson:build --continue --stacktrace
+  - ./gradlew :sample:assembleLocal --continue --stacktrace
 
 sudo: required
 

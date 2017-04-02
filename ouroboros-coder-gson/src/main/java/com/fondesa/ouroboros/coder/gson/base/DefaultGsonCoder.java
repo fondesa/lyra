@@ -28,7 +28,7 @@ import java.lang.reflect.Field;
  * Considering that {@link Gson} needs a class for the deserialize, the class of the {@link Field}
  * is passed in the {@link Bundle}.
  */
-public class DefaultGsonCoder extends GsonCoder<Object> {
+public class DefaultGsonCoder<FieldType> extends GsonCoder<FieldType> {
     private final static String CLASS_KEY = "c";
     private final static String VALUE_KEY = "v";
 
@@ -49,7 +49,7 @@ public class DefaultGsonCoder extends GsonCoder<Object> {
      * @param fieldValue value of field
      */
     @Override
-    public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull Object fieldValue) {
+    public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull FieldType fieldValue) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(CLASS_KEY, fieldValue.getClass());
         bundle.putSerializable(VALUE_KEY, gson().toJson(fieldValue));
@@ -65,10 +65,10 @@ public class DefaultGsonCoder extends GsonCoder<Object> {
      */
     @SuppressWarnings("ConstantConditions")
     @Override
-    public Object deserialize(@NonNull Bundle state, @NonNull String fieldName) {
+    public FieldType deserialize(@NonNull Bundle state, @NonNull String fieldName) {
         Bundle bundle = state.getBundle(fieldName);
         Class jsonClass = (Class) bundle.getSerializable(CLASS_KEY);
         String jsonString = bundle.getString(VALUE_KEY);
-        return gson().fromJson(jsonString, jsonClass);
+        return (FieldType) gson().fromJson(jsonString, jsonClass);
     }
 }

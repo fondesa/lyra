@@ -16,9 +16,8 @@
 
 package com.fondesa.ouroboros.coder.base;
 
-import com.fondesa.ouroboros.common.CoderRule;
+import com.fondesa.ouroboros.sharedtest.BundleTestCase;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -29,35 +28,34 @@ import static junit.framework.Assert.assertEquals;
  * Unit test class for {@link LongCoder}.
  */
 @RunWith(RobolectricTestRunner.class)
-public class LongCoderTest {
-    @Rule
-    public final CoderRule<LongCoder> mCoderRule = new CoderRule<>(LongCoder.class);
+public class LongCoderTest extends BundleTestCase {
+    private LongCoder mCoder = new LongCoder();
 
     @Test
     public void testSerializeLongPrimitive() {
         long expectedValue = 9L;
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.bundle().getLong(mCoderRule.randomKey()));
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, bundle().getLong(randomKey()));
     }
 
     @Test
     public void testSerializeLongObject() {
         Long expectedValue = 9L;
-        mCoderRule.coder().serialize(mCoderRule.bundle(), mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, ((Long) mCoderRule.bundle().getLong(mCoderRule.randomKey())));
+        mCoder.serialize(bundle(), randomKey(), expectedValue);
+        assertEquals(expectedValue, ((Long) bundle().getLong(randomKey())));
     }
 
     @Test
     public void testDeserializeLongPrimitive() {
         long expectedValue = 9L;
-        mCoderRule.bundle().putLong(mCoderRule.randomKey(), expectedValue);
-        assertEquals((Long) expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
+        bundle().putLong(randomKey(), expectedValue);
+        assertEquals((Long) expectedValue, mCoder.deserialize(bundle(), randomKey()));
     }
 
     @Test
     public void testDeserializeLongObject() {
         Long expectedValue = 9L;
-        mCoderRule.bundle().putLong(mCoderRule.randomKey(), expectedValue);
-        assertEquals(expectedValue, mCoderRule.coder().deserialize(mCoderRule.bundle(), mCoderRule.randomKey()));
+        bundle().putLong(randomKey(), expectedValue);
+        assertEquals(expectedValue, mCoder.deserialize(bundle(), randomKey()));
     }
 }
