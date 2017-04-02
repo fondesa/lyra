@@ -26,37 +26,6 @@ artifacts {
 group = project.hasProperty("BINTRAY_COMMON_GROUP_ID") ? BINTRAY_COMMON_GROUP_ID : ""
 version = BINTRAY_LIB_VERSION
 
-// Create the pom configuration:
-def pomConfig = {
-    packaging 'aar'
-    groupId project.hasProperty("BINTRAY_COMMON_GROUP_ID") ? BINTRAY_COMMON_GROUP_ID : ""
-    artifactId BINTRAY_LIB_ARTIFACT_ID
-
-    name BINTRAY_LIB_NAME
-    description BINTRAY_LIB_DESCRIPTION
-    version BINTRAY_LIB_VERSION
-    url BINTRAY_LIB_SITE_URL
-
-    // Set your license
-    licenses {
-        license {
-            url project.hasProperty("BINTRAY_COMMON_LICENSE_URL") ? BINTRAY_COMMON_LICENSE_URL : ""
-        }
-    }
-    developers {
-        developer {
-            id project.hasProperty("BINTRAY_COMMON_DEV_ID") ? BINTRAY_COMMON_DEV_ID : ""
-            name project.hasProperty("BINTRAY_COMMON_DEV_NAME") ? BINTRAY_COMMON_DEV_NAME : ""
-            email project.hasProperty("BINTRAY_COMMON_DEV_MAIL") ? BINTRAY_COMMON_DEV_MAIL : ""
-        }
-    }
-    scm {
-        connection BINTRAY_LIB_GIT_URL
-        developerConnection BINTRAY_LIB_GIT_URL
-        url BINTRAY_LIB_SITE_URL
-    }
-}
-
 // Create the publication with the pom configuration:
 publishing {
     publications {
@@ -71,9 +40,38 @@ publishing {
 
             pom.withXml {
                 def root = asNode()
-                root.children().last() + pomConfig
 
-                def dependenciesNode = asNode().appendNode('dependencies')
+                // Add general lib's information
+                root.appendNode('name', BINTRAY_LIB_NAME)
+                root.appendNode('description', BINTRAY_LIB_DESCRIPTION)
+                root.appendNode('url', BINTRAY_LIB_SITE_URL)
+
+                // Add license part
+                def licensesNode = root.appendNode('licenses')
+                def licenseNode = licensesNode.appendNode('license')
+                def licenseUrl = project.hasProperty("BINTRAY_COMMON_LICENSE_URL") ? BINTRAY_COMMON_LICENSE_URL : ""
+                licenseNode.appendNode('url', licenseUrl)
+
+                // Add developers part
+                def developersNode = root.appendNode('developers')
+                def developerNode = developersNode.appendNode('developer')
+
+                def developerId = project.hasProperty("BINTRAY_COMMON_DEV_ID") ? BINTRAY_COMMON_DEV_ID : ""
+                def developerName = project.hasProperty("BINTRAY_COMMON_DEV_NAME") ? BINTRAY_COMMON_DEV_NAME : ""
+                def developerEmail = project.hasProperty("BINTRAY_COMMON_DEV_MAIL") ? BINTRAY_COMMON_DEV_MAIL : ""
+
+                developerNode.appendNode('id', developerId)
+                developerNode.appendNode('name', developerName)
+                developerNode.appendNode('email', developerEmail)
+
+                // Add SCM part
+                def scmNode = root.appendNode('scm')
+                scmNode.appendNode('connection', BINTRAY_LIB_GIT_URL)
+                scmNode.appendNode('developerConnection', BINTRAY_LIB_GIT_URL)
+                scmNode.appendNode('url', BINTRAY_LIB_SITE_URL)
+
+                // Add dependencies part
+                def dependenciesNode = root.appendNode('dependencies')
 
                 // List all compile dependencies and write to POM
                 configurations.compile.getAllDependencies().each { Dependency dep ->
@@ -119,12 +117,13 @@ bintray {
         name = BINTRAY_LIB_REPO_NAME
         desc = BINTRAY_LIB_DESCRIPTION
         websiteUrl = BINTRAY_LIB_SITE_URL
+        issueTrackerUrl = BINTRAY_LIB_ISSUE_TRACKER_URL
         vcsUrl = BINTRAY_LIB_GIT_URL
         licenses = [project.hasProperty("BINTRAY_COMMON_LICENSE_ID") ? BINTRAY_COMMON_LICENSE_ID : ""]
         publish = true
         publicDownloadNumbers = true
         version {
-            desc = BINTRAY_LIB_DESCRIPTION
+            released = new Date()
             gpg {
                 sign = true
                 passphrase = project.hasProperty("BINTRAY_COMMON_GPG_PASSWORD") ? BINTRAY_COMMON_GPG_PASSWORD : ""
