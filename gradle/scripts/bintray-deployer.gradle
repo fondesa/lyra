@@ -29,7 +29,7 @@ version = BINTRAY_LIB_VERSION
 // Create the publication with the pom configuration:
 publishing {
     publications {
-        ouroborosPublication(MavenPublication) {
+        bintrayPublication(MavenPublication) {
             artifact sourcesJar
             artifact javadocJar
             artifact("$buildDir/outputs/aar/${project.name}-release.aar")
@@ -111,7 +111,7 @@ bintray {
     user = project.hasProperty("BINTRAY_COMMON_USERNAME") ? BINTRAY_COMMON_USERNAME : ""
     key = project.hasProperty("BINTRAY_COMMON_APIKEY") ? BINTRAY_COMMON_APIKEY : ""
 
-    publications = ['ouroborosPublication']
+    publications = ['bintrayPublication']
     pkg {
         repo = project.hasProperty("BINTRAY_COMMON_REPO") ? BINTRAY_COMMON_REPO : ""
         name = BINTRAY_LIB_REPO_NAME
@@ -141,7 +141,7 @@ final def TASK_CLEAN = "clean"
 final def TASK_ASSEMBLE = "assembleRelease"
 final def TASK_SOURCES = "sourcesJar"
 final def TASK_JAVADOC = "javadocJar"
-final def TASK_POM = "generatePomFileForOuroborosPublicationPublication"
+final def TASK_POM = "generatePomFileForBintrayPublicationPublication"
 
 def taskMap = new HashMap<String, Boolean>()
 addTaskToMap(taskMap, TASK_BINTRAY)
