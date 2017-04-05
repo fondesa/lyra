@@ -1,3 +1,4 @@
-include ':ouroboros', ':ouroboros-shared-test'
+include ':ouroboros'
 include ':ouroboros-coder-gson'
+include ':ouroboros-shared-test'
 include ':sample'

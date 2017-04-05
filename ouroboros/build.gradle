@@ -1,15 +1,5 @@
 apply plugin: 'com.android.library'
-
-android {
-    compileSdkVersion Integer.parseInt(ANDROID_COMPILE_SDK_VERSION)
-    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
-
-    defaultConfig {
-        minSdkVersion Integer.parseInt(ANDROID_MIN_SDK_VERSION)
-        targetSdkVersion Integer.parseInt(ANDROID_TARGET_SDK_VERSION)
-        return true
-    }
-}
+apply plugin: AndroidCommonPlugin
 
 dependencies {
     testCompile project(':ouroboros-shared-test')
