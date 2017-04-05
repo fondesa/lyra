@@ -20,10 +20,11 @@ import android.os.Bundle;
 
 import org.junit.Before;
 
-import java.util.UUID;
+import io.github.benas.randombeans.EnhancedRandomBuilder;
 
 /**
- * Created by antoniolig on 02/04/17.
+ * Class used to run a test suite accessing to a {@link Bundle}.
+ * This class provides an empty {@link Bundle} before each test method and a random generated key.
  */
 public class BundleTestCase {
     private Bundle mBundle;
@@ -33,13 +34,21 @@ public class BundleTestCase {
     public void setUp() {
         // Random key using UUID.
         mBundle = new Bundle();
-        mRandomKey = UUID.randomUUID().toString();
+        mRandomKey = EnhancedRandomBuilder.aNewEnhancedRandom().nextObject(String.class);
     }
 
+    /**
+     * Bundle to use in test methods.
+     *
+     * @return the {@link Bundle} instance created before the test method.
+     */
     protected Bundle bundle() {
         return mBundle;
     }
 
+    /**
+     * @return random key used to write/read from/into a {@link Bundle}
+     */
     protected String randomKey() {
         return mRandomKey;
     }

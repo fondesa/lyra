@@ -16,9 +16,118 @@
 
 package com.fondesa.ouroboros.coder.gson;
 
-/**
- * Created by antoniolig on 01/04/17.
- */
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 
+import com.fondesa.ouroboros.annotation.SaveState;
+import com.fondesa.ouroboros.coder.StateCoder;
+import com.fondesa.ouroboros.coder.gson.base.DefaultGsonCoder;
+import com.fondesa.ouroboros.coder.utils.StateCoderUtils;
+import com.fondesa.ouroboros.exception.CoderNotFoundException;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.robolectric.RobolectricTestRunner;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+/**
+ * Unit test class for {@link DefaultGsonCoderRetriever}.
+ */
+@RunWith(RobolectricTestRunner.class)
 public class DefaultGsonCoderRetrieverTest {
+    private DefaultGsonCoderRetriever mRetriever;
+
+    @Before
+    public void setUp() {
+        mRetriever = new DefaultGsonCoderRetriever();
+    }
+
+    @Test
+    public void testRetrieveBasicCoder() throws CoderNotFoundException {
+        Class fieldClass = String.class;
+
+        SaveState mockedSaveState = mock(SaveState.class);
+        when(mockedSaveState.value()).thenAnswer(new Answer<Class<? extends StateCoder>>() {
+            @Override
+            public Class<? extends StateCoder> answer(InvocationOnMock invocationOnMock) throws Throwable {
+                return StateCoder.class;
+            }
+        });
+
+        StateCoder retrieverCoder = mRetriever.getCoder(mockedSaveState, fieldClass);
+        assertNotNull(retrieverCoder);
+
+        StateCoder basicCoder = StateCoderUtils.getBasicCoderForClass(fieldClass);
+        assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
+    }
+
+    @Test
+    public void testRetrieveBasicCachedCoder() throws CoderNotFoundException {
+        Class fieldClass = String.class;
+
+        SaveState mockedSaveState = mock(SaveState.class);
+        when(mockedSaveState.value()).thenAnswer(new Answer<Class<? extends StateCoder>>() {
+            @Override
+            public Class<? extends StateCoder> answer(InvocationOnMock invocationOnMock) throws Throwable {
+                return StateCoder.class;
+            }
+        });
+
+        StateCoder retrieverCoder = mRetriever.getCoder(mockedSaveState, fieldClass);
+        assertNotNull(retrieverCoder);
+
+        StateCoder basicCoder = StateCoderUtils.getBasicCoderForClass(fieldClass);
+        assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
+
+        retrieverCoder = mRetriever.getCoder(mockedSaveState, fieldClass);
+        assertNotNull(retrieverCoder);
+        assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
+    }
+
+    @Test
+    public void testRetrieveCustomCoder() throws CoderNotFoundException {
+        Class fieldClass = String.class;
+        SaveState mockedSaveState = mock(SaveState.class);
+        when(mockedSaveState.value()).thenAnswer(new Answer<Class<? extends StateCoder>>() {
+            @Override
+            public Class<? extends StateCoder> answer(InvocationOnMock invocationOnMock) throws Throwable {
+                return CustomStateCoder.class;
+            }
+        });
+        StateCoder retrieverCoder = mRetriever.getCoder(mockedSaveState, fieldClass);
+        assertNotNull(retrieverCoder);
+        assertEquals(retrieverCoder.getClass(), CustomStateCoder.class);
+    }
+
+    @Test
+    public void testRetrieveGsonCoder() throws CoderNotFoundException {
+        Class fieldClass = String.class;
+        SaveState mockedSaveState = mock(SaveState.class);
+        when(mockedSaveState.value()).thenAnswer(new Answer<Class<? extends StateCoder>>() {
+            @Override
+            public Class<? extends StateCoder> answer(InvocationOnMock invocationOnMock) throws Throwable {
+                return DefaultGsonCoder.class;
+            }
+        });
+        StateCoder retrieverCoder = mRetriever.getCoder(mockedSaveState, fieldClass);
+        assertNotNull(retrieverCoder);
+        assertEquals(retrieverCoder.getClass(), DefaultGsonCoder.class);
+    }
+
+    public static class CustomStateCoder implements StateCoder<String> {
+        @Override
+        public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull String fieldValue) { /* empty */ }
+
+        @Override
+        public String deserialize(@NonNull Bundle state, @NonNull String fieldName) {
+            return null;
+        }
+    }
 }

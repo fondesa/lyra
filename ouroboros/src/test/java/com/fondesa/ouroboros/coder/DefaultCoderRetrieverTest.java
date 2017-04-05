@@ -23,8 +23,6 @@ import com.fondesa.ouroboros.annotation.SaveState;
 import com.fondesa.ouroboros.coder.utils.StateCoderUtils;
 import com.fondesa.ouroboros.exception.CoderNotFoundException;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +30,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -41,7 +40,6 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(RobolectricTestRunner.class)
 public class DefaultCoderRetrieverTest {
-
     private DefaultCoderRetriever mRetriever;
 
     @Before
@@ -65,7 +63,7 @@ public class DefaultCoderRetrieverTest {
         assertNotNull(retrieverCoder);
 
         StateCoder basicCoder = StateCoderUtils.getBasicCoderForClass(fieldClass);
-        Assert.assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
+        assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
     }
 
     @Test
@@ -84,11 +82,11 @@ public class DefaultCoderRetrieverTest {
         assertNotNull(retrieverCoder);
 
         StateCoder basicCoder = StateCoderUtils.getBasicCoderForClass(fieldClass);
-        Assert.assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
+        assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
 
         retrieverCoder = mRetriever.getCoder(mockedSaveState, fieldClass);
         assertNotNull(retrieverCoder);
-        Assert.assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
+        assertEquals(retrieverCoder.getClass(), basicCoder.getClass());
     }
 
     @Test
@@ -103,7 +101,7 @@ public class DefaultCoderRetrieverTest {
         });
         StateCoder retrieverCoder = mRetriever.getCoder(mockedSaveState, fieldClass);
         assertNotNull(retrieverCoder);
-        Assert.assertEquals(retrieverCoder.getClass(), CustomStateCoder.class);
+        assertEquals(retrieverCoder.getClass(), CustomStateCoder.class);
     }
 
     public static class CustomStateCoder implements StateCoder<String> {
