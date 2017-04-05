@@ -34,8 +34,7 @@ class AndroidCommonPlugin implements Plugin<Project> {
         project.configure(project) {
             // Load Android properties file.
             Properties props = new Properties()
-            File propsFile = new File("${FILE_NAME}.properties")
-            propsFile.withInputStream { props.load(it) }
+            props.load(new FileInputStream("${FILE_NAME}.properties"))
 
             // Add Android extension.
             project.android {

@@ -5,7 +5,6 @@ dependencies {
     testCompile project(':ouroboros-shared-test')
 
     compile project(':ouroboros')
-
     compile "com.google.code.gson:gson:$GSON_VERSION"
 }
 
