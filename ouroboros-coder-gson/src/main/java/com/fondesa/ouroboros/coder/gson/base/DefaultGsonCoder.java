@@ -69,6 +69,7 @@ public class DefaultGsonCoder<FieldType> extends GsonCoder<FieldType> {
         Bundle bundle = state.getBundle(fieldName);
         Class jsonClass = (Class) bundle.getSerializable(CLASS_KEY);
         String jsonString = bundle.getString(VALUE_KEY);
+        //noinspection unchecked
         return (FieldType) gson().fromJson(jsonString, jsonClass);
     }
 }
