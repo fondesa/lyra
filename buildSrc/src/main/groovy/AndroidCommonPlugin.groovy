@@ -1,6 +1,3 @@
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-
 /*
  * Copyright (c) 2017 Fondesa
  *
@@ -17,30 +14,39 @@ import org.gradle.api.Project
  * limitations under the License.
  */
 
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+
+/**
+ * Plugin used to have a common configuration between Android modules.
+ * This plugin use the constants defined in {@code android-version.properties} file.
+ */
 @SuppressWarnings("GroovyUnusedDeclaration")
 class AndroidCommonPlugin implements Plugin<Project> {
-    Closure applyConfiguration = { Project project ->
-        // Load Android properties file.
-        Properties props = new Properties()
-        File propsFile = new File("android-version.properties")
-        propsFile.withInputStream { props.load(it) }
 
-        // Add Android extension.
-        project.android {
-            compileSdkVersion Integer.parseInt(props["COMPILE_SDK"])
-            buildToolsVersion props["BUILD_TOOLS"]
-
-            defaultConfig {
-                minSdkVersion Integer.parseInt(props["MIN_SDK"])
-                targetSdkVersion Integer.parseInt(props["TARGET_SDK"])
-            }
-        }
-    }
+    /**
+     * Name of the properties file without extension.
+     */
+    private static final def FILE_NAME = "android-config"
 
     @Override
     void apply(Project project) {
         project.configure(project) {
-            applyConfiguration(project)
+            // Load Android properties file.
+            Properties props = new Properties()
+            File propsFile = new File("${FILE_NAME}.properties")
+            propsFile.withInputStream { props.load(it) }
+
+            // Add Android extension.
+            project.android {
+                compileSdkVersion Integer.parseInt(props["COMPILE_SDK"])
+                buildToolsVersion props["BUILD_TOOLS"]
+
+                defaultConfig {
+                    minSdkVersion Integer.parseInt(props["MIN_SDK"])
+                    targetSdkVersion Integer.parseInt(props["TARGET_SDK"])
+                }
+            }
         }
     }
 }
