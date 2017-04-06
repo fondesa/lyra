@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-/**
- * Plugin used to have a common configuration between Android modules.
- * This plugin use the constants defined in {@code android-version.properties} file.
- */
 @SuppressWarnings("GroovyUnusedDeclaration")
 abstract class ConfiguredProjectPlugin implements Plugin<Project> {
     Project project
