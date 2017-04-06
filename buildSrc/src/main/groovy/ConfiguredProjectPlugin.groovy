@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -22,30 +21,41 @@ import org.gradle.api.Project
  * This plugin use the constants defined in {@code android-version.properties} file.
  */
 @SuppressWarnings("GroovyUnusedDeclaration")
-class AndroidCommonPlugin implements Plugin<Project> {
-
-    /**
-     * Name of the properties file without extension.
-     */
-    private static final def FILE_NAME = "android-config"
+abstract class ConfiguredProjectPlugin implements Plugin<Project> {
+    Project project
 
     @Override
     void apply(Project project) {
+        this.project = project
         project.configure(project) {
-            // Load Android properties file.
-            Properties props = new Properties()
-            props.load(new FileInputStream("${FILE_NAME}.properties"))
+            onProjectConfigured()
+        }
+    }
 
-            // Add Android extension.
-            project.android {
-                compileSdkVersion Integer.parseInt(props["COMPILE_SDK"])
-                buildToolsVersion props["BUILD_TOOLS"]
+    abstract void onProjectConfigured()
 
-                defaultConfig {
-                    minSdkVersion Integer.parseInt(props["MIN_SDK"])
-                    targetSdkVersion Integer.parseInt(props["TARGET_SDK"])
-                }
+    Properties loadProps(String fileName) {
+        File[] files = new File[2]
+        files[0] = new File(project.rootDir.path + File.separator + "${fileName}.properties")
+        files[1] = new File(project.projectDir.path + File.separator + "${fileName}.properties")
+        return loadProps(files)
+    }
+
+    static Properties loadProps(File... files) {
+        Properties props = new Properties()
+        files.each {
+            if (it.exists()) {
+                props.load(new FileInputStream(it))
             }
         }
+        return props
+    }
+
+    String prop(String propName) {
+        project.hasProperty(propName) ? project.property(propName) : ""
+    }
+
+    static String prop(Properties properties, String propName) {
+        properties.getProperty(propName, "")
     }
 }

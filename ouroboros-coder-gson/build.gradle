@@ -1,6 +1,8 @@
-apply plugin: 'com.android.library'
-apply plugin: AndroidCommonPlugin
-//apply plugin: BintrayDeployerPlugin
+new AndroidSharedPlugin(
+        type: AndroidSharedPlugin.LIBRARY
+).apply(project)
+
+new BintrayDeployPlugin().apply(project)
 
 dependencies {
     testCompile project(':ouroboros-shared-test')
@@ -8,5 +10,3 @@ dependencies {
     compile project(':ouroboros')
     compile "com.google.code.gson:gson:$GSON_VERSION"
 }
-
-apply from: "${rootDir}/gradle/scripts/bintray-deployer.gradle"

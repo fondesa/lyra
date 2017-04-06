@@ -1,7 +1,9 @@
-apply plugin: 'com.android.library'
-apply plugin: AndroidCommonPlugin
-
-android.lintOptions.disable 'InvalidPackage'
+new AndroidSharedPlugin(
+        type: AndroidSharedPlugin.LIBRARY,
+        config: {
+            lintOptions.disable 'InvalidPackage'
+        }
+).apply(project)
 
 dependencies {
     compile "junit:junit:$JUNIT_VERSION"

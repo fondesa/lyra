@@ -1,14 +1,14 @@
-apply plugin: 'com.android.application'
-apply plugin: AndroidCommonPlugin
+new AndroidSharedPlugin(
+        type: AndroidSharedPlugin.APP,
+        config: {
+            defaultConfig.applicationId "com.fondesa.ouroboros.sample"
 
-android {
-    defaultConfig.applicationId "com.fondesa.ouroboros.sample"
-
-    productFlavors {
-        local
-        maven
-    }
-}
+            productFlavors {
+                local
+                maven
+            }
+        }
+).apply(project)
 
 final def libraryMavenCompileVersion = "0.0.1-a3"
 
