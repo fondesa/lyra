@@ -1,20 +1,14 @@
-apply plugin: 'com.android.application'
+new AndroidSharedPlugin(
+        type: AndroidSharedPlugin.APP,
+        config: {
+            defaultConfig.applicationId "com.fondesa.ouroboros.sample"
 
-android {
-    compileSdkVersion Integer.parseInt(ANDROID_COMPILE_SDK_VERSION)
-    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
-
-    defaultConfig {
-        applicationId "com.fondesa.ouroboros.sample"
-        minSdkVersion Integer.parseInt(ANDROID_MIN_SDK_VERSION)
-        targetSdkVersion Integer.parseInt(ANDROID_TARGET_SDK_VERSION)
-    }
-
-    productFlavors {
-        local
-        maven
-    }
-}
+            productFlavors {
+                local
+                maven
+            }
+        }
+).apply(project)
 
 final def libraryMavenCompileVersion = "0.0.1-a3"
 
