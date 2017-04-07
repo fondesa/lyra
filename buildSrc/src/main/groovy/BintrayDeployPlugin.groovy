@@ -21,7 +21,8 @@ import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.javadoc.Javadoc
 
 /**
- *
+ * Plugin used to publish the library on Bintray and Maven Central.
+ * This plugin will add some sources tasks and the {@code publishLibrary} task to upload the library.
  */
 @SuppressWarnings("GroovyUnusedDeclaration")
 class BintrayDeployPlugin extends ConfiguredProjectPlugin {
@@ -32,12 +33,13 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
         // Load Bintray deploy properties file.
         bintrayProps = loadProps("bintray-deploy")
 
-        // Android libraries
+        // Create the task to add the jar of the sources.
         project.task("sourcesJar", type: Jar) {
             classifier = 'sources'
             from project.android.sourceSets.main.java.srcDirs
         }
 
+        // Create the task to generate the javadoc.
         project.task("javadoc", type: Javadoc) {
             failOnError false
             source = project.android.sourceSets.main.java.srcDirs
@@ -45,6 +47,7 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
             classpath += project.configurations.compile
         }
 
+        // Create the task to generate the jar of the javadoc sources.
         project.task("javadocJar", type: Jar, dependsOn: project.javadoc) {
             classifier = 'javadoc'
             from project.javadoc.destinationDir
@@ -58,8 +61,8 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
         project.group = prop("BINTRAY_COMMON_GROUP_ID")
         project.version = prop(bintrayProps, "BINTRAY_LIB_VERSION")
 
+        // Configure the Maven publication.
         configurePublish()
-        configureBintray()
 
         def addTaskToMap = { taskMap, taskName ->
             taskMap.put(taskName, project.tasks.findByName(taskName) != null)
@@ -70,7 +73,7 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
         final def TASK_ASSEMBLE = "assembleRelease"
         final def TASK_SOURCES = "sourcesJar"
         final def TASK_JAVADOC = "javadocJar"
-        final def TASK_POM = "generatePomFileForBintrayPublicationPublication"
+        final def TASK_POM = "generatePomFileForLibraryPublicationPublication"
 
         def taskMap = new HashMap<String, Boolean>()
         addTaskToMap(taskMap, TASK_BINTRAY)
@@ -92,6 +95,7 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
                     if (!allInserted)
                         break
                 }
+                // Add the task only after all tasks are added.
                 if (allInserted) {
                     def newTask = project.task("publishLibrary")
                     newTask.group = "publishing"
@@ -113,6 +117,9 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
         }
     }
 
+    /**
+     * Closure used to define the content of the pom.xml file.
+     */
     Closure configurePom = {
         def root = asNode()
 
@@ -179,12 +186,15 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
         }
     }
 
+    /**
+     * Closure used to configure the publication on Bintray.
+     */
     Closure configurePublish = {
         project.apply plugin: 'maven-publish'
         // Create the publication with the pom configuration:
         project.publishing {
             publications {
-                bintrayPublication(MavenPublication) {
+                libraryPublication(MavenPublication) {
                     artifact project.sourcesJar
                     artifact project.javadocJar
                     artifact("$project.buildDir/outputs/aar/${project.name}-release.aar")
@@ -200,15 +210,20 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
                 }
             }
         }
+        // Configure the Bintray deploy.
+        configureBintray()
     }
 
+    /**
+     * Closure used to create the Bintray repository's properties.
+     */
     Closure configureBintray = {
         project.apply plugin: 'com.jfrog.bintray'
         project.bintray {
             user = prop("BINTRAY_COMMON_USERNAME")
             key = prop("BINTRAY_COMMON_APIKEY")
 
-            publications = ['bintrayPublication']
+            publications = ['libraryPublication']
             pkg {
                 repo = prop("BINTRAY_COMMON_REPO")
                 name = prop(bintrayProps, "BINTRAY_LIB_REPO_NAME")
