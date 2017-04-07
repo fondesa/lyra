@@ -89,4 +89,15 @@ abstract class ConfiguredProjectPlugin implements Plugin<Project> {
     static String prop(Properties properties, String propName) {
         properties.getProperty(propName, "")
     }
+
+    /**
+     * Apply a plugin to the project only if it wasn't applied before.
+     *
+     * @param pluginName name of the plugin to apply
+     */
+    void applyPlugin(String pluginName) {
+        if (!project.plugins.hasPlugin(pluginName)) {
+            project.apply plugin: pluginName
+        }
+    }
 }

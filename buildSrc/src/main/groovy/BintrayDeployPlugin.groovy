@@ -61,7 +61,7 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
         project.group = prop("BINTRAY_COMMON_GROUP_ID")
         project.version = prop(bintrayProps, "BINTRAY_LIB_VERSION")
 
-        // Configure the Maven publication.
+        // Configure the Bintray publication.
         configurePublish()
 
         def addTaskToMap = { taskMap, taskName ->
@@ -190,7 +190,7 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
      * Closure used to configure the publication on Bintray.
      */
     Closure configurePublish = {
-        project.apply plugin: 'maven-publish'
+        applyPlugin('maven-publish')
         // Create the publication with the pom configuration:
         project.publishing {
             publications {
@@ -218,7 +218,7 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
      * Closure used to create the Bintray repository's properties.
      */
     Closure configureBintray = {
-        project.apply plugin: 'com.jfrog.bintray'
+        applyPlugin('com.jfrog.bintray')
         project.bintray {
             user = prop("BINTRAY_COMMON_USERNAME")
             key = prop("BINTRAY_COMMON_APIKEY")

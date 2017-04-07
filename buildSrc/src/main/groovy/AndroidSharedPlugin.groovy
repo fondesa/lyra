@@ -34,9 +34,9 @@ class AndroidSharedPlugin extends ConfiguredProjectPlugin {
 
         // Apply plugin type.
         if (type == LIBRARY) {
-            project.apply plugin: 'com.android.library'
+            applyPlugin('com.android.library')
         } else if (type == APP) {
-            project.apply plugin: 'com.android.application'
+            applyPlugin('com.android.application')
         }
 
         // Add Android extension.
