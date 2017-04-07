@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 /**
- * Plugin used to have a common configuration between Android modules.
- * This plugin use the constants defined in {@code android-version.properties} file.
+ * Gradle plugin used to configure a module and to expose some common Project API.
  */
 @SuppressWarnings("GroovyUnusedDeclaration")
 abstract class ConfiguredProjectPlugin implements Plugin<Project> {
@@ -32,8 +32,20 @@ abstract class ConfiguredProjectPlugin implements Plugin<Project> {
         }
     }
 
+    /**
+     * Called when the project is configured in the {@param # apply ( Project ) method}.
+     */
     abstract void onProjectConfigured()
 
+    /**
+     * Load the properties from descending files' tree.
+     * This method will search a file with the name passed as parameter in the project dir and in the root dir.
+     * The output properties will be the merge of the two files giving a major priority to a property
+     * found in the project directory.
+     *
+     * @param fileName name of the properties file without extension
+     * @return instance of {@code Properties}
+     */
     Properties loadProps(String fileName) {
         File[] files = new File[2]
         files[0] = new File(project.rootDir.path + File.separator + "${fileName}.properties")
@@ -41,6 +53,12 @@ abstract class ConfiguredProjectPlugin implements Plugin<Project> {
         return loadProps(files)
     }
 
+    /**
+     * Load multiple files in the same {@code Properties} instance.
+     *
+     * @param files varargs of files to load
+     * @return instance of {@code Properties}
+     */
     static Properties loadProps(File... files) {
         Properties props = new Properties()
         files.each {
@@ -51,11 +69,35 @@ abstract class ConfiguredProjectPlugin implements Plugin<Project> {
         return props
     }
 
+    /**
+     * Get the value of a project property (gradle.properties file).
+     *
+     * @param propName name of the property
+     * @return value of the property in String format or empty String if not found
+     */
     String prop(String propName) {
         project.hasProperty(propName) ? project.property(propName) : ""
     }
 
+    /**
+     * Get the value of a property.
+     *
+     * @param properties instance of {@code Properties} after a File, or an XML is loaded into it.
+     * @param propName name of the property
+     * @return value of the property in String format or empty String if not found
+     */
     static String prop(Properties properties, String propName) {
         properties.getProperty(propName, "")
+    }
+
+    /**
+     * Apply a plugin to the project only if it wasn't applied before.
+     *
+     * @param pluginName name of the plugin to apply
+     */
+    void applyPlugin(String pluginName) {
+        if (!project.plugins.hasPlugin(pluginName)) {
+            project.apply plugin: pluginName
+        }
     }
 }

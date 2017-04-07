@@ -16,7 +16,8 @@
 
 /**
  * Plugin used to have a common configuration between Android modules.
- * This plugin use the constants defined in {@code android-version.properties} file.
+ * This plugin use the constants defined in {@code android-config.properties} file.
+ * The default behavior can be extended through the {@code config} closure.
  */
 @SuppressWarnings("GroovyUnusedDeclaration")
 class AndroidSharedPlugin extends ConfiguredProjectPlugin {
@@ -33,9 +34,9 @@ class AndroidSharedPlugin extends ConfiguredProjectPlugin {
 
         // Apply plugin type.
         if (type == LIBRARY) {
-            project.apply plugin: 'com.android.library'
+            applyPlugin('com.android.library')
         } else if (type == APP) {
-            project.apply plugin: 'com.android.application'
+            applyPlugin('com.android.application')
         }
 
         // Add Android extension.
@@ -48,7 +49,9 @@ class AndroidSharedPlugin extends ConfiguredProjectPlugin {
                 targetSdkVersion prop(androidProps, "TARGET_SDK").toInteger()
             }
             if (config != null) {
+                // Set the delegate to the Android extension.
                 config.delegate = project.android
+                // Add the additional behavior.
                 config.call()
             }
         }
