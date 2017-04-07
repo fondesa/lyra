@@ -20,6 +20,9 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.javadoc.Javadoc
 
+/**
+ *
+ */
 @SuppressWarnings("GroovyUnusedDeclaration")
 class BintrayDeployPlugin extends ConfiguredProjectPlugin {
     private Properties bintrayProps
