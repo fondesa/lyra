@@ -1,0 +1,12 @@
+new AndroidSharedPlugin(
+        type: AndroidSharedPlugin.LIBRARY
+).apply(project)
+
+new BintrayDeployPlugin().apply(project)
+
+dependencies {
+    testCompile project(':lyra-shared-test')
+
+    compile "com.android.support:support-annotations:$ANDROID_SUPPORT_VERSION"
+    compile "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
+}

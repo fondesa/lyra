@@ -1,4 +1,4 @@
-include ':ouroboros'
-include ':ouroboros-coder-gson'
-include ':ouroboros-shared-test'
+include ':lyra'
+include ':lyra-coder-gson'
+include ':lyra-shared-test'
 include ':sample'

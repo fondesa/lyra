@@ -1,0 +1,12 @@
+new AndroidSharedPlugin(
+        type: AndroidSharedPlugin.LIBRARY
+).apply(project)
+
+new BintrayDeployPlugin().apply(project)
+
+dependencies {
+    testCompile project(':lyra-shared-test')
+
+    compile project(':lyra')
+    compile "com.google.code.gson:gson:$GSON_VERSION"
+}

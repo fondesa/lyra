@@ -20,9 +20,9 @@ branches:
     - master
 
 script:
-  - ./gradlew :ouroboros-shared-test:build --continue --stacktrace
-  - ./gradlew :ouroboros:build --continue --stacktrace
-  - ./gradlew :ouroboros-coder-gson:build --continue --stacktrace
+  - ./gradlew :lyra-shared-test:build --continue --stacktrace
+  - ./gradlew :lyra:build --continue --stacktrace
+  - ./gradlew :lyra-coder-gson:build --continue --stacktrace
   - ./gradlew :sample:assembleLocal --continue --stacktrace
 
 sudo: required
