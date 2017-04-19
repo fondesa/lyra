@@ -1,7 +1,7 @@
 new AndroidSharedPlugin(
         type: AndroidSharedPlugin.APP,
         config: {
-            defaultConfig.applicationId "com.fondesa.ouroboros.sample"
+            defaultConfig.applicationId "com.fondesa.lyra.sample"
 
             productFlavors {
                 local
@@ -10,15 +10,15 @@ new AndroidSharedPlugin(
         }
 ).apply(project)
 
-final def libraryMavenCompileVersion = "0.0.1-a3"
+final def libraryMavenCompileVersion = "1.0.0-rc1"
 
 dependencies {
     compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
     compile "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
 
-    localCompile project(':ouroboros')
-    localCompile project(':ouroboros-coder-gson')
+    localCompile project(':lyra')
+    localCompile project(':lyra-coder-gson')
 
-    mavenCompile "com.github.fondesa:ouroboros:$libraryMavenCompileVersion"
-    mavenCompile "com.github.fondesa:ouroboros-coder-gson:$libraryMavenCompileVersion"
+    mavenCompile "com.github.fondesa:lyra:$libraryMavenCompileVersion"
+    mavenCompile "com.github.fondesa:lyra-coder-gson:$libraryMavenCompileVersion"
 }
