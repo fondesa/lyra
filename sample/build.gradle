@@ -10,7 +10,7 @@ new AndroidSharedPlugin(
         }
 ).apply(project)
 
-final def libraryMavenCompileVersion = "0.0.1-a3"
+final def libraryMavenCompileVersion = "1.0.0-rc1"
 
 dependencies {
     compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
@@ -19,6 +19,6 @@ dependencies {
     localCompile project(':lyra')
     localCompile project(':lyra-coder-gson')
 
-//    mavenCompile "com.github.fondesa:lyra:$libraryMavenCompileVersion"
-//    mavenCompile "com.github.fondesa:lyra-coder-gson:$libraryMavenCompileVersion"
+    mavenCompile "com.github.fondesa:lyra:$libraryMavenCompileVersion"
+    mavenCompile "com.github.fondesa:lyra-coder-gson:$libraryMavenCompileVersion"
 }
