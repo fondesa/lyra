@@ -1,4 +1,4 @@
-![](art/lyra_logo.png)
+![](art/lyra-logo.png)
 
 [![Build Status](https://travis-ci.org/Fondesa/Lyra.svg?branch=master)](https://travis-ci.org/Fondesa/Lyra)
 
