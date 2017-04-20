@@ -8,3 +8,4 @@ Lyra supports automatic save/restore, base coders to serialize/deserialize value
 By default, Lyra uses an internal serializer/deserializer for fields, but also provides a utility library to add serialization/deserialization capabilities of [Gson][1].
 
 [1]: https://github.com/google/gson
+
