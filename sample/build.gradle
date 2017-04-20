@@ -7,6 +7,18 @@ new AndroidSharedPlugin(
                 local
                 maven
             }
+
+            buildTypes {
+                debug {
+                    debuggable true
+                }
+
+                proguardDebug {
+                    debuggable true
+                    minifyEnabled true
+                    proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                }
+            }
         }
 ).apply(project)
 
