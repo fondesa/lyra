@@ -7,5 +7,37 @@ Lyra supports automatic save/restore, base coders to serialize/deserialize value
 
 By default, Lyra uses an internal serializer/deserializer for fields, but also provides a utility library to add serialization/deserialization capabilities of [Gson][1].
 
-[1]: https://github.com/google/gson
+Integration
+------
 
+You can download the [latest JAR][2] or grab it from ```jcenter()``` or ```mavenCentral()```.
+You can optionally use the dependency `lyra-coder-gson` if you want to include the [Gson][1] coder.
+
+### Gradle ###
+
+```gradle
+dependencies {
+    compile 'com.github.fondesa:lyra:1.0.0-rc1'
+    // Use this dependency if you want to include the Gson coder.
+    compile 'com.github.fondesa:lyra-coder-gson:1.0.0-rc1'
+}
+```
+
+### Maven ###
+
+```xml
+<dependency>
+  <groupId>com.github.fondesa</groupId>
+  <artifactId>lyra</artifactId>
+  <version>1.0.0-rc1</version>
+  <type>pom</type>
+</dependency>
+```
+
+Compatibility
+------
+
+**Android SDK**: Lyra requires a minimum API level of 9.
+
+[1]: https://github.com/google/gson
+[2]: https://repo1.maven.org/maven2/com/github/fondesa/lyra/1.0.0-rc1/lyra-1.0.0-rc1-sources.jar
