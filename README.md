@@ -34,6 +34,20 @@ dependencies {
 </dependency>
 ```
 
+ProGuard
+--------
+
+If you are using ProGuard, you need to include the following lines to your proguard configuration file.
+
+```pro
+-keepclassmembers class * implements com.fondesa.lyra.coder.StateCoder {
+    <init>(...);
+}
+-keepclassmembers class ** {
+    @com.fondesa.lyra.annotation.SaveState <fields>;
+}
+```
+
 Compatibility
 ------
 
