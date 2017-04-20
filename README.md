@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/Fondesa/Lyra/master/art/lyra_logo.png" height="220">
+<img src="https://raw.githubusercontent.com/Fondesa/Lyra/master/art/lyra_logo.png" height="196">
 
 [![Build Status](https://travis-ci.org/Fondesa/Lyra.svg?branch=master)](https://travis-ci.org/Fondesa/Lyra)
 
