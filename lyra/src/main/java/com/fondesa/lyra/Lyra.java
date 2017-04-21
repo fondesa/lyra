@@ -106,6 +106,7 @@ public class Lyra {
      *
      * @return not null instance of {@link Lyra}
      */
+    @NonNull
     public static Lyra instance() {
         if (!isInitialized()) {
             throw new NullPointerException("Instance not initialized. You have to build it in your application.");
@@ -120,6 +121,7 @@ public class Lyra {
      * @param field {@link Field} used to get the key
      * @return key used to save/restore a {@link Field} instance
      */
+    @NonNull
     public static String getKeyFromField(@NonNull Field field) {
         return field.getDeclaringClass().getName() + '#' + field.getName();
     }
@@ -228,6 +230,7 @@ public class Lyra {
         }
     }
 
+    @NonNull
     private static SaveState getSaveStateAnnotation(@NonNull Field field) {
         SaveState saveState = field.getAnnotation(SaveState.class);
         if (saveState == null) {
