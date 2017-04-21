@@ -52,7 +52,7 @@ public class DefaultGsonCoder<FieldType> extends GsonCoder<FieldType> {
     public void serialize(@NonNull Bundle state, @NonNull String key, @NonNull FieldType fieldValue) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(CLASS_KEY, fieldValue.getClass());
-        bundle.putSerializable(VALUE_KEY, gson().toJson(fieldValue));
+        bundle.putString(VALUE_KEY, gson().toJson(fieldValue));
         state.putBundle(key, bundle);
     }
 
@@ -67,6 +67,9 @@ public class DefaultGsonCoder<FieldType> extends GsonCoder<FieldType> {
     @Override
     public FieldType deserialize(@NonNull Bundle state, @NonNull String key) {
         Bundle bundle = state.getBundle(key);
+        if (bundle == null)
+            return null;
+
         Class jsonClass = (Class) bundle.getSerializable(CLASS_KEY);
         String jsonString = bundle.getString(VALUE_KEY);
         //noinspection unchecked
