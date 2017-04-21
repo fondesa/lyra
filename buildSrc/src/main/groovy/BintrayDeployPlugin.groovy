@@ -225,7 +225,7 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
         applyPlugin('com.jfrog.bintray')
         project.bintray {
             user = prop("BINTRAY_COMMON_USERNAME")
-            key = prop("BINTRAY_COMMON_APIKEY")
+            key = prop("BINTRAY_COMMON_API_KEY")
 
             publications = ['libraryPublication']
             pkg {
