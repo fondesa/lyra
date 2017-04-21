@@ -10,7 +10,7 @@ By default, Lyra uses an internal serializer/deserializer for fields, but also p
 Integration
 ------
 
-You can download the [latest JAR][2] or grab it from ```jcenter()``` or ```mavenCentral()```.
+You can download a jar from GitHub's [releases page][2] or grab it from ```jcenter()``` or ```mavenCentral()```.
 You can optionally use the dependency `lyra-coder-gson` if you want to include the [Gson][1] coder.
 
 ### Gradle ###
@@ -150,4 +150,4 @@ Compatibility
 
 
 [1]: https://github.com/google/gson
-[2]: https://jcenter.bintray.com/com/github/fondesa/lyra/1.0.0/lyra-1.0.0-sources.jar
+[2]: https://github.com/Fondesa/Lyra/releases
