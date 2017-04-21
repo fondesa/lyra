@@ -30,11 +30,11 @@ public class CharSequenceArrayCoder extends BaseCoder<CharSequence[]> {
      * Write a field's value into the saved state {@link Bundle}.
      *
      * @param state      {@link Bundle} used to save the state
-     * @param fieldName  name of the field
+     * @param key        key retrieved from {@code fieldDeclaringClass#fieldName}
      * @param fieldValue value of field
      */
     @Override
-    public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull CharSequence[] fieldValue) {
-        state.putCharSequenceArray(fieldName, fieldValue);
+    public void serialize(@NonNull Bundle state, @NonNull String key, @NonNull CharSequence[] fieldValue) {
+        state.putCharSequenceArray(key, fieldValue);
     }
 }

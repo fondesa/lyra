@@ -123,10 +123,10 @@ public class DefaultGsonCoderRetrieverTest {
 
     public static class CustomStateCoder implements StateCoder<String> {
         @Override
-        public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull String fieldValue) { /* empty */ }
+        public void serialize(@NonNull Bundle state, @NonNull String key, @NonNull String fieldValue) { /* empty */ }
 
         @Override
-        public String deserialize(@NonNull Bundle state, @NonNull String fieldName) {
+        public String deserialize(@NonNull Bundle state, @NonNull String key) {
             return null;
         }
     }

@@ -44,6 +44,7 @@ public abstract class GsonCoder<ValueType> implements StateCoder<ValueType> {
      *
      * @return the {@link Gson} instance passed in the constructor
      */
+    @NonNull
     protected Gson gson() {
         return mGson;
     }

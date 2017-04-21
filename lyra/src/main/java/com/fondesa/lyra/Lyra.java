@@ -53,6 +53,7 @@ import java.lang.reflect.Field;
  * After, you can access to instance methods with {@link Lyra#instance()}.
  */
 public class Lyra {
+    public static final String SUB_BUNDLE_KEY = "lyra:";
     private static final String TAG = Lyra.class.getSimpleName();
 
     private Application mApplication;
@@ -105,11 +106,24 @@ public class Lyra {
      *
      * @return not null instance of {@link Lyra}
      */
+    @NonNull
     public static Lyra instance() {
         if (!isInitialized()) {
             throw new NullPointerException("Instance not initialized. You have to build it in your application.");
         }
         return instance;
+    }
+
+    /**
+     * Get the key used to save/restore a class' field.
+     * The format will be: {@code fieldDeclaringClass#fieldName}.
+     *
+     * @param field {@link Field} used to get the key
+     * @return key used to save/restore a {@link Field} instance
+     */
+    @NonNull
+    public static String getKeyFromField(@NonNull Field field) {
+        return field.getDeclaringClass().getName() + '#' + field.getName();
     }
 
     /**
@@ -124,6 +138,8 @@ public class Lyra {
         // Get the instance through the method to have the correct exception handling if instance is null.
         final Lyra lyra = instance();
         Field[] fields = lyra.mFieldsRetriever.getFields(stateHolder.getClass());
+
+        Bundle lyraBundle = new Bundle();
 
         //noinspection ForLoopReplaceableByForEach
         for (int i = 0; i < fields.length; i++) {
@@ -151,7 +167,7 @@ public class Lyra {
                     throw new RuntimeException(e);
                 }
                 //noinspection unchecked
-                stateCoder.serialize(state, field.getName(), fieldValue);
+                stateCoder.serialize(lyraBundle, getKeyFromField(field), fieldValue);
             }
 
             if (!accessible) {
@@ -159,6 +175,9 @@ public class Lyra {
                 field.setAccessible(false);
             }
         }
+
+        // Put the saved fields in the sub Bundle of Lyra.
+        state.putBundle(SUB_BUNDLE_KEY, lyraBundle);
     }
 
     /**
@@ -170,7 +189,9 @@ public class Lyra {
      * @param state       {@link Bundle} from which you want to restore the value of the annotated fields
      */
     public void restoreState(@NonNull Object stateHolder, @Nullable Bundle state) {
-        if (state == null)
+        Bundle lyraBundle;
+        // Restore the saved fields from the sub Bundle of Lyra.
+        if (state == null || (lyraBundle = state.getBundle(SUB_BUNDLE_KEY)) == null)
             return;
 
         // Get the instance through the method to have the correct exception handling if instance is null.
@@ -192,7 +213,7 @@ public class Lyra {
             } catch (CoderNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            final Object fieldValue = stateCoder.deserialize(state, field.getName());
+            final Object fieldValue = stateCoder.deserialize(lyraBundle, getKeyFromField(field));
             if (fieldValue != null) {
                 try {
                     // Set the field value.
@@ -209,6 +230,7 @@ public class Lyra {
         }
     }
 
+    @NonNull
     private static SaveState getSaveStateAnnotation(@NonNull Field field) {
         SaveState saveState = field.getAnnotation(SaveState.class);
         if (saveState == null) {

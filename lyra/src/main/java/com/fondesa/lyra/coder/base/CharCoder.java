@@ -30,11 +30,11 @@ public class CharCoder extends BaseCoder<Character> {
      * Write a field's value into the saved state {@link Bundle}.
      *
      * @param state      {@link Bundle} used to save the state
-     * @param fieldName  name of the field
+     * @param key        key retrieved from {@code fieldDeclaringClass#fieldName}
      * @param fieldValue value of field
      */
     @Override
-    public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull Character fieldValue) {
-        state.putChar(fieldName, fieldValue);
+    public void serialize(@NonNull Bundle state, @NonNull String key, @NonNull Character fieldValue) {
+        state.putChar(key, fieldValue);
     }
 }
