@@ -30,11 +30,11 @@ public class LongArrayCoder extends BaseCoder<long[]> {
      * Write a field's value into the saved state {@link Bundle}.
      *
      * @param state      {@link Bundle} used to save the state
-     * @param fieldName  name of the field
+     * @param key  key retrieved from declaringClass#fieldName
      * @param fieldValue value of field
      */
     @Override
-    public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull long[] fieldValue) {
-        state.putLongArray(fieldName, fieldValue);
+    public void serialize(@NonNull Bundle state, @NonNull String key, @NonNull long[] fieldValue) {
+        state.putLongArray(key, fieldValue);
     }
 }

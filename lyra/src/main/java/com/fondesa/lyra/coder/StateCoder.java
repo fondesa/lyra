@@ -33,17 +33,17 @@ public interface StateCoder<FieldType> {
      * Write a field's value into the saved state {@link Bundle}.
      *
      * @param state      {@link Bundle} used to save the state
-     * @param fieldName  name of the field
+     * @param key        key retrieved from declaringClass#fieldName
      * @param fieldValue value of field
      */
-    void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull FieldType fieldValue);
+    void serialize(@NonNull Bundle state, @NonNull String key, @NonNull FieldType fieldValue);
 
     /**
      * Read a field's value from the saved state {@link Bundle}.
      *
-     * @param state     {@link Bundle} used to save the state
-     * @param fieldName name of the field
+     * @param state {@link Bundle} used to save the state
+     * @param key   key retrieved from declaringClass#fieldName
      * @return value of the field
      */
-    FieldType deserialize(@NonNull Bundle state, @NonNull String fieldName);
+    FieldType deserialize(@NonNull Bundle state, @NonNull String key);
 }

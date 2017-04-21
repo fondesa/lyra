@@ -30,11 +30,11 @@ public class IntArrayCoder extends BaseCoder<int[]> {
      * Write a field's value into the saved state {@link Bundle}.
      *
      * @param state      {@link Bundle} used to save the state
-     * @param fieldName  name of the field
+     * @param key  key retrieved from declaringClass#fieldName
      * @param fieldValue value of field
      */
     @Override
-    public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull int[] fieldValue) {
-        state.putIntArray(fieldName, fieldValue);
+    public void serialize(@NonNull Bundle state, @NonNull String key, @NonNull int[] fieldValue) {
+        state.putIntArray(key, fieldValue);
     }
 }

@@ -41,6 +41,7 @@ import java.util.List;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
 
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertThat;
@@ -92,8 +93,13 @@ public class LyraTest {
 
         List<Object> fieldValues = listOfValuesFromFields(saveStateObject, fields);
         List<Object> savedValues = new ArrayList<>(fieldValues.size());
-        for (String key : stateBundle.keySet()) {
-            savedValues.add(stateBundle.get(key));
+
+        Bundle lyraBundle = stateBundle.getBundle(Lyra.SUB_BUNDLE_KEY);
+        // Assert that the sub Bundle has been written.
+        assertNotNull(lyraBundle);
+
+        for (String key : lyraBundle.keySet()) {
+            savedValues.add(lyraBundle.get(key));
         }
 
         assertThat(savedValues, containsInAnyOrder(fieldValues.toArray()));
@@ -104,6 +110,8 @@ public class LyraTest {
         final DefaultFieldsRetriever retriever = new DefaultFieldsRetriever();
         final DefaultCoderRetriever coderRetriever = new DefaultCoderRetriever();
         final Bundle stateBundle = new Bundle();
+        final Bundle lyraBundle = new Bundle();
+
         final TestModels.SubClassAllModifiersAnnotatedFields saveStateObject =
                 new TestModels.SubClassAllModifiersAnnotatedFields();
 
@@ -116,9 +124,12 @@ public class LyraTest {
             Object randomObj = mRandomizer.nextObject(fieldType);
             savedValues.add(randomObj);
             //noinspection unchecked
-            stateCoder.serialize(stateBundle, field.getName(), randomObj);
+            stateCoder.serialize(lyraBundle, Lyra.getKeyFromField(field), randomObj);
         }
 
+        // Insert the sub Bundle used by Lyra.
+        stateBundle.putBundle(Lyra.SUB_BUNDLE_KEY, lyraBundle);
+        // Restore the state from the sub Bundle.
         Lyra.instance().restoreState(saveStateObject, stateBundle);
 
         List<Object> fieldValues = listOfValuesFromFields(saveStateObject, fields);

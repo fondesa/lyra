@@ -31,11 +31,11 @@ public class ParcelableArrayCoder extends BaseCoder<Parcelable[]> {
      * Write a field's value into the saved state {@link Bundle}.
      *
      * @param state      {@link Bundle} used to save the state
-     * @param fieldName  name of the field
+     * @param key  key retrieved from declaringClass#fieldName
      * @param fieldValue value of field
      */
     @Override
-    public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull Parcelable[] fieldValue) {
-        state.putParcelableArray(fieldName, fieldValue);
+    public void serialize(@NonNull Bundle state, @NonNull String key, @NonNull Parcelable[] fieldValue) {
+        state.putParcelableArray(key, fieldValue);
     }
 }

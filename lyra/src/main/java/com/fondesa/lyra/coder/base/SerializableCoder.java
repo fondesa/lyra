@@ -32,11 +32,11 @@ public class SerializableCoder extends BaseCoder<Serializable> {
      * Write a field's value into the saved state {@link Bundle}.
      *
      * @param state      {@link Bundle} used to save the state
-     * @param fieldName  name of the field
+     * @param key  key retrieved from declaringClass#fieldName
      * @param fieldValue value of field
      */
     @Override
-    public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull Serializable fieldValue) {
-        state.putSerializable(fieldName, fieldValue);
+    public void serialize(@NonNull Bundle state, @NonNull String key, @NonNull Serializable fieldValue) {
+        state.putSerializable(key, fieldValue);
     }
 }

@@ -30,11 +30,11 @@ public class StringArrayCoder extends BaseCoder<String[]> {
      * Write a field's value into the saved state {@link Bundle}.
      *
      * @param state      {@link Bundle} used to save the state
-     * @param fieldName  name of the field
+     * @param key  key retrieved from declaringClass#fieldName
      * @param fieldValue value of field
      */
     @Override
-    public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull String[] fieldValue) {
-        state.putStringArray(fieldName, fieldValue);
+    public void serialize(@NonNull Bundle state, @NonNull String key, @NonNull String[] fieldValue) {
+        state.putStringArray(key, fieldValue);
     }
 }

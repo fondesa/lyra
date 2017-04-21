@@ -45,28 +45,28 @@ public class DefaultGsonCoder<FieldType> extends GsonCoder<FieldType> {
      * Write a field's value into the saved state {@link Bundle}.
      *
      * @param state      {@link Bundle} used to save the state
-     * @param fieldName  name of the field
+     * @param key        key retrieved from declaringClass#fieldName
      * @param fieldValue value of field
      */
     @Override
-    public void serialize(@NonNull Bundle state, @NonNull String fieldName, @NonNull FieldType fieldValue) {
+    public void serialize(@NonNull Bundle state, @NonNull String key, @NonNull FieldType fieldValue) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(CLASS_KEY, fieldValue.getClass());
         bundle.putSerializable(VALUE_KEY, gson().toJson(fieldValue));
-        state.putBundle(fieldName, bundle);
+        state.putBundle(key, bundle);
     }
 
     /**
      * Read a field's value from the saved state {@link Bundle}.
      *
-     * @param state     {@link Bundle} used to save the state
-     * @param fieldName name of the field
+     * @param state {@link Bundle} used to save the state
+     * @param key   key retrieved from declaringClass#fieldName
      * @return value of the field
      */
     @SuppressWarnings("ConstantConditions")
     @Override
-    public FieldType deserialize(@NonNull Bundle state, @NonNull String fieldName) {
-        Bundle bundle = state.getBundle(fieldName);
+    public FieldType deserialize(@NonNull Bundle state, @NonNull String key) {
+        Bundle bundle = state.getBundle(key);
         Class jsonClass = (Class) bundle.getSerializable(CLASS_KEY);
         String jsonString = bundle.getString(VALUE_KEY);
         //noinspection unchecked
