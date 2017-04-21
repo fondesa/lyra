@@ -17,9 +17,9 @@ You can optionally use the dependency `lyra-coder-gson` if you want to include t
 
 ```gradle
 dependencies {
-    compile 'com.github.fondesa:lyra:1.0.0-rc1'
+    compile 'com.github.fondesa:lyra:1.0.0'
     // Use this dependency if you want to include the Gson coder.
-    compile 'com.github.fondesa:lyra-coder-gson:1.0.0-rc1'
+    compile 'com.github.fondesa:lyra-coder-gson:1.0.0'
 }
 ```
 
@@ -29,7 +29,7 @@ dependencies {
 <dependency>
   <groupId>com.github.fondesa</groupId>
   <artifactId>lyra</artifactId>
-  <version>1.0.0-rc1</version>
+  <version>1.0.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -150,4 +150,4 @@ Compatibility
 
 
 [1]: https://github.com/google/gson
-[2]: https://repo1.maven.org/maven2/com/github/fondesa/lyra/1.0.0-rc1/lyra-1.0.0-rc1-sources.jar
+[2]: https://jcenter.bintray.com/com/github/fondesa/lyra/1.0.0/lyra-1.0.0-sources.jar

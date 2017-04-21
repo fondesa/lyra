@@ -22,7 +22,7 @@ new AndroidSharedPlugin(
         }
 ).apply(project)
 
-final def libraryMavenCompileVersion = "1.0.0-rc1"
+final def libraryMavenCompileVersion = "1.0.0"
 
 dependencies {
     compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
