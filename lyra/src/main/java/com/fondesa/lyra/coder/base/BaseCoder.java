@@ -32,8 +32,8 @@ abstract class BaseCoder<FieldType> implements StateCoder<FieldType> {
     /**
      * Read a field's value from the saved state {@link Bundle}.
      *
-     * @param state     {@link Bundle} used to save the state
-     * @param key key retrieved from declaringClass#fieldName
+     * @param state {@link Bundle} used to save the state
+     * @param key   key retrieved from {@code fieldDeclaringClass#fieldName}
      * @return value of the field
      */
     @Override

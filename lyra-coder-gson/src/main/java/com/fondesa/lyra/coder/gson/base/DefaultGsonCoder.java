@@ -45,7 +45,7 @@ public class DefaultGsonCoder<FieldType> extends GsonCoder<FieldType> {
      * Write a field's value into the saved state {@link Bundle}.
      *
      * @param state      {@link Bundle} used to save the state
-     * @param key        key retrieved from declaringClass#fieldName
+     * @param key        key retrieved from {@code fieldDeclaringClass#fieldName}
      * @param fieldValue value of field
      */
     @Override
@@ -60,7 +60,7 @@ public class DefaultGsonCoder<FieldType> extends GsonCoder<FieldType> {
      * Read a field's value from the saved state {@link Bundle}.
      *
      * @param state {@link Bundle} used to save the state
-     * @param key   key retrieved from declaringClass#fieldName
+     * @param key   key retrieved from {@code fieldDeclaringClass#fieldName}
      * @return value of the field
      */
     @SuppressWarnings("ConstantConditions")

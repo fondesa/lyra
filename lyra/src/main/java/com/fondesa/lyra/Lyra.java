@@ -114,6 +114,17 @@ public class Lyra {
     }
 
     /**
+     * Get the key used to save/restore a class' field.
+     * The format will be: {@code fieldDeclaringClass#fieldName}.
+     *
+     * @param field {@link Field} used to get the key
+     * @return key used to save/restore a {@link Field} instance
+     */
+    public static String getKeyFromField(@NonNull Field field) {
+        return field.getDeclaringClass().getName() + '#' + field.getName();
+    }
+
+    /**
      * Save the annotated fields' state of a class into a {@link Bundle}.
      * The fields of a class will be retrieved through a {@link FieldsRetriever}.
      * The coder to serialize the fields into a {@link Bundle} will be retrieved through a {@link CoderRetriever}.
@@ -215,10 +226,6 @@ public class Lyra {
                 field.setAccessible(false);
             }
         }
-    }
-
-    public static String getKeyFromField(@NonNull Field field) {
-        return field.getDeclaringClass().getName() + '#' + field.getName();
     }
 
     private static SaveState getSaveStateAnnotation(@NonNull Field field) {
