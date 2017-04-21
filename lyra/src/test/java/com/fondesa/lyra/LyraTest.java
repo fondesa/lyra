@@ -41,6 +41,7 @@ import java.util.List;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
 
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -68,8 +69,25 @@ public class LyraTest {
     }
 
     @Test
+    public void testInstanceNotNull() {
+        assertNotNull(Lyra.instance());
+    }
+
+    @Test
+    public void testDestroy() {
+        Lyra.destroy();
+        assertFalse(Lyra.isInitialized());
+    }
+
+    @Test
     public void testIsInitialized() {
         assertTrue(Lyra.isInitialized());
+    }
+
+    @Test
+    public void testKeyFromFieldNotNull() {
+        Field field = TestModels.MixedPublicFields.class.getDeclaredFields()[0];
+        assertNotNull(Lyra.getKeyFromField(field));
     }
 
     @Test
