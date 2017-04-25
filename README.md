@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         /* Necessary only if you aren't in an Activity or you 
         haven't specified to auto save Activities in the Lyra instance. */
-        Lyra.instance().saveState(this, savedInstanceState);
+        Lyra.instance().restoreState(this, savedInstanceState);
     }
     
     @Override
