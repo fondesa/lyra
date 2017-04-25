@@ -134,11 +134,15 @@ public class CustomStringCoder implements StateCoder<String> {
     @Override
     public String deserialize(@NonNull Bundle state, @NonNull String key) {
         String base64 = state.getString(key);
+        if (base64 == null)
+            return null;
+            
         byte[] data = Base64.decode(base64, Base64.DEFAULT);
         try {
             return new String(data, "UTF-8");
-        } catch (UnsupportedEncodingException ignored) {}
-        return null;
+        } catch (UnsupportedEncodingException ignored) {
+            return null;
+        }
     }
 }
 ```
