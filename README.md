@@ -100,7 +100,7 @@ public class MainActivity extends Activity {
     @SaveState(CustomStringCoder.class)
     private String mText;
     
-     @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /* Necessary only if you aren't in an Activity or you 
