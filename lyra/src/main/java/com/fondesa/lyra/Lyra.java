@@ -22,10 +22,12 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.View;
 
 import com.fondesa.lyra.annotation.SaveState;
 import com.fondesa.lyra.coder.CoderRetriever;
@@ -54,6 +56,7 @@ import java.lang.reflect.Field;
  */
 public class Lyra {
     public static final String SUB_BUNDLE_KEY = "lyra:";
+    public static final String VIEW_SUPER_STATE_BUNDLE_KEY = "view:superState";
     private static final String TAG = Lyra.class.getSimpleName();
 
     private Application mApplication;
@@ -228,6 +231,26 @@ public class Lyra {
                 field.setAccessible(false);
             }
         }
+    }
+
+    public Parcelable saveState(@NonNull View stateHolder, @NonNull Parcelable state) {
+        Bundle wrapper = new Bundle();
+        // Put the original super state.
+        wrapper.putParcelable(VIEW_SUPER_STATE_BUNDLE_KEY, state);
+        // Save the state into the Lyra Bundle.
+        saveState((Object) stateHolder, wrapper);
+        return wrapper;
+    }
+
+    public Parcelable restoreState(@NonNull View stateHolder, @Nullable Parcelable state) {
+        if (state instanceof Bundle) {
+            Bundle wrapper = (Bundle) state;
+            // Get the original super state.
+            state = wrapper.getParcelable(VIEW_SUPER_STATE_BUNDLE_KEY);
+            // Restore the state saved in the Lyra Bundle.
+            restoreState((Object) stateHolder, wrapper);
+        }
+        return state;
     }
 
     @NonNull
