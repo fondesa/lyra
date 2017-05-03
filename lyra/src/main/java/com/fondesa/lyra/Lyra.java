@@ -131,7 +131,7 @@ public class Lyra {
 
     /**
      * Save the annotated fields' state of a class into a {@link Bundle}.
-     * The fields of a class will be retrieved through a {@link FieldsRetriever}.
+     * The fields of the class will be retrieved through a {@link FieldsRetriever}.
      * The coder to serialize the fields into a {@link Bundle} will be retrieved through a {@link CoderRetriever}.
      *
      * @param stateHolder instance of the class with annotated fields
@@ -185,7 +185,7 @@ public class Lyra {
 
     /**
      * Restore the annotated fields' state of a class from a {@link Bundle}.
-     * The fields of a class will be retrieved through a {@link FieldsRetriever}.
+     * The fields of the class will be retrieved through a {@link FieldsRetriever}.
      * The coder to deserialize the fields from a {@link Bundle} will be retrieved through a {@link CoderRetriever}.
      *
      * @param stateHolder instance of the class with annotated fields
@@ -233,6 +233,17 @@ public class Lyra {
         }
     }
 
+    /**
+     * Save the annotated fields' state of a {@link View} class into a {@link Bundle}.
+     * The {@link Bundle} will contain the parcelable state of the {@link View}
+     * with the key {@link #VIEW_SUPER_STATE_BUNDLE_KEY}.
+     * The fields of the class will be retrieved through a {@link FieldsRetriever}.
+     * The coder to serialize the fields into a {@link Bundle} will be retrieved through a {@link CoderRetriever}.
+     *
+     * @param stateHolder instance of the class with annotated fields
+     * @param state       {@link Bundle} in which you want to save the annotated fields
+     * @return {@link Bundle} containing view state and Lyra sub-bundle
+     */
     public Parcelable saveState(@NonNull View stateHolder, @NonNull Parcelable state) {
         Bundle wrapper = new Bundle();
         // Put the original super state.
@@ -242,6 +253,16 @@ public class Lyra {
         return wrapper;
     }
 
+    /**
+     * Restore the annotated fields' state of a {@link View} class from a {@link Parcelable}.
+     * If the state is a {@link Bundle}, the {@link View}'s state and the fields' values will be restored.
+     * The fields of the class will be retrieved through a {@link FieldsRetriever}.
+     * The coder to deserialize the fields from a {@link Bundle} will be retrieved through a {@link CoderRetriever}.
+     *
+     * @param stateHolder instance of the class with annotated fields
+     * @param state       {@link Bundle} from which you want to restore the value of the annotated fields
+     * @return {@link Parcelable} containing {@link View}'s saved state
+     */
     public Parcelable restoreState(@NonNull View stateHolder, @Nullable Parcelable state) {
         if (state instanceof Bundle) {
             Bundle wrapper = (Bundle) state;
