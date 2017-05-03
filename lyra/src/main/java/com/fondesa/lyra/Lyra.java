@@ -244,7 +244,7 @@ public class Lyra {
      * @param state       {@link Bundle} in which you want to save the annotated fields
      * @return {@link Bundle} containing view state and Lyra sub-bundle
      */
-    public Parcelable saveState(@NonNull View stateHolder, @NonNull Parcelable state) {
+    public Parcelable saveState(@NonNull View stateHolder, @Nullable Parcelable state) {
         Bundle wrapper = new Bundle();
         // Put the original super state.
         wrapper.putParcelable(VIEW_SUPER_STATE_BUNDLE_KEY, state);
