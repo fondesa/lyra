@@ -7,10 +7,6 @@ import com.fondesa.lyra.Lyra;
 import com.fondesa.lyra.coder.gson.DefaultGsonCoderRetriever;
 import com.fondesa.lyra.field.DefaultFieldsRetriever;
 
-/**
- * Created by antoniolig on 17/02/17.
- */
-
 public class App extends Application {
     @Override
     public void onCreate() {

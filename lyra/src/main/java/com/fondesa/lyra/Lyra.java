@@ -22,10 +22,12 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.View;
 
 import com.fondesa.lyra.annotation.SaveState;
 import com.fondesa.lyra.coder.CoderRetriever;
@@ -54,6 +56,7 @@ import java.lang.reflect.Field;
  */
 public class Lyra {
     public static final String SUB_BUNDLE_KEY = "lyra:";
+    public static final String VIEW_SUPER_STATE_BUNDLE_KEY = "view:superState";
     private static final String TAG = Lyra.class.getSimpleName();
 
     private Application mApplication;
@@ -128,7 +131,7 @@ public class Lyra {
 
     /**
      * Save the annotated fields' state of a class into a {@link Bundle}.
-     * The fields of a class will be retrieved through a {@link FieldsRetriever}.
+     * The fields of the class will be retrieved through a {@link FieldsRetriever}.
      * The coder to serialize the fields into a {@link Bundle} will be retrieved through a {@link CoderRetriever}.
      *
      * @param stateHolder instance of the class with annotated fields
@@ -182,7 +185,7 @@ public class Lyra {
 
     /**
      * Restore the annotated fields' state of a class from a {@link Bundle}.
-     * The fields of a class will be retrieved through a {@link FieldsRetriever}.
+     * The fields of the class will be retrieved through a {@link FieldsRetriever}.
      * The coder to deserialize the fields from a {@link Bundle} will be retrieved through a {@link CoderRetriever}.
      *
      * @param stateHolder instance of the class with annotated fields
@@ -228,6 +231,47 @@ public class Lyra {
                 field.setAccessible(false);
             }
         }
+    }
+
+    /**
+     * Save the annotated fields' state of a {@link View} class into a {@link Bundle}.
+     * The {@link Bundle} will contain the parcelable state of the {@link View}
+     * with the key {@link #VIEW_SUPER_STATE_BUNDLE_KEY}.
+     * The fields of the class will be retrieved through a {@link FieldsRetriever}.
+     * The coder to serialize the fields into a {@link Bundle} will be retrieved through a {@link CoderRetriever}.
+     *
+     * @param stateHolder instance of the class with annotated fields
+     * @param state       {@link Bundle} in which you want to save the annotated fields
+     * @return {@link Bundle} containing view state and Lyra sub-bundle
+     */
+    public Parcelable saveState(@NonNull View stateHolder, @Nullable Parcelable state) {
+        Bundle wrapper = new Bundle();
+        // Put the original super state.
+        wrapper.putParcelable(VIEW_SUPER_STATE_BUNDLE_KEY, state);
+        // Save the state into the Lyra Bundle.
+        saveState((Object) stateHolder, wrapper);
+        return wrapper;
+    }
+
+    /**
+     * Restore the annotated fields' state of a {@link View} class from a {@link Parcelable}.
+     * If the state is a {@link Bundle}, the {@link View}'s state and the fields' values will be restored.
+     * The fields of the class will be retrieved through a {@link FieldsRetriever}.
+     * The coder to deserialize the fields from a {@link Bundle} will be retrieved through a {@link CoderRetriever}.
+     *
+     * @param stateHolder instance of the class with annotated fields
+     * @param state       {@link Bundle} from which you want to restore the value of the annotated fields
+     * @return {@link Parcelable} containing {@link View}'s saved state
+     */
+    public Parcelable restoreState(@NonNull View stateHolder, @Nullable Parcelable state) {
+        if (state instanceof Bundle) {
+            Bundle wrapper = (Bundle) state;
+            // Get the original super state.
+            state = wrapper.getParcelable(VIEW_SUPER_STATE_BUNDLE_KEY);
+            // Restore the state saved in the Lyra Bundle.
+            restoreState((Object) stateHolder, wrapper);
+        }
+        return state;
     }
 
     @NonNull

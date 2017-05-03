@@ -18,8 +18,10 @@ package com.fondesa.lyra.common;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.View;
 
 import com.fondesa.lyra.annotation.SaveState;
 
@@ -185,5 +187,18 @@ public class TestModels {
         public double g;
         @SaveState
         float h;
+    }
+
+    public static class SaveStateView extends View {
+        @SaveState
+        protected ImplementedSerializable f;
+        @SaveState
+        public double g;
+        @SaveState
+        float h;
+
+        public SaveStateView(Context context) {
+            super(context);
+        }
     }
 }
