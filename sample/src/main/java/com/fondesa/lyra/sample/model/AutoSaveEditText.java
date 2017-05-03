@@ -8,9 +8,6 @@ import android.util.AttributeSet;
 import com.fondesa.lyra.Lyra;
 import com.fondesa.lyra.annotation.SaveState;
 
-/**
- * Created by antoniolig on 21/02/17.
- */
 public class AutoSaveEditText extends AppCompatEditText {
     @SaveState
     CharSequence myText;

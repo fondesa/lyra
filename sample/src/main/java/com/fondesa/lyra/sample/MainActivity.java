@@ -6,7 +6,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fondesa.lyra.Lyra;
@@ -31,7 +31,8 @@ public class MainActivity extends BaseMainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FrameLayout root = new FrameLayout(this);
+        LinearLayout root = new LinearLayout(this);
+        root.setOrientation(LinearLayout.VERTICAL);
         int defaultPadding = getResources().getDimensionPixelSize(R.dimen.default_inner_padding);
         root.setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding);
 
@@ -56,8 +57,8 @@ public class MainActivity extends BaseMainActivity {
                 printInfo();
             }
         });
-        FrameLayout.LayoutParams buttonParams =
-                new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams buttonParams =
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         buttonParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
 
         root.addView(button, buttonParams);

@@ -3,10 +3,6 @@ package com.fondesa.lyra.sample.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by antoniolig on 18/02/17.
- */
-
 public class ParcelableModel implements Parcelable {
     public int id;
     public String value;
@@ -16,7 +12,7 @@ public class ParcelableModel implements Parcelable {
         this.value = value;
     }
 
-    protected ParcelableModel(Parcel in) {
+    private ParcelableModel(Parcel in) {
         id = in.readInt();
         value = in.readString();
     }
