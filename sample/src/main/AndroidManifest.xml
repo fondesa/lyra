@@ -4,7 +4,7 @@
     package="com.fondesa.lyra.sample">
 
     <application
-        android:name="com.fondesa.lyra.sample.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,7 +14,7 @@
 
         <activity android:name=".BaseMainActivity" />
 
-        <activity android:name="com.fondesa.lyra.sample.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
