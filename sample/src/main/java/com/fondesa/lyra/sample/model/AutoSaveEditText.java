@@ -10,7 +10,7 @@ import com.fondesa.lyra.annotation.SaveState;
 
 public class AutoSaveEditText extends AppCompatEditText {
     @SaveState
-    CharSequence myText;
+    CharSequence mText;
 
     public AutoSaveEditText(Context context) {
         super(context);
@@ -26,13 +26,13 @@ public class AutoSaveEditText extends AppCompatEditText {
 
     @Override
     public Parcelable onSaveInstanceState() {
-        myText = getText();
+        mText = getText();
         return Lyra.instance().saveState(this, super.onSaveInstanceState());
     }
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(Lyra.instance().restoreState(this, state));
-        setText(myText);
+        setText(mText);
     }
 }
