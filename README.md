@@ -118,6 +118,25 @@ public class MainActivity extends Activity {
 }
 ```
 
+The save/restore of the state is supported also in a custom `View`. For example:
+
+```java
+public class AutoSaveEditText extends AppCompatEditText {
+    @SaveState
+    CharSequence mText;
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        return Lyra.instance().saveState(this, super.onSaveInstanceState());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        super.onRestoreInstanceState(Lyra.instance().restoreState(this, state));
+    }
+}
+```
+
 As shown above, you can create your own custom `StateCoder`. For example, this coder will save/restore a `String` in `Base64`:
 
 ```java
