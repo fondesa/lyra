@@ -16,22 +16,35 @@
 
 package com.fondesa.lyra.sample.activity
 
+import android.os.Build
+import android.os.Bundle
+import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import com.fondesa.lyra.Lyra
+import com.fondesa.lyra.annotation.SaveState
+import com.fondesa.lyra.coder.gson.base.DefaultGsonCoder
+import com.fondesa.lyra.sample.R
 import com.fondesa.lyra.sample.model.Model
+import com.fondesa.lyra.sample.model.ParcelableModel
+import com.fondesa.lyra.sample.widget.AutoSaveEditText
 
 class MainActivity : BaseMainActivity() {
-    private lateinit var textView: android.widget.TextView
+    private lateinit var textView: TextView
 
-    @com.fondesa.lyra.annotation.SaveState(com.fondesa.lyra.coder.gson.base.DefaultGsonCoder::class)
+    @SaveState(DefaultGsonCoder::class)
     private var text: String? = null
 
-    @com.fondesa.lyra.annotation.SaveState
-    internal var model: com.fondesa.lyra.sample.model.ParcelableModel? = null
+    @SaveState
+    internal var model: ParcelableModel? = null
 
-    override fun onCreate(savedInstanceState: android.os.Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val rootView = initView()
-        val rootViewParams = android.view.ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        val rootViewParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         setContentView(rootView, rootViewParams)
 
         restoreState(savedInstanceState)
@@ -39,53 +52,53 @@ class MainActivity : BaseMainActivity() {
         printInfo()
     }
 
-    override fun onSaveInstanceState(outState: android.os.Bundle) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            com.fondesa.lyra.Lyra.instance().saveState(this, outState)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            Lyra.instance().saveState(this, outState)
         }
     }
 
-    private fun initView(): android.view.View {
-        val root = android.widget.LinearLayout(this)
-        root.orientation = android.widget.LinearLayout.VERTICAL
-        val defaultPadding = resources.getDimensionPixelSize(com.fondesa.lyra.sample.R.dimen.default_inner_padding)
+    private fun initView(): View {
+        val root = LinearLayout(this)
+        root.orientation = LinearLayout.VERTICAL
+        val defaultPadding = resources.getDimensionPixelSize(R.dimen.default_inner_padding)
         root.setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding)
 
-        textView = android.widget.TextView(this)
-        root.addView(textView, android.view.ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+        textView = TextView(this)
+        root.addView(textView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
-        val button = android.widget.Button(this)
-        button.setText(com.fondesa.lyra.sample.R.string.change_value)
+        val button = Button(this)
+        button.setText(R.string.change_value)
         button.setOnClickListener {
             text = if (text == null) "first" else null
             randomByte = if (randomByte.toInt() == 0) 1 else 0
 
             if (modelList == null) {
-                modelList = java.util.ArrayList<Model>()
-                modelList!!.add(com.fondesa.lyra.sample.model.Model(1, "first"))
-                modelList!!.add(com.fondesa.lyra.sample.model.Model(2, "second"))
-                modelList!!.add(com.fondesa.lyra.sample.model.Model(3, "third"))
+                modelList = ArrayList<Model>()
+                modelList!!.add(Model(1, "first"))
+                modelList!!.add(Model(2, "second"))
+                modelList!!.add(Model(3, "third"))
             } else {
                 modelList = null
             }
-            model = if (model == null) com.fondesa.lyra.sample.model.ParcelableModel(5, "fifth") else null
+            model = if (model == null) ParcelableModel(5, "fifth") else null
             printInfo()
         }
-        val buttonParams = android.widget.LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        buttonParams.gravity = android.view.Gravity.BOTTOM or android.view.Gravity.CENTER_HORIZONTAL
+        val buttonParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        buttonParams.gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
 
         root.addView(button, buttonParams)
 
-        val autoSaveEditText = com.fondesa.lyra.sample.widget.AutoSaveEditText(this)
-        autoSaveEditText.id = com.fondesa.lyra.sample.R.id.auto_save_edit_text
-        root.addView(autoSaveEditText, android.view.ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+        val autoSaveEditText = AutoSaveEditText(this)
+        autoSaveEditText.id = R.id.auto_save_edit_text
+        root.addView(autoSaveEditText, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         return root
     }
 
     private fun restoreState(savedInstanceState: android.os.Bundle?) {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            com.fondesa.lyra.Lyra.instance().restoreState(this, savedInstanceState)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            Lyra.instance().restoreState(this, savedInstanceState)
         }
     }
 
