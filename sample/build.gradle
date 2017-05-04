@@ -1,28 +1,38 @@
-new AndroidSharedPlugin(
-        type: AndroidSharedPlugin.APP,
-        config: {
-            defaultConfig.applicationId "com.fondesa.lyra.sample"
+buildscript {
+    ext {
+        libraryMavenCompileVersion = '1.0.1'
 
-            productFlavors {
-                local
-                maven
+        androidLib = [
+                supportV4: "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION",
+                appCompat: "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
+        ]
+
+        localLyra = [
+                core     : ":lyra",
+                gsonCoder: ":lyra-coder-gson"
+        ]
+
+        mavenLyra = [
+                core     : "com.github.fondesa:lyra:$libraryMavenCompileVersion",
+                gsonCoder: "com.github.fondesa:lyra-coder-gson:$libraryMavenCompileVersion"
+        ]
+    }
+}
+
+subprojects { project ->
+    new AndroidSharedPlugin(
+            type: AndroidSharedPlugin.APP,
+            config: {
+                defaultConfig.applicationId "com.fondesa.lyra.sample"
+
+                productFlavors {
+                    local
+                    maven
+                }
+
+                sourceSets {
+                    main.java.srcDirs += "src/main/kotlin"
+                }
             }
-        }
-).apply(project)
-
-apply plugin: 'kotlin-android'
-
-final def libraryMavenCompileVersion = "1.0.1"
-
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
-
-    compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
-    compile "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
-
-    localCompile project(':lyra')
-    localCompile project(':lyra-coder-gson')
-
-    mavenCompile "com.github.fondesa:lyra:$libraryMavenCompileVersion"
-    mavenCompile "com.github.fondesa:lyra-coder-gson:$libraryMavenCompileVersion"
+    ).apply(project)
 }

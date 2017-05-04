@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Lyra sample</string>
+
+    <string name="change_value">Change value</string>
+</resources>

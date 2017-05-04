@@ -1,0 +1,16 @@
+evaluationDependsOn(':sample')
+
+apply plugin: 'kotlin-android'
+
+dependencies {
+    compile androidLib.appCompat
+    compile androidLib.supportV4
+
+    localCompile project(localLyra.core)
+    localCompile project(localLyra.gsonCoder)
+
+    mavenCompile mavenLyra.core
+    mavenCompile mavenLyra.gsonCoder
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
+}

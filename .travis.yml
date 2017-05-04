@@ -20,10 +20,11 @@ branches:
     - master
 
 script:
-  - ./gradlew :lyra-shared-test:build --continue --stacktrace
-  - ./gradlew :lyra:build --continue --stacktrace
-  - ./gradlew :lyra-coder-gson:build --continue --stacktrace
-  - ./gradlew :sample:assembleLocal --continue --stacktrace
+  - ./gradlew :lyra-shared-test:build --continue -s
+  - ./gradlew :lyra:build --continue -s
+  - ./gradlew :lyra-coder-gson:build --continue -s
+  - ./gradlew :sample:sample-java:assembleLocal --continue -s
+  - ./gradlew :sample:sample-kotlin:assembleLocal --continue -s
 
 sudo: required
 
