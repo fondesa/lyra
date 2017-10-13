@@ -13,4 +13,5 @@ dependencies {
     mavenCompile mavenLyra.gsonCoder
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$KOTLIN_VERSION"
 }

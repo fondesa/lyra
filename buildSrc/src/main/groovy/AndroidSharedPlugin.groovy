@@ -48,6 +48,11 @@ class AndroidSharedPlugin extends ConfiguredProjectPlugin {
                 minSdkVersion prop(androidProps, "MIN_SDK").toInteger()
                 targetSdkVersion prop(androidProps, "TARGET_SDK").toInteger()
             }
+
+            sourceSets {
+                main.java.srcDirs += "src/main/kotlin"
+            }
+
             if (config != null) {
                 // Set the delegate to the Android extension.
                 config.delegate = project.android

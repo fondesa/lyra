@@ -7,6 +7,9 @@ new BintrayDeployPlugin().apply(project)
 dependencies {
     testCompile project(':lyra-shared-test')
 
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$KOTLIN_VERSION"
+
     compile "com.android.support:support-annotations:$ANDROID_SUPPORT_VERSION"
     compile "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
 }

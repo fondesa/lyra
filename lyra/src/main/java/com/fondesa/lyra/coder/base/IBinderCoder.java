@@ -21,8 +21,6 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.BundleCompat;
 
-import com.fondesa.lyra.coder.StateCoder;
-
 /**
  * Implementation of {@link StateCoder} to manage {@code IBinder} fields.
  */

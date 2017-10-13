@@ -22,8 +22,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.SizeF;
 
-import com.fondesa.lyra.coder.StateCoder;
-
 /**
  * Implementation of {@link StateCoder} to manage {@code SizeF} fields.
  * <br>

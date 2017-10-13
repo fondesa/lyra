@@ -21,7 +21,6 @@ import android.os.Parcelable;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 
-import com.fondesa.lyra.Lyra;
 import com.fondesa.lyra.annotation.SaveState;
 
 public class AutoSaveEditText extends AppCompatEditText {

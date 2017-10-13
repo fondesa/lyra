@@ -19,8 +19,6 @@ package com.fondesa.lyra.coder.base;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.fondesa.lyra.coder.StateCoder;
-
 /**
  * Implementation of {@link StateCoder} to manage {@code long array} fields.
  */

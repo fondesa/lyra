@@ -29,10 +29,6 @@ subprojects { project ->
                     local
                     maven
                 }
-
-                sourceSets {
-                    main.java.srcDirs += "src/main/kotlin"
-                }
             }
     ).apply(project)
 }

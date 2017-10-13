@@ -20,9 +20,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.fondesa.lyra.annotation.SaveState;
-import com.fondesa.lyra.coder.StateCoder;
 import com.fondesa.lyra.coder.gson.base.DefaultGsonCoder;
-import com.fondesa.lyra.coder.utils.StateCoderUtils;
 import com.fondesa.lyra.exception.CoderNotFoundException;
 
 import org.junit.Before;
@@ -32,7 +30,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
 
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

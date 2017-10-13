@@ -25,7 +25,6 @@ import android.support.annotation.RequiresApi;
 import android.util.Size;
 import android.util.SizeF;
 
-import com.fondesa.lyra.coder.StateCoder;
 import com.fondesa.lyra.coder.base.StringCoder;
 import com.fondesa.lyra.common.TestModels;
 import com.fondesa.lyra.exception.CoderNotFoundException;
@@ -39,7 +38,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 /**

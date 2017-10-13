@@ -23,10 +23,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.fondesa.lyra.annotation.SaveState;
-import com.fondesa.lyra.coder.DefaultCoderRetriever;
-import com.fondesa.lyra.coder.StateCoder;
 import com.fondesa.lyra.common.TestModels;
-import com.fondesa.lyra.field.DefaultFieldsRetriever;
 import com.fondesa.lyra.sharedtest.FieldAccessibleRunner;
 
 import org.junit.After;

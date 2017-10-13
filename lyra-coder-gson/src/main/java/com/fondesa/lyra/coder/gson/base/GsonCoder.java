@@ -18,7 +18,6 @@ package com.fondesa.lyra.coder.gson.base;
 
 import android.support.annotation.NonNull;
 
-import com.fondesa.lyra.coder.StateCoder;
 import com.google.gson.Gson;
 
 /**

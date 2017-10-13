@@ -62,7 +62,7 @@ public class DefaultGsonCoderRetriever extends DefaultCoderRetriever {
      */
     @NonNull
     @Override
-    public StateCoder getCoder(@NonNull SaveState saveState, @NonNull Class<?> annotatedFieldClass) throws CoderNotFoundException {
+    public StateCoder<?> getCoder(@NonNull SaveState saveState, @NonNull Class<?> annotatedFieldClass) throws CoderNotFoundException {
         StateCoder stateCoder;
         // Get the coder class from the annotation.
         final Class<? extends StateCoder> stateSDClass = saveState.value();

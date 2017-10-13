@@ -25,7 +25,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fondesa.lyra.Lyra;
 import com.fondesa.lyra.annotation.SaveState;
 import com.fondesa.lyra.coder.gson.base.DefaultGsonCoder;
 import com.fondesa.lyra.sample.R;

@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.fondesa.lyra.annotation.SaveState;
-import com.fondesa.lyra.coder.utils.StateCoderUtils;
 import com.fondesa.lyra.exception.CoderNotFoundException;
 
 import org.junit.Before;

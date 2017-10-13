@@ -20,8 +20,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import com.fondesa.lyra.coder.StateCoder;
-
 /**
  * Implementation of {@link StateCoder} to manage {@code Parcelable} fields.
  */

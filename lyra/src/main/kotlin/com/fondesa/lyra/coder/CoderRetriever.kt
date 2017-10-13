@@ -14,33 +14,31 @@
  * limitations under the License.
  */
 
-package com.fondesa.lyra.coder;
+package com.fondesa.lyra.coder
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Bundle
 
-import com.fondesa.lyra.Lyra;
-import com.fondesa.lyra.annotation.SaveState;
-import com.fondesa.lyra.exception.CoderNotFoundException;
+import com.fondesa.lyra.Lyra
+import com.fondesa.lyra.annotation.SaveState
+import com.fondesa.lyra.exception.CoderNotFoundException
 
 /**
- * Interface that manages the way in which a {@link StateCoder} is retrieved from an annotation.
- * <br>
- * The default implementation is: {@link DefaultCoderRetriever}.
- * You can implement your own {@link CoderRetriever} and set it in the singleton instance
- * of {@link Lyra} with {@link Lyra.Builder#coderRetriever(CoderRetriever)}
+ * Interface that manages the way in which a [StateCoder] is retrieved from an annotation.
+ * The default implementation is: [DefaultCoderRetriever].
+ * You can implement your own [CoderRetriever] and set it in the singleton instance
+ * of [Lyra] with [Lyra.Builder.coderRetriever]
  * (for example to optimize performance or handle the cache differently).
  */
-public interface CoderRetriever {
+interface CoderRetriever {
 
     /**
-     * Retrieve a {@link StateCoder} from an annotation and the annotated class.
+     * Retrieve a [StateCoder] from an annotation and the annotated class.
      *
      * @param saveState           annotation obtained from the annotated field
      * @param annotatedFieldClass java class of the annotate field
-     * @return not null coder used to serialize and deserialize the state {@link Bundle}
+     * @return not null coder used to serialize and deserialize the state [Bundle]
      * @throws CoderNotFoundException if the coder can't be found or is unsupported
      */
-    @NonNull
-    StateCoder getCoder(@NonNull SaveState saveState, @NonNull Class<?> annotatedFieldClass) throws CoderNotFoundException;
+    @Throws(CoderNotFoundException::class)
+    fun getCoder(saveState: SaveState, annotatedFieldClass: Class<*>): StateCoder<*>
 }

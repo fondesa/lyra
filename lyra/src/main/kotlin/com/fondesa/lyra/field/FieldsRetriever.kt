@@ -14,30 +14,26 @@
  * limitations under the License.
  */
 
-package com.fondesa.lyra.field;
+package com.fondesa.lyra.field
 
-import android.support.annotation.NonNull;
-
-import com.fondesa.lyra.Lyra;
-import com.fondesa.lyra.annotation.SaveState;
-
-import java.lang.reflect.Field;
+import com.fondesa.lyra.Lyra
+import com.fondesa.lyra.annotation.SaveState
+import java.lang.reflect.Field
 
 /**
  * Interface that manages the retrieving of fields in a java class.
- * <br>
- * The default implementation is: {@link DefaultFieldsRetriever}.
- * You can implement your own {@link FieldsRetriever} and set it in the singleton instance
- * of {@link Lyra} with {@link Lyra.Builder#fieldsRetriever(FieldsRetriever)}
+ * The default implementation is: [DefaultFieldsRetriever].
+ * You can implement your own [FieldsRetriever] and set it in the singleton instance
+ * of [Lyra] with [Lyra.Builder.fieldsRetriever]
  * (for example to optimize performance or handle the cache differently).
  */
-public interface FieldsRetriever {
+interface FieldsRetriever {
 
     /**
-     * Retrieve an array of {@link Field} from a class.
+     * Retrieve an array of [Field] from a class.
      *
      * @param cls java class containing the fields that will be saved
-     * @return array of {@link Field} annotated with {@link SaveState}
+     * @return array of [Field] annotated with [SaveState]
      */
-    Field[] getFields(@NonNull Class<?> cls);
+    fun getFields(cls: Class<*>): Array<Field>
 }
